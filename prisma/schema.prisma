@@ -1,0 +1,485 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator graphql {
+  provider = "prisma-nestjs-graphql"
+  output   = "../src/generated/graphql"
+  reExport = "Directories"
+}
+
+generator zod {
+  provider = "prisma-zod-generator"
+  output   = "../src/generated"
+  config   = "zod-generator-config.json"
+}
+
+generator dto {
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../src/generated/dto"
+  outputToNestJsResourceStructure = "false"
+  flatResourceStructure           = "false"
+  exportRelationModifierClasses   = "true"
+  reExport                        = "true"
+  generateFileTypes               = "all"
+  createDtoPrefix                 = "Create"
+  updateDtoPrefix                 = "Update"
+  dtoSuffix                       = "Input"
+  entityPrefix                    = ""
+  entitySuffix                    = ""
+  classValidation                 = "true"
+  fileNamingStyle                 = "kebab"
+  noDependencies                  = "false"
+  outputType                      = "class"
+  definiteAssignmentAssertion     = "false"
+  requiredResponseApiProperty     = "true"
+  prettier                        = "true"
+  wrapRelationsAsType             = "false"
+  showDefaultValues               = "false"
+}
+
+enum Status {
+  Enabled
+  Disabled
+}
+
+enum Target {
+  Admin
+  User
+}
+
+enum MediaStore {
+  Local
+  Qiniu
+  Oss
+  Cos
+  S3
+}
+
+enum MediaType {
+  Image
+  Video
+  Audio
+  Document
+  Archive
+  Other
+}
+
+enum MediaVisibility {
+  Public
+  Private
+  Shared
+}
+
+model Auth {
+  /// @DtoCreateRequired
+  /// @DtoUpdateRequired
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  id        String   @id @default(cuid())
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+  /// @DtoCreateOptional
+  /// @DtoUpdateOptional
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  expiredAt DateTime @default(now()) @map("expired_at")
+
+  adminId   String?  @map("admin_id")
+  /// @DtoRelationCanConnectOnCreate
+  admin     Admin?   @relation(fields: [adminId], references: [id])
+  userId    String?  @map("user_id")
+  /// @DtoRelationCanConnectOnCreate
+  user      User?    @relation(fields: [userId], references: [id])
+  companyId String?  @map("company_id")
+  /// @DtoRelationCanConnectOnCreate
+  company   Company? @relation(fields: [companyId], references: [id])
+
+  /// @HideField({ output: true })
+  token       String
+  /// @HideField({ output: true })
+  fingerprint String?
+  device      Json?
+  location    Json?
+  target      Target
+
+  @@map("auths")
+}
+
+model Admin {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  id        String   @id @default(cuid())
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  status Status @default(Enabled)
+
+  /// @zod.min(2).trim()
+  name     String @db.VarChar(100)
+  /// @zod.email().min(5).trim().toLowerCase()
+  email    String @unique @db.VarChar(100)
+  /// @HideField({ output: true, match: '@(*Where*|*OrderBy*)' })
+  password String
+
+  roleId String    @map("role_id")
+  /// @DtoRelationCanConnectOnUpdate
+  /// @DtoRelationCanConnectOnCreate
+  role   AdminRole @relation(fields: [roleId], references: [id])
+
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  companies    AdminCompany[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  auths        Auth[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  logs         RequestLog[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  mediaFolders MediaFolder[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  mediaFiles   MediaFile[]
+
+  @@map("admins")
+}
+
+model AdminRole {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  id        String   @id @default(cuid())
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  status Status @default(Enabled)
+
+  /// @zod.min(2).trim()
+  name        String   @unique @db.VarChar(100)
+  description String?
+  /// @zod.min(2).trim()
+  code        String   @unique @db.VarChar(100)
+  permissions String[]
+
+  /// @zod.optional()
+  admins Admin[]
+
+  @@map("admin_roles")
+}
+
+model AdminCompany {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  adminId   String  @map("admin_id")
+  /// @DtoRelationCanConnectOnUpdate
+  /// @DtoRelationCanConnectOnCreate
+  admin     Admin   @relation(fields: [adminId], references: [id])
+  companyId String  @map("company_id")
+  /// @DtoRelationCanConnectOnUpdate
+  /// @DtoRelationCanConnectOnCreate
+  company   Company @relation(fields: [companyId], references: [id])
+
+  permissions String[]
+
+  @@id([adminId, companyId], name: "adminCompanyIdx")
+  @@map("admin_companies")
+}
+
+model User {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  id        String   @id @default(cuid())
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  status Status @default(Enabled)
+
+  /// @zod.min(2).trim()
+  name     String @db.VarChar(100)
+  /// @zod.email().min(5).trim()
+  email    String @unique @db.VarChar(100)
+  /// @HideField({ output: true, match: '@(*Where*|*OrderBy*)' })
+  password String
+
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  companies    CompanyUser[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  auths        Auth[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  logs         RequestLog[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  mediaFolders MediaFolder[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  mediaFiles   MediaFile[]
+
+  @@map("users")
+}
+
+model Company {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  id        String   @id @default(cuid())
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  status Status @default(Enabled)
+
+  /// @zod.min(2).trim()
+  name        String  @unique @db.VarChar(200)
+  /// @zod.min(2).trim()
+  alias       String? @db.VarChar(200)
+  /// @zod.min(2).trim()
+  code        String? @unique @db.VarChar(100)
+  description String?
+
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  auths        Auth[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  admins       AdminCompany[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  roles        CompanyRole[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  users        CompanyUser[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  logs         RequestLog[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  mediaFolders MediaFolder[]
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  mediaFiles   MediaFile[]
+
+  @@map("companies")
+}
+
+model CompanyRole {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  id        String   @id @default(cuid())
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  status Status @default(Enabled)
+
+  /// @zod.min(2).trim()
+  name        String   @db.VarChar(100)
+  description String?
+  /// @zod.min(2).trim()
+  code        String   @db.VarChar(100)
+  permissions String[]
+
+  companyId String?  @map("company_id")
+  /// @DtoRelationCanConnectOnUpdate
+  /// @DtoRelationCanConnectOnCreate
+  company   Company? @relation(fields: [companyId], references: [id])
+
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  users CompanyUser[]
+
+  @@unique([companyId, code], name: "companyRoleIdx")
+  @@map("company_roles")
+}
+
+model CompanyUser {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  status Status @default(Enabled)
+
+  companyId String      @map("company_id")
+  /// @DtoRelationCanConnectOnUpdate
+  /// @DtoRelationCanConnectOnCreate
+  company   Company     @relation(fields: [companyId], references: [id])
+  userId    String      @map("user_id")
+  /// @DtoRelationCanConnectOnUpdate
+  /// @DtoRelationCanConnectOnCreate
+  user      User        @relation(fields: [userId], references: [id])
+  roleId    String      @map("role_id")
+  /// @DtoRelationCanConnectOnUpdate
+  /// @DtoRelationCanConnectOnCreate
+  role      CompanyRole @relation(fields: [roleId], references: [id])
+
+  @@id([companyId, userId], name: "companyUserIdx")
+  @@map("company_users")
+}
+
+enum RequestMethod {
+  GET
+  POST
+  PUT
+  DELETE
+  PATCH
+  OPTIONS
+  HEAD
+  GRAPHQL
+}
+
+model RequestLog {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  id        String   @id @default(cuid())
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+  recordAt  DateTime @default(now()) @map("record_at")
+
+  route       String?
+  method      RequestMethod?
+  /// @zod.ipv4()
+  ip          String?
+  subject     String?
+  action      String?
+  query       Json?
+  language    String?
+  fingerprint String?
+  device      Json?
+  location    Json?
+  target      Target?
+
+  userId    String?  @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id])
+  adminId   String?  @map("admin_id")
+  admin     Admin?   @relation(fields: [adminId], references: [id])
+  companyId String?  @map("company_id")
+  company   Company? @relation(fields: [companyId], references: [id])
+
+  @@index([subject, action], name: "requestResourceIdx")
+  @@map("request_logs")
+}
+
+model MediaFolder {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  id        String   @id @default(cuid())
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  status Status @default(Enabled)
+
+  /// @zod.trim()
+  name        String  @db.VarChar(100)
+  description String?
+  /// @zod.trim()
+  path        String // 完整路径，如 "/folder1/subfolder"
+  level       Int     @default(0) // 文件夹层级深度
+
+  // 父子关系支持目录结构
+  parentId String?       @map("parent_id")
+  parent   MediaFolder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children MediaFolder[] @relation("FolderHierarchy")
+
+  // 多层级资源隔离
+  companyId String?  @map("company_id")
+  company   Company? @relation(fields: [companyId], references: [id])
+
+  // 所有者信息
+  ownerId   String? @map("owner_id")
+  ownerType Target  @map("owner_type") // Admin 或 User
+  adminId   String? @map("admin_id")
+  admin     Admin?  @relation(fields: [adminId], references: [id])
+  userId    String? @map("user_id")
+  user      User?   @relation(fields: [userId], references: [id])
+
+  // 权限控制
+  visibility MediaVisibility @default(Private)
+
+  // 关联的媒体资源
+  /// @zod.optional()
+  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  files MediaFile[]
+
+  @@unique([companyId, path], name: "folderPathIdx")
+  @@index([companyId, parentId], name: "folderHierarchyIdx")
+  @@index([ownerId, ownerType], name: "folderOwnerIdx")
+  @@map("media_folders")
+}
+
+model MediaFile {
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  id         String   @id @default(cuid())
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  createdAt  DateTime @default(now()) @map("created_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  /// @HideField({ match: '@(*Create*|*Update*)' })
+  uploadedAt DateTime @default(now()) @map("uploaded_at")
+
+  store  MediaStore @default(Local)
+  status Status     @default(Enabled)
+
+  // 文件基本信息
+  mediaType  MediaType @map("media_type")
+  mimeType   String    @map("mime_type")
+  originName String    @map("origin_name")
+  fileName   String    @map("file_name")
+  fileSize   BigInt    @map("file_size") // 文件大小（字节）
+  filePath   String    @default("/") @map("file_path") // 文件存储路径
+  fileHash   String    @map("file_hash") // 文件哈希值用于去重
+
+  // 文件元数据
+  width       Int?
+  height      Int?
+  duration    Int? // 音视频时长（秒）
+  metadata    Json? // 其他元数据信息
+  description String?
+
+  // 文件夹关联
+  folderId String?      @map("folder_id")
+  folder   MediaFolder? @relation(fields: [folderId], references: [id])
+
+  // 多层级资源隔离
+  companyId String?  @map("company_id")
+  company   Company? @relation(fields: [companyId], references: [id])
+
+  // 所有者信息
+  ownerId   String  @map("owner_id")
+  ownerType Target  @map("owner_type") // Admin 或 User
+  adminId   String? @map("admin_id")
+  admin     Admin?  @relation(fields: [adminId], references: [id])
+  userId    String? @map("user_id")
+  user      User?   @relation(fields: [userId], references: [id])
+
+  // 权限控制
+  visibility MediaVisibility @default(Private)
+
+  @@unique([companyId, fileHash], name: "fileHashIdx")
+  @@index([companyId, folderId], name: "fileFolderIdx")
+  @@index([ownerId, ownerType], name: "fileOwnerIdx")
+  @@index([mediaType, companyId], name: "fileTypeIdx")
+  @@index([fileName, companyId], name: "fileNameIdx")
+  @@map("media_files")
+}
