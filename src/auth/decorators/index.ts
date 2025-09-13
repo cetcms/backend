@@ -21,3 +21,4 @@ export * from './current-auth-company.decorator';
 export * from './current-auth-user.decorator';
 export * from './current-request.decorator';
 export * from './use-permission.decorator';
+export * from './current-request-info.decorator';

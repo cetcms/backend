@@ -13,6 +13,16 @@ export class LoginInput {
   target?: Target;
 }
 
+@InputType()
+export class LoginMeta {
+  @Field(() => String)
+  fingerprint: string;
+  @Field(() => String)
+  userAgent: string;
+  @Field(() => String)
+  ip: string;
+}
+
 @ObjectType()
 export class Login {
   @Field(() => Target)

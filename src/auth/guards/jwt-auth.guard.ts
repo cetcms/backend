@@ -99,7 +99,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       });
     }
     const req = RequestHandler(context);
-    if (req.headers[RequestHeaders.Fingerprint] !== auth.fingerprint) {
+    if (req.header(RequestHeaders.Fingerprint) !== auth.fingerprint) {
       throw new UnauthorizedException({
         message: 'Invalid fingerprint',
         code: 'FINGERPRINT_INVALID',

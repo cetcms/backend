@@ -1,6 +1,6 @@
 import { Injectable, Logger, UnprocessableEntityException } from '@nestjs/common';
 import { isEmail } from 'class-validator';
-import { Login, LoginInput } from 'src/auth/dto';
+import { Login, LoginInput, LoginMeta } from 'src/auth/dto';
 import { TokenFactory } from 'src/auth/factories';
 import { DateHandler } from 'src/common/handlers';
 import { Admin } from 'src/generated/graphql/admin';
@@ -28,7 +28,7 @@ export class AuthService {
    * @param input - 登录输入数据，包含账户、密码、目标类型和公司ID
    * @returns 登录结果，包含访问令牌和相关信息
    */
-  async login(input: LoginInput): Promise<Login> {
+  async login(input: LoginInput, meta: LoginMeta): Promise<Login> {
     // 如果未指定目标类型，默认设置为用户类型
     if (!input.target) input.target = Target.User;
 
@@ -65,7 +65,7 @@ export class AuthService {
       });
       // 创建认证记录
       const auth = await this.auth.createByTarget(target.id, input.companyId || null, {
-        fingerprint: undefined,
+        fingerprint: meta.fingerprint,
         location: undefined,
         device: undefined,
         target: input.target,
