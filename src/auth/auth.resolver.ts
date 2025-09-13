@@ -1,6 +1,10 @@
+import { UseGuards } from '@nestjs/common';
 import { Query, Mutation, Resolver, Args } from '@nestjs/graphql';
 import { AuthService } from 'src/auth/auth.service';
+import { CurrentAuth } from 'src/auth/decorators';
 import { Login, LoginInput } from 'src/auth/dto';
+import { JwtAuthGuard } from 'src/auth/guards';
+import { Auth } from 'src/generated/graphql/auth';
 
 @Resolver()
 export class AuthResolver {
@@ -11,8 +15,9 @@ export class AuthResolver {
     return this.service.login(input);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => Boolean)
-  logout() {
-    return this.service.logout();
+  logout(@CurrentAuth() auth: Auth) {
+    return this.service.logout(auth);
   }
 }

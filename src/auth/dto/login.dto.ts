@@ -9,8 +9,8 @@ export class LoginInput {
   companyId?: string;
   @Field(() => String)
   password: string;
-  @Field(() => Target)
-  target: Target;
+  @Field(() => Target, { nullable: true, defaultValue: Target.User })
+  target?: Target;
 }
 
 @ObjectType()

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import { CreateAuthInput, UpdateAuthInput } from 'src/generated/dto';
@@ -58,11 +58,7 @@ export class AuthRepository {
    * @returns 解析后的创建数据
    */
   private parseCreateData(input: CreateAuthInput) {
-    return AuthCreateInputObjectZodSchema.omit({
-      admin: true,
-      user: true,
-      company: true,
-    }).parse(input) as unknown as Prisma.AuthCreateInput;
+    return AuthCreateInputObjectZodSchema.parse(input) as unknown as Prisma.AuthCreateInput;
   }
 
   /**
@@ -254,13 +250,34 @@ export class AuthRepository {
   }
 
   /**
+   * 根据目标类型创建身份认证记录
+   * @param targetId - 目标唯一标识符
+   * @param companyId - 公司唯一标识符（可选）
+   * @param input - 创建身份认证记录所需的数据
+   * @returns 创建的身份认证记录
+   */
+  createByTarget(targetId: string, companyId: string | null, input: CreateAuthInput) {
+    switch (input.target) {
+      case Target.Admin:
+        return this.createOnlyAdmin(targetId, companyId, input);
+      case Target.User:
+        if (!companyId) {
+          throw new UnprocessableEntityException('you cannot auth without company');
+        }
+        return this.createOnlyUser(targetId, companyId, input);
+      default:
+        throw new UnprocessableEntityException('target not supported');
+    }
+  }
+
+  /**
    * 创建管理员认证记录
    * @param adminId 管理员 ID
    * @param companyId 公司 ID
    * @param input 创建认证记录输入数据
    * @returns 创建的认证记录
    */
-  async createByAdmin(adminId: string, companyId: string | null, input: CreateAuthInput) {
+  async createOnlyAdmin(adminId: string, companyId: string | null, input: CreateAuthInput) {
     input.target = Target.Admin;
     input.admin = { connect: { id: adminId } };
     if (companyId) {
@@ -294,7 +311,7 @@ export class AuthRepository {
    * @param input 创建认证记录输入数据
    * @returns 创建的认证记录
    */
-  async createByUser(userId: string, companyId: string, input: CreateAuthInput) {
+  async createOnlyUser(userId: string, companyId: string, input: CreateAuthInput) {
     input.target = Target.User;
     input.user = { connect: { id: userId } };
     input.company = { connect: { id: companyId } };
@@ -348,8 +365,34 @@ export class AuthRepository {
     if (where) args.where = this.parseManyWhere(where);
     return this.db.auth.deleteMany(args);
   }
+  /**
+   * 根据目标类型删除身份认证记录
+   * @param target
+   * @param targetId - 目标唯一标识符
+   * @returns 删除操作的结果，包含删除的记录数量
+   */
+  deleteByTarget(target: Target, targetId: string) {
+    switch (target) {
+      case Target.Admin:
+        return this.deleteAllByAdminId(targetId);
+      case Target.User:
+        return this.deleteAllByUserId(targetId);
+      default:
+        throw new UnprocessableEntityException('target not supported');
+    }
+  }
 
   /**
+   * 根据认证记录 ID 删除身份认证记录
+   * @param id - 认证记录唯一标识符
+   * @returns 删除操作的结果，包含删除的记录数量
+   */
+  deleteById(id: string) {
+    return this.delete({ id });
+  }
+
+  /**
+   * 删除所有与用户相关的身份认证记录
    * 根据用户 ID 删除该用户的所有身份认证记录
    * @param userId - 用户唯一标识符
    * @returns 删除操作的结果，包含删除的记录数量
