@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PasswordHandler } from 'src/common/handlers';
 import { DatabaseService } from 'src/database';
-import { CreateAdminInput, UpdateAdminInput } from 'src/generated/dto';
 import {
   Admin,
   AdminWhereInput,
+  AdminCreateInput,
+  AdminUpdateInput,
   AdminWhereUniqueInput,
   AdminOrderByWithRelationInput,
 } from 'src/generated/graphql/admin';
@@ -46,7 +47,7 @@ export class AdminRepository {
    * 处理输入数据，自动加密密码
    * @param input - 输入数据（包含密码时会自动加密）
    */
-  private handleInputData(input: CreateAdminInput | UpdateAdminInput) {
+  private handleInputData(input: AdminCreateInput | AdminUpdateInput) {
     if (input.password) input.password = PasswordHandler(input.password).hash();
   }
 
@@ -66,7 +67,7 @@ export class AdminRepository {
    * @param input - 更新管理员的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateAdminInput) {
+  private parseUpdateData(input: AdminUpdateInput) {
     return AdminUpdateInputObjectSchema.parse(input) as unknown as Prisma.AdminUpdateInput;
   }
 
@@ -75,7 +76,7 @@ export class AdminRepository {
    * @param input - 创建管理员的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateAdminInput) {
+  private parseCreateData(input: AdminCreateInput) {
     return AdminCreateInputObjectZodSchema.omit({
       companies: true,
       auths: true,
@@ -161,7 +162,7 @@ export class AdminRepository {
    * @param input - 更新数据（包含密码时会自动加密）
    * @returns 更新后的管理员记录
    */
-  updateById(id: string, input: UpdateAdminInput) {
+  updateById(id: string, input: AdminUpdateInput) {
     return this.update({ id }, input);
   }
 
@@ -171,7 +172,7 @@ export class AdminRepository {
    * @param input - 更新数据（包含密码时会自动加密）
    * @returns 更新后的管理员记录
    */
-  updateByEmail(email: string, input: UpdateAdminInput) {
+  updateByEmail(email: string, input: AdminUpdateInput) {
     return this.update({ email }, input);
   }
 
@@ -198,7 +199,7 @@ export class AdminRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的管理员记录或 null
    */
-  findFirst(where?: AdminWhereInput, orderBy?: AdminOrderByWithRelationInput) {
+  findFirst(where?: AdminWhereInput, orderBy?: AdminOrderByWithRelationInput): Promise<Admin | null> {
     const args: Prisma.AdminFindFirstArgs = { include: this.include, orderBy };
     if (where) args.where = this.parseManyWhere(where);
     return this.db.admin.findFirst(args);
@@ -224,7 +225,12 @@ export class AdminRepository {
    * @param take - 获取的记录数量（可选）
    * @returns 符合条件的管理员列表
    */
-  findMany(where?: AdminWhereInput, orderBy?: AdminOrderByWithRelationInput, skip?: number, take?: number) {
+  findMany(
+    where?: AdminWhereInput,
+    orderBy?: AdminOrderByWithRelationInput,
+    skip?: number,
+    take?: number
+  ): Promise<Admin[]> {
     const args: Prisma.AdminFindManyArgs = {
       include: this.include,
       orderBy,
@@ -240,7 +246,7 @@ export class AdminRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: AdminWhereInput) {
+  count(where?: AdminWhereInput): Promise<number> {
     const args: Prisma.AdminCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.admin.count(args);
@@ -252,7 +258,7 @@ export class AdminRepository {
    * @param input - 更新数据（包含密码时会自动进行哈希加密）
    * @returns 更新后的管理员记录
    */
-  update(where: Pick<AdminWhereUniqueInput, PickWhereUniqueFields>, input: UpdateAdminInput) {
+  update(where: Pick<AdminWhereUniqueInput, PickWhereUniqueFields>, input: AdminUpdateInput): Promise<Admin> {
     this.handleInputData(input);
     return this.db.admin.update({
       where: this.parseUniqueWhere(where),
@@ -265,7 +271,7 @@ export class AdminRepository {
    * @param input - 创建管理员所需的数据（包含密码时会自动进行哈希加密）
    * @returns 创建的管理员记录
    */
-  create(input: CreateAdminInput) {
+  create(input: AdminCreateInput): Promise<Admin> {
     this.handleInputData(input);
     return this.db.admin.create({
       data: this.parseCreateData(input),
@@ -278,7 +284,7 @@ export class AdminRepository {
    * @param input - 创建/更新数据（包含密码时会自动进行哈希加密）
    * @returns 创建或更新后的管理员记录
    */
-  upsert(where: Pick<AdminWhereUniqueInput, PickWhereUniqueFields>, input: CreateAdminInput) {
+  upsert(where: Pick<AdminWhereUniqueInput, PickWhereUniqueFields>, input: AdminCreateInput): Promise<Admin> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.admin.upsert({
@@ -293,7 +299,7 @@ export class AdminRepository {
    * @param where - 唯一查询条件（可使用 id 或 email）
    * @returns 删除的管理员记录
    */
-  delete(where: Pick<AdminWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<AdminWhereUniqueInput, PickWhereUniqueFields>): Promise<Admin> {
     return this.db.admin.delete({
       where: this.parseUniqueWhere(where),
     });

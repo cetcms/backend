@@ -1,18 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CreateAdminCompanyInput, UpdateAdminCompanyInput } from 'src/generated/dto';
 import {
+  AdminCompany,
   AdminCompanyWhereInput,
+  AdminCompanyCreateInput,
+  AdminCompanyUpdateInput,
   AdminCompanyWhereUniqueInput,
   AdminCompanyOrderByWithRelationInput,
-  AdminCompany,
 } from 'src/generated/graphql/admin-company';
 import {
   AdminCompanyCreateInputObjectZodSchema,
   AdminCompanyUpdateInputObjectSchema,
   AdminCompanyWhereInputObjectSchema,
-  // AdminCompanyWhereUniqueInputObjectSchema,
+  AdminCompanyWhereUniqueInputObjectSchema,
 } from 'src/generated/schemas';
 
 type PickWhereUniqueFields = 'adminCompanyIdx';
@@ -45,7 +46,7 @@ export class AdminCompanyRepository {
    * 处理输入数据
    * @param input - 输入数据
    */
-  private handleInputData(input: CreateAdminCompanyInput | UpdateAdminCompanyInput) {
+  private handleInputData(input: AdminCompanyCreateInput | AdminCompanyUpdateInput) {
     // 此repository暂时不需要特殊处理输入数据
     return input;
   }
@@ -55,7 +56,7 @@ export class AdminCompanyRepository {
    * @param input - 创建管理员公司关联的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateAdminCompanyInput) {
+  private parseCreateData(input: AdminCompanyCreateInput) {
     return AdminCompanyCreateInputObjectZodSchema.parse(input) as unknown as Prisma.AdminCompanyCreateInput;
   }
 
@@ -64,7 +65,7 @@ export class AdminCompanyRepository {
    * @param input - 更新管理员公司关联的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateAdminCompanyInput) {
+  private parseUpdateData(input: AdminCompanyUpdateInput) {
     return AdminCompanyUpdateInputObjectSchema.parse(input) as unknown as Prisma.AdminCompanyUpdateInput;
   }
 
@@ -83,7 +84,7 @@ export class AdminCompanyRepository {
    * @returns 解析后的唯一查询条件
    */
   private parseUniqueWhere(where: AdminCompanyWhereUniqueInput) {
-    return { adminCompanyIdx: where.adminCompanyIdx };
+    return AdminCompanyWhereUniqueInputObjectSchema.parse(where) as unknown as Prisma.AdminCompanyWhereUniqueInput;
   }
 
   /**
@@ -121,7 +122,7 @@ export class AdminCompanyRepository {
    * @param input - 更新数据
    * @returns 更新后的管理员公司关联记录
    */
-  updateByAdminIdAndCompanyId(adminId: string, companyId: string, input: UpdateAdminCompanyInput) {
+  updateByAdminIdAndCompanyId(adminId: string, companyId: string, input: AdminCompanyUpdateInput) {
     return this.update({ adminCompanyIdx: { adminId, companyId } }, input);
   }
 
@@ -148,7 +149,10 @@ export class AdminCompanyRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的管理员公司关联记录或 null
    */
-  findFirst(where?: AdminCompanyWhereInput, orderBy?: AdminCompanyOrderByWithRelationInput) {
+  findFirst(
+    where?: AdminCompanyWhereInput,
+    orderBy?: AdminCompanyOrderByWithRelationInput
+  ): Promise<AdminCompany | null> {
     const args: Prisma.AdminCompanyFindFirstArgs = {
       include: this.include,
       orderBy,
@@ -182,7 +186,7 @@ export class AdminCompanyRepository {
     orderBy?: AdminCompanyOrderByWithRelationInput,
     skip?: number,
     take?: number
-  ) {
+  ): Promise<AdminCompany[]> {
     const args: Prisma.AdminCompanyFindManyArgs = {
       include: this.include,
       orderBy,
@@ -198,7 +202,7 @@ export class AdminCompanyRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: AdminCompanyWhereInput) {
+  count(where?: AdminCompanyWhereInput): Promise<number> {
     const args: Prisma.AdminCompanyCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.adminCompany.count(args);
@@ -210,7 +214,10 @@ export class AdminCompanyRepository {
    * @param input - 更新数据
    * @returns 更新后的管理员公司关联记录
    */
-  update(where: Pick<AdminCompanyWhereUniqueInput, PickWhereUniqueFields>, input: UpdateAdminCompanyInput) {
+  update(
+    where: Pick<AdminCompanyWhereUniqueInput, PickWhereUniqueFields>,
+    input: AdminCompanyUpdateInput
+  ): Promise<AdminCompany> {
     this.handleInputData(input);
     return this.db.adminCompany.update({
       where: this.parseUniqueWhere(where),
@@ -223,7 +230,7 @@ export class AdminCompanyRepository {
    * @param input - 创建关联关系所需的数据
    * @returns 创建的管理员公司关联记录
    */
-  create(input: CreateAdminCompanyInput) {
+  create(input: AdminCompanyCreateInput): Promise<AdminCompany> {
     this.handleInputData(input);
     return this.db.adminCompany.create({
       data: this.parseCreateData(input),
@@ -236,7 +243,10 @@ export class AdminCompanyRepository {
    * @param input - 创建/更新数据
    * @returns 创建或更新后的管理员公司关联记录
    */
-  upsert(where: Pick<AdminCompanyWhereUniqueInput, PickWhereUniqueFields>, input: CreateAdminCompanyInput) {
+  upsert(
+    where: Pick<AdminCompanyWhereUniqueInput, PickWhereUniqueFields>,
+    input: AdminCompanyCreateInput
+  ): Promise<AdminCompany> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.adminCompany.upsert({
@@ -251,7 +261,7 @@ export class AdminCompanyRepository {
    * @param where - 唯一查询条件（使用复合索引 adminCompanyIdx）
    * @returns 删除的管理员公司关联记录
    */
-  delete(where: Pick<AdminCompanyWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<AdminCompanyWhereUniqueInput, PickWhereUniqueFields>): Promise<AdminCompany> {
     return this.db.adminCompany.delete({
       where: this.parseUniqueWhere(where),
     });

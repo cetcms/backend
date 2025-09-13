@@ -2,8 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PasswordHandler } from 'src/common/handlers';
 import { DatabaseService } from 'src/database';
-import { CreateUserInput, UpdateUserInput } from 'src/generated/dto';
-import { UserWhereInput, UserWhereUniqueInput, UserOrderByWithRelationInput, User } from 'src/generated/graphql/user';
+import {
+  User,
+  UserWhereInput,
+  UserCreateInput,
+  UserUpdateInput,
+  UserWhereUniqueInput,
+  UserOrderByWithRelationInput,
+} from 'src/generated/graphql/user';
 import {
   UserCreateInputObjectZodSchema,
   UserUpdateInputObjectSchema,
@@ -41,7 +47,7 @@ export class UserRepository {
    * 处理输入数据，自动加密密码
    * @param input - 输入数据（包含密码时会自动加密）
    */
-  private handleInputData(input: CreateUserInput | UpdateUserInput) {
+  private handleInputData(input: UserCreateInput | UserUpdateInput) {
     if (input.password) input.password = PasswordHandler(input.password).hash();
   }
 
@@ -61,7 +67,7 @@ export class UserRepository {
    * @param input - 创建用户的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateUserInput) {
+  private parseCreateData(input: UserCreateInput) {
     return UserCreateInputObjectZodSchema.omit({
       companies: true,
       auths: true,
@@ -76,7 +82,7 @@ export class UserRepository {
    * @param input - 更新用户的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateUserInput) {
+  private parseUpdateData(input: UserUpdateInput) {
     return UserUpdateInputObjectSchema.parse(input) as unknown as Prisma.UserUpdateInput;
   }
 
@@ -156,7 +162,7 @@ export class UserRepository {
    * @param input - 更新数据（包含密码时会自动加密）
    * @returns 更新后的用户记录
    */
-  updateByEmail(email: string, input: UpdateUserInput) {
+  updateByEmail(email: string, input: UserUpdateInput) {
     return this.update({ email }, input);
   }
 
@@ -166,7 +172,7 @@ export class UserRepository {
    * @param input - 更新数据（包含密码时会自动加密）
    * @returns 更新后的用户记录
    */
-  updateById(id: string, input: UpdateUserInput) {
+  updateById(id: string, input: UserUpdateInput) {
     return this.update({ id }, input);
   }
 
@@ -252,7 +258,7 @@ export class UserRepository {
    * @param input - 更新数据（包含密码时会自动进行哈希加密）
    * @returns 更新后的用户记录
    */
-  update(where: Pick<UserWhereUniqueInput, PickWhereUniqueFields>, input: UpdateUserInput): Promise<User> {
+  update(where: Pick<UserWhereUniqueInput, PickWhereUniqueFields>, input: UserUpdateInput): Promise<User> {
     this.handleInputData(input);
     return this.db.user.update({
       where: this.parseUniqueWhere(where),
@@ -265,7 +271,7 @@ export class UserRepository {
    * @param input - 创建用户所需的数据（包含密码时会自动进行哈希加密）
    * @returns 创建的用户记录
    */
-  create(input: CreateUserInput): Promise<User> {
+  create(input: UserCreateInput): Promise<User> {
     this.handleInputData(input);
     return this.db.user.create({
       data: this.parseCreateData(input),
@@ -278,7 +284,7 @@ export class UserRepository {
    * @param input - 创建/更新数据（包含密码时会自动进行哈希加密）
    * @returns 创建或更新后的用户记录
    */
-  upsert(where: Pick<UserWhereUniqueInput, PickWhereUniqueFields>, input: CreateUserInput): Promise<User> {
+  upsert(where: Pick<UserWhereUniqueInput, PickWhereUniqueFields>, input: UserCreateInput): Promise<User> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.user.upsert({

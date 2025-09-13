@@ -26,6 +26,7 @@ export class AuthService {
   /**
    * 用户登录方法
    * @param input - 登录输入数据，包含账户、密码、目标类型和公司ID
+   * @param meta - 元数据信息
    * @returns 登录结果，包含访问令牌和相关信息
    */
   async login(input: LoginInput, meta: LoginMeta): Promise<Login> {

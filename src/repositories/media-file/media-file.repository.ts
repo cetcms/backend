@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CreateMediaFileInput, UpdateMediaFileInput } from 'src/generated/dto';
 import {
+  MediaFile,
   MediaFileWhereInput,
+  MediaFileCreateInput,
+  MediaFileUpdateInput,
   MediaFileWhereUniqueInput,
   MediaFileOrderByWithRelationInput,
 } from 'src/generated/graphql/media-file';
@@ -44,7 +46,7 @@ export class MediaFileRepository {
    * 处理输入数据
    * @param input - 输入数据
    */
-  private handleInputData(input: CreateMediaFileInput | UpdateMediaFileInput) {
+  private handleInputData(input: MediaFileCreateInput | MediaFileUpdateInput) {
     // 此repository暂时不需要特殊处理输入数据
     return input;
   }
@@ -54,7 +56,7 @@ export class MediaFileRepository {
    * @param input - 创建媒体文件的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateMediaFileInput) {
+  private parseCreateData(input: MediaFileCreateInput) {
     return MediaFileCreateInputObjectZodSchema.omit({
       folder: true,
       company: true,
@@ -68,7 +70,7 @@ export class MediaFileRepository {
    * @param input - 更新媒体文件的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateMediaFileInput) {
+  private parseUpdateData(input: MediaFileUpdateInput) {
     return MediaFileUpdateInputObjectSchema.parse(input) as unknown as Prisma.MediaFileUpdateInput;
   }
 
@@ -145,7 +147,7 @@ export class MediaFileRepository {
    * @param input - 更新数据
    * @returns 更新后的媒体文件记录
    */
-  updateById(id: string, input: UpdateMediaFileInput) {
+  updateById(id: string, input: MediaFileUpdateInput): Promise<MediaFile> {
     return this.update({ id }, input);
   }
 
@@ -172,7 +174,7 @@ export class MediaFileRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的媒体文件记录或 null
    */
-  findFirst(where?: MediaFileWhereInput, orderBy?: MediaFileOrderByWithRelationInput) {
+  findFirst(where?: MediaFileWhereInput, orderBy?: MediaFileOrderByWithRelationInput): Promise<MediaFile | null> {
     const args: Prisma.MediaFileFindFirstArgs = {
       include: this.include,
       orderBy,
@@ -186,7 +188,7 @@ export class MediaFileRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 匹配的媒体文件记录或 null
    */
-  findUnique(where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>) {
+  findUnique(where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>): Promise<MediaFile | null> {
     return this.db.mediaFile.findUnique({
       where: this.parseUniqueWhere(where),
       include: this.include,
@@ -201,7 +203,12 @@ export class MediaFileRepository {
    * @param take - 获取的记录数量（可选）
    * @returns 符合条件的媒体文件列表
    */
-  findMany(where?: MediaFileWhereInput, orderBy?: MediaFileOrderByWithRelationInput, skip?: number, take?: number) {
+  findMany(
+    where?: MediaFileWhereInput,
+    orderBy?: MediaFileOrderByWithRelationInput,
+    skip?: number,
+    take?: number
+  ): Promise<MediaFile[]> {
     const args: Prisma.MediaFileFindManyArgs = {
       include: this.include,
       orderBy,
@@ -217,7 +224,7 @@ export class MediaFileRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: MediaFileWhereInput) {
+  count(where?: MediaFileWhereInput): Promise<number> {
     const args: Prisma.MediaFileCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.mediaFile.count(args);
@@ -229,11 +236,15 @@ export class MediaFileRepository {
    * @param input - 更新数据
    * @returns 更新后的媒体文件记录
    */
-  update(where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>, input: UpdateMediaFileInput) {
+  update(
+    where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>,
+    input: MediaFileUpdateInput
+  ): Promise<MediaFile> {
     this.handleInputData(input);
     return this.db.mediaFile.update({
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(input),
+      include: this.include,
     });
   }
 
@@ -242,10 +253,11 @@ export class MediaFileRepository {
    * @param input - 创建媒体文件所需的数据
    * @returns 创建的媒体文件记录
    */
-  create(input: CreateMediaFileInput) {
+  create(input: MediaFileCreateInput): Promise<MediaFile> {
     this.handleInputData(input);
     return this.db.mediaFile.create({
       data: this.parseCreateData(input),
+      include: this.include,
     });
   }
 
@@ -255,13 +267,17 @@ export class MediaFileRepository {
    * @param input - 创建/更新数据
    * @returns 创建或更新后的媒体文件记录
    */
-  upsert(where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>, input: CreateMediaFileInput) {
+  upsert(
+    where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>,
+    input: MediaFileCreateInput
+  ): Promise<MediaFile> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.mediaFile.upsert({
       where: this.parseUniqueWhere(where),
       update: data,
       create: data,
+      include: this.include,
     });
   }
 
@@ -270,7 +286,7 @@ export class MediaFileRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 删除的媒体文件记录
    */
-  delete(where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>): Promise<MediaFile> {
     return this.db.mediaFile.delete({
       where: this.parseUniqueWhere(where),
     });

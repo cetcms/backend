@@ -24,4 +24,10 @@ export class AuthResolver {
   logout(@CurrentAuth() auth: Auth) {
     return this.service.logout(auth);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => Auth)
+  authInfo(@CurrentAuth() auth: Auth) {
+    return auth;
+  }
 }

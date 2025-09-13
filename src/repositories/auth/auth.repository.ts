@@ -1,8 +1,14 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CreateAuthInput, UpdateAuthInput } from 'src/generated/dto';
-import { AuthWhereInput, AuthWhereUniqueInput, AuthOrderByWithRelationInput, Auth } from 'src/generated/graphql/auth';
+import {
+  Auth,
+  AuthWhereInput,
+  AuthCreateInput,
+  AuthUpdateInput,
+  AuthWhereUniqueInput,
+  AuthOrderByWithRelationInput,
+} from 'src/generated/graphql/auth';
 import { Target } from 'src/generated/graphql/prisma';
 import {
   AuthCreateInputObjectZodSchema,
@@ -47,7 +53,7 @@ export class AuthRepository {
    * 处理输入数据
    * @param input - 输入数据
    */
-  private handleInputData(input: CreateAuthInput | UpdateAuthInput) {
+  private handleInputData(input: AuthCreateInput | AuthUpdateInput) {
     // 此repository暂时不需要特殊处理输入数据
     return input;
   }
@@ -57,7 +63,7 @@ export class AuthRepository {
    * @param input - 创建身份认证的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateAuthInput) {
+  private parseCreateData(input: AuthCreateInput) {
     return AuthCreateInputObjectZodSchema.parse(input) as unknown as Prisma.AuthCreateInput;
   }
 
@@ -66,7 +72,7 @@ export class AuthRepository {
    * @param input - 更新身份认证的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateAuthInput) {
+  private parseUpdateData(input: AuthUpdateInput) {
     return AuthUpdateInputObjectSchema.parse(input) as unknown as Prisma.AuthUpdateInput;
   }
 
@@ -148,7 +154,7 @@ export class AuthRepository {
    * @param input - 更新数据
    * @returns 更新后的身份认证记录
    */
-  updateById(id: string, input: UpdateAuthInput) {
+  updateById(id: string, input: AuthUpdateInput) {
     return this.update({ id }, input);
   }
 
@@ -175,7 +181,7 @@ export class AuthRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的身份认证记录或 null
    */
-  findFirst(where?: AuthWhereInput, orderBy?: AuthOrderByWithRelationInput) {
+  findFirst(where?: AuthWhereInput, orderBy?: AuthOrderByWithRelationInput): Promise<Auth | null> {
     const args: Prisma.AuthFindFirstArgs = { include: this.include, orderBy };
     if (where) args.where = this.parseManyWhere(where);
     return this.db.auth.findFirst(args);
@@ -186,7 +192,7 @@ export class AuthRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 匹配的身份认证记录或 null
    */
-  findUnique(where: Pick<AuthWhereUniqueInput, PickWhereUniqueFields>) {
+  findUnique(where: Pick<AuthWhereUniqueInput, PickWhereUniqueFields>): Promise<Auth | null> {
     return this.db.auth.findUnique({
       where: this.parseUniqueWhere(where),
       include: this.include,
@@ -201,7 +207,12 @@ export class AuthRepository {
    * @param take - 获取的记录数量（可选）
    * @returns 符合条件的身份认证记录列表
    */
-  findMany(where?: AuthWhereInput, orderBy?: AuthOrderByWithRelationInput, skip?: number, take?: number) {
+  findMany(
+    where?: AuthWhereInput,
+    orderBy?: AuthOrderByWithRelationInput,
+    skip?: number,
+    take?: number
+  ): Promise<Auth[]> {
     const args: Prisma.AuthFindManyArgs = {
       include: this.include,
       orderBy,
@@ -217,7 +228,7 @@ export class AuthRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: AuthWhereInput) {
+  count(where?: AuthWhereInput): Promise<number> {
     const args: Prisma.AuthCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.auth.count(args);
@@ -229,7 +240,7 @@ export class AuthRepository {
    * @param input - 更新数据
    * @returns 更新后的身份认证记录
    */
-  update(where: Pick<AuthWhereUniqueInput, PickWhereUniqueFields>, input: UpdateAuthInput) {
+  update(where: Pick<AuthWhereUniqueInput, PickWhereUniqueFields>, input: AuthUpdateInput): Promise<Auth> {
     this.handleInputData(input);
     return this.db.auth.update({
       where: this.parseUniqueWhere(where),
@@ -242,7 +253,7 @@ export class AuthRepository {
    * @param input - 创建身份认证记录所需的数据
    * @returns 创建的身份认证记录
    */
-  create(input: CreateAuthInput): Promise<Auth> {
+  create(input: AuthCreateInput): Promise<Auth> {
     this.handleInputData(input);
     return this.db.auth.create({
       data: this.parseCreateData(input),
@@ -256,7 +267,7 @@ export class AuthRepository {
    * @param input - 创建身份认证记录所需的数据
    * @returns 创建的身份认证记录
    */
-  createByTarget(targetId: string, companyId: string | null, input: CreateAuthInput) {
+  createByTarget(targetId: string, companyId: string | null, input: AuthCreateInput) {
     switch (input.target) {
       case Target.Admin:
         return this.createOnlyAdmin(targetId, companyId, input);
@@ -277,7 +288,7 @@ export class AuthRepository {
    * @param input 创建认证记录输入数据
    * @returns 创建的认证记录
    */
-  async createOnlyAdmin(adminId: string, companyId: string | null, input: CreateAuthInput) {
+  async createOnlyAdmin(adminId: string, companyId: string | null, input: AuthCreateInput) {
     input.target = Target.Admin;
     input.admin = { connect: { id: adminId } };
     if (companyId) {
@@ -311,7 +322,7 @@ export class AuthRepository {
    * @param input 创建认证记录输入数据
    * @returns 创建的认证记录
    */
-  async createOnlyUser(userId: string, companyId: string, input: CreateAuthInput) {
+  async createOnlyUser(userId: string, companyId: string, input: AuthCreateInput) {
     input.target = Target.User;
     input.user = { connect: { id: userId } };
     input.company = { connect: { id: companyId } };
@@ -334,7 +345,7 @@ export class AuthRepository {
    * @param input - 创建/更新数据
    * @returns 创建或更新后的身份认证记录
    */
-  upsert(where: Pick<AuthWhereUniqueInput, PickWhereUniqueFields>, input: CreateAuthInput) {
+  upsert(where: Pick<AuthWhereUniqueInput, PickWhereUniqueFields>, input: AuthCreateInput): Promise<Auth> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.auth.upsert({
@@ -349,7 +360,7 @@ export class AuthRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 删除的身份认证记录
    */
-  delete(where: Pick<AuthWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<AuthWhereUniqueInput, PickWhereUniqueFields>): Promise<Auth> {
     return this.db.auth.delete({
       where: this.parseUniqueWhere(where),
     });

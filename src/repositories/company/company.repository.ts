@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CreateCompanyInput, UpdateCompanyInput } from 'src/generated/dto';
 import {
+  Company,
   CompanyWhereInput,
+  CompanyCreateInput,
+  CompanyUpdateInput,
   CompanyWhereUniqueInput,
   CompanyOrderByWithRelationInput,
 } from 'src/generated/graphql/company';
@@ -44,7 +46,7 @@ export class CompanyRepository {
    * 处理输入数据
    * @param input - 输入数据
    */
-  private handleInputData(input: CreateCompanyInput | UpdateCompanyInput) {
+  private handleInputData(input: CompanyCreateInput | CompanyUpdateInput) {
     // 此repository暂时不需要特殊处理输入数据
     return input;
   }
@@ -54,7 +56,7 @@ export class CompanyRepository {
    * @param input - 创建公司的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateCompanyInput) {
+  private parseCreateData(input: CompanyCreateInput) {
     return CompanyCreateInputObjectZodSchema.omit({
       auths: true,
       admins: true,
@@ -71,7 +73,7 @@ export class CompanyRepository {
    * @param input - 更新公司的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateCompanyInput) {
+  private parseUpdateData(input: CompanyUpdateInput) {
     return CompanyUpdateInputObjectSchema.parse(input) as unknown as Prisma.CompanyUpdateInput;
   }
 
@@ -85,11 +87,20 @@ export class CompanyRepository {
   }
 
   /**
+   * 解析唯一查询条件，验证输入数据是否符合 Prisma 模型定义
+   * @param where - 唯一查询条件
+   * @returns 解析后的唯一查询条件
+   */
+  private parseUniqueWhere(where: CompanyWhereUniqueInput) {
+    return CompanyWhereUniqueInputObjectSchema.parse(where) as unknown as Prisma.CompanyWhereUniqueInput;
+  }
+
+  /**
    * 根据公司名称查找公司
    * @param name - 公司名称
    * @returns 匹配的公司记录或 null
    */
-  findByName(name: string) {
+  findByName(name: string): Promise<Company | null> {
     return this.findFirst({ name: { equals: name } });
   }
 
@@ -98,7 +109,7 @@ export class CompanyRepository {
    * @param id - 公司唯一标识符
    * @returns 匹配的公司记录或 null
    */
-  findById(id: string) {
+  findById(id: string): Promise<Company | null> {
     return this.findUnique({ id });
   }
 
@@ -106,11 +117,11 @@ export class CompanyRepository {
    * 根据公司名称更新公司信息
    * @param name - 公司名称
    * @param input - 更新数据
-   * @returns 更新后的公司记录或 null
+   * @returns 更新后的公司记录
    */
-  async updateByName(name: string, input: UpdateCompanyInput) {
+  async updateByName(name: string, input: CompanyUpdateInput): Promise<Company> {
     const company = await this.findByName(name);
-    if (!company) return null;
+    if (!company) throw new Error('Company not found');
     return this.update({ id: company.id }, input);
   }
 
@@ -120,7 +131,7 @@ export class CompanyRepository {
    * @param input - 更新数据
    * @returns 更新后的公司记录
    */
-  updateById(id: string, input: UpdateCompanyInput) {
+  updateById(id: string, input: CompanyUpdateInput): Promise<Company> {
     return this.update({ id }, input);
   }
 
@@ -147,7 +158,7 @@ export class CompanyRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的公司记录或 null
    */
-  findFirst(where?: CompanyWhereInput, orderBy?: CompanyOrderByWithRelationInput) {
+  findFirst(where?: CompanyWhereInput, orderBy?: CompanyOrderByWithRelationInput): Promise<Company | null> {
     const args: Prisma.CompanyFindFirstArgs = { include: this.include, orderBy };
     if (where) args.where = this.parseManyWhere(where);
     return this.db.company.findFirst(args);
@@ -158,7 +169,7 @@ export class CompanyRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 匹配的公司记录或 null
    */
-  findUnique(where: Pick<CompanyWhereUniqueInput, PickWhereUniqueFields>) {
+  findUnique(where: Pick<CompanyWhereUniqueInput, PickWhereUniqueFields>): Promise<Company | null> {
     return this.db.company.findUnique({
       where: this.parseUniqueWhere(where),
       include: this.include,
@@ -173,7 +184,12 @@ export class CompanyRepository {
    * @param take - 获取的记录数量（可选）
    * @returns 符合条件的公司列表
    */
-  findMany(where?: CompanyWhereInput, orderBy?: CompanyOrderByWithRelationInput, skip?: number, take?: number) {
+  findMany(
+    where?: CompanyWhereInput,
+    orderBy?: CompanyOrderByWithRelationInput,
+    skip?: number,
+    take?: number
+  ): Promise<Company[]> {
     const args: Prisma.CompanyFindManyArgs = {
       include: this.include,
       orderBy,
@@ -189,19 +205,10 @@ export class CompanyRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: CompanyWhereInput) {
+  count(where?: CompanyWhereInput): Promise<number> {
     const args: Prisma.CompanyCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.company.count(args);
-  }
-
-  /**
-   * 解析唯一查询条件，验证输入数据是否符合 Prisma 模型定义
-   * @param where - 唯一查询条件
-   * @returns 解析后的唯一查询条件
-   */
-  private parseUniqueWhere(where: CompanyWhereUniqueInput) {
-    return CompanyWhereUniqueInputObjectSchema.parse(where) as unknown as Prisma.CompanyWhereUniqueInput;
   }
 
   /**
@@ -210,7 +217,7 @@ export class CompanyRepository {
    * @param input - 更新数据
    * @returns 更新后的公司记录
    */
-  update(where: Pick<CompanyWhereUniqueInput, PickWhereUniqueFields>, input: UpdateCompanyInput) {
+  update(where: Pick<CompanyWhereUniqueInput, PickWhereUniqueFields>, input: CompanyUpdateInput): Promise<Company> {
     this.handleInputData(input);
     return this.db.company.update({
       where: this.parseUniqueWhere(where),
@@ -223,7 +230,7 @@ export class CompanyRepository {
    * @param input - 创建公司所需的数据
    * @returns 创建的公司记录
    */
-  create(input: CreateCompanyInput) {
+  create(input: CompanyCreateInput): Promise<Company> {
     this.handleInputData(input);
     return this.db.company.create({
       data: this.parseCreateData(input),
@@ -236,7 +243,7 @@ export class CompanyRepository {
    * @param input - 创建/更新数据
    * @returns 创建或更新后的公司记录
    */
-  upsert(where: Pick<CompanyWhereUniqueInput, PickWhereUniqueFields>, input: CreateCompanyInput) {
+  upsert(where: Pick<CompanyWhereUniqueInput, PickWhereUniqueFields>, input: CompanyCreateInput): Promise<Company> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.company.upsert({
@@ -251,7 +258,7 @@ export class CompanyRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 删除的公司记录
    */
-  delete(where: Pick<CompanyWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<CompanyWhereUniqueInput, PickWhereUniqueFields>): Promise<Company> {
     return this.db.company.delete({
       where: this.parseUniqueWhere(where),
     });

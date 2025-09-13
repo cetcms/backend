@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CreateAdminRoleInput, UpdateAdminRoleInput } from 'src/generated/dto';
 import {
+  AdminRole,
   AdminRoleWhereInput,
+  AdminRoleUpdateInput,
+  AdminRoleCreateInput,
   AdminRoleWhereUniqueInput,
   AdminRoleOrderByWithRelationInput,
 } from 'src/generated/graphql/admin-role';
@@ -46,7 +48,7 @@ export class AdminRoleRepository {
    * @param input - 创建或更新管理员角色的输入数据
    * @returns 处理后的输入数据
    */
-  private handleInputData(input: CreateAdminRoleInput | UpdateAdminRoleInput) {
+  private handleInputData(input: AdminRoleCreateInput | AdminRoleUpdateInput) {
     if (input.name) input.name = voca.titleCase(input.name);
     if (input.code) input.code = voca.snakeCase(input.code).toUpperCase();
     return input;
@@ -57,7 +59,7 @@ export class AdminRoleRepository {
    * @param input - 创建管理员角色的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateAdminRoleInput) {
+  private parseCreateData(input: AdminRoleCreateInput) {
     return AdminRoleCreateInputObjectZodSchema.omit({
       admins: true,
     }).parse(input) as unknown as Prisma.AdminRoleCreateInput;
@@ -68,7 +70,7 @@ export class AdminRoleRepository {
    * @param input - 更新管理员角色的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateAdminRoleInput) {
+  private parseUpdateData(input: AdminRoleUpdateInput) {
     return AdminRoleUpdateInputObjectSchema.parse(input) as unknown as Prisma.AdminRoleUpdateInput;
   }
 
@@ -123,7 +125,7 @@ export class AdminRoleRepository {
    * @param input - 更新数据
    * @returns 更新后的管理员角色记录
    */
-  updateByCode(code: string, input: UpdateAdminRoleInput) {
+  updateByCode(code: string, input: AdminRoleUpdateInput) {
     return this.update({ code }, input);
   }
 
@@ -133,7 +135,7 @@ export class AdminRoleRepository {
    * @param input - 更新数据
    * @returns 更新后的管理员角色记录
    */
-  updateByName(name: string, input: UpdateAdminRoleInput) {
+  updateByName(name: string, input: AdminRoleUpdateInput) {
     return this.update({ name }, input);
   }
 
@@ -143,7 +145,7 @@ export class AdminRoleRepository {
    * @param input - 更新数据
    * @returns 更新后的管理员角色记录
    */
-  updateById(id: string, input: UpdateAdminRoleInput) {
+  updateById(id: string, input: AdminRoleUpdateInput) {
     return this.update({ id }, input);
   }
 
@@ -170,7 +172,7 @@ export class AdminRoleRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的管理员角色记录或 null
    */
-  findFirst(where?: AdminRoleWhereInput, orderBy?: AdminRoleOrderByWithRelationInput) {
+  findFirst(where?: AdminRoleWhereInput, orderBy?: AdminRoleOrderByWithRelationInput): Promise<AdminRole | null> {
     const args: Prisma.AdminRoleFindFirstArgs = {
       include: this.include,
       orderBy,
@@ -184,7 +186,7 @@ export class AdminRoleRepository {
    * @param where - 唯一查询条件（可使用 id、code 或 name）
    * @returns 匹配的管理员角色记录或 null
    */
-  findUnique(where: Pick<AdminRoleWhereUniqueInput, PickWhereUniqueFields>) {
+  findUnique(where: Pick<AdminRoleWhereUniqueInput, PickWhereUniqueFields>): Promise<AdminRole | null> {
     return this.db.adminRole.findUnique({
       where: this.parseUniqueWhere(where),
       include: this.include,
@@ -199,7 +201,12 @@ export class AdminRoleRepository {
    * @param take - 获取的记录数量（可选）
    * @returns 符合条件的管理员角色列表
    */
-  findMany(where?: AdminRoleWhereInput, orderBy?: AdminRoleOrderByWithRelationInput, skip?: number, take?: number) {
+  findMany(
+    where?: AdminRoleWhereInput,
+    orderBy?: AdminRoleOrderByWithRelationInput,
+    skip?: number,
+    take?: number
+  ): Promise<AdminRole[]> {
     const args: Prisma.AdminRoleFindManyArgs = {
       include: this.include,
       orderBy,
@@ -215,7 +222,7 @@ export class AdminRoleRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: AdminRoleWhereInput) {
+  count(where?: AdminRoleWhereInput): Promise<number> {
     const args: Prisma.AdminRoleCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.adminRole.count(args);
@@ -227,7 +234,10 @@ export class AdminRoleRepository {
    * @param input - 更新数据
    * @returns 更新后的管理员角色记录
    */
-  update(where: Pick<AdminRoleWhereUniqueInput, PickWhereUniqueFields>, input: UpdateAdminRoleInput) {
+  update(
+    where: Pick<AdminRoleWhereUniqueInput, PickWhereUniqueFields>,
+    input: AdminRoleUpdateInput
+  ): Promise<AdminRole> {
     this.handleInputData(input);
     return this.db.adminRole.update({
       where: this.parseUniqueWhere(where),
@@ -240,7 +250,7 @@ export class AdminRoleRepository {
    * @param input - 创建角色所需的数据
    * @returns 创建的管理员角色记录
    */
-  create(input: CreateAdminRoleInput) {
+  create(input: AdminRoleCreateInput): Promise<AdminRole> {
     this.handleInputData(input);
     return this.db.adminRole.create({
       data: this.parseCreateData(input),
@@ -253,7 +263,10 @@ export class AdminRoleRepository {
    * @param input - 创建/更新数据
    * @returns 创建或更新后的管理员角色记录
    */
-  upsert(where: Pick<AdminRoleWhereUniqueInput, PickWhereUniqueFields>, input: CreateAdminRoleInput) {
+  upsert(
+    where: Pick<AdminRoleWhereUniqueInput, PickWhereUniqueFields>,
+    input: AdminRoleCreateInput
+  ): Promise<AdminRole> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.adminRole.upsert({
@@ -268,7 +281,7 @@ export class AdminRoleRepository {
    * @param where - 唯一查询条件（可使用 id、code 或 name）
    * @returns 删除的管理员角色记录
    */
-  delete(where: Pick<AdminRoleWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<AdminRoleWhereUniqueInput, PickWhereUniqueFields>): Promise<AdminRole> {
     return this.db.adminRole.delete({
       where: this.parseUniqueWhere(where),
     });

@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CreateRequestLogInput, UpdateRequestLogInput } from 'src/generated/dto';
 import {
+  RequestLog,
   RequestLogWhereInput,
+  RequestLogCreateInput,
+  RequestLogUpdateInput,
   RequestLogWhereUniqueInput,
   RequestLogOrderByWithRelationInput,
 } from 'src/generated/graphql/request-log';
@@ -44,7 +46,7 @@ export class RequestLogRepository {
    * 处理输入数据
    * @param input - 输入数据
    */
-  private handleInputData(input: CreateRequestLogInput | UpdateRequestLogInput) {
+  private handleInputData(input: RequestLogCreateInput | RequestLogUpdateInput) {
     // 此repository暂时不需要特殊处理输入数据
     return input;
   }
@@ -54,7 +56,7 @@ export class RequestLogRepository {
    * @param input - 创建请求日志的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateRequestLogInput) {
+  private parseCreateData(input: RequestLogCreateInput) {
     return RequestLogCreateInputObjectZodSchema.parse(input) as unknown as Prisma.RequestLogCreateInput;
   }
 
@@ -63,7 +65,7 @@ export class RequestLogRepository {
    * @param input - 更新请求日志的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateRequestLogInput) {
+  private parseUpdateData(input: RequestLogUpdateInput) {
     return RequestLogUpdateInputObjectSchema.parse(input) as unknown as Prisma.RequestLogUpdateInput;
   }
 
@@ -160,7 +162,7 @@ export class RequestLogRepository {
    * @param input - 更新数据
    * @returns 更新后的请求日志记录
    */
-  updateById(id: string, input: UpdateRequestLogInput) {
+  updateById(id: string, input: RequestLogUpdateInput): Promise<RequestLog> {
     return this.update({ id }, input);
   }
 
@@ -187,7 +189,7 @@ export class RequestLogRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的请求日志记录或 null
    */
-  findFirst(where?: RequestLogWhereInput, orderBy?: RequestLogOrderByWithRelationInput) {
+  findFirst(where?: RequestLogWhereInput, orderBy?: RequestLogOrderByWithRelationInput): Promise<RequestLog | null> {
     const args: Prisma.RequestLogFindFirstArgs = {
       include: this.include,
       orderBy,
@@ -201,7 +203,7 @@ export class RequestLogRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 匹配的请求日志记录或 null
    */
-  findUnique(where: Pick<RequestLogWhereUniqueInput, PickWhereUniqueFields>) {
+  findUnique(where: Pick<RequestLogWhereUniqueInput, PickWhereUniqueFields>): Promise<RequestLog | null> {
     return this.db.requestLog.findUnique({
       where: this.parseUniqueWhere(where),
       include: this.include,
@@ -216,7 +218,12 @@ export class RequestLogRepository {
    * @param take - 获取的记录数量（可选）
    * @returns 符合条件的请求日志列表
    */
-  findMany(where?: RequestLogWhereInput, orderBy?: RequestLogOrderByWithRelationInput, skip?: number, take?: number) {
+  findMany(
+    where?: RequestLogWhereInput,
+    orderBy?: RequestLogOrderByWithRelationInput,
+    skip?: number,
+    take?: number
+  ): Promise<RequestLog[]> {
     const args: Prisma.RequestLogFindManyArgs = {
       include: this.include,
       orderBy,
@@ -232,7 +239,7 @@ export class RequestLogRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: RequestLogWhereInput) {
+  count(where?: RequestLogWhereInput): Promise<number> {
     const args: Prisma.RequestLogCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.requestLog.count(args);
@@ -244,11 +251,15 @@ export class RequestLogRepository {
    * @param input - 更新数据
    * @returns 更新后的请求日志记录
    */
-  update(where: Pick<RequestLogWhereUniqueInput, PickWhereUniqueFields>, input: UpdateRequestLogInput) {
+  update(
+    where: Pick<RequestLogWhereUniqueInput, PickWhereUniqueFields>,
+    input: RequestLogUpdateInput
+  ): Promise<RequestLog> {
     this.handleInputData(input);
     return this.db.requestLog.update({
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(input),
+      include: this.include,
     });
   }
 
@@ -257,10 +268,11 @@ export class RequestLogRepository {
    * @param input - 创建请求日志所需的数据
    * @returns 创建的请求日志记录
    */
-  create(input: CreateRequestLogInput) {
+  create(input: RequestLogCreateInput): Promise<RequestLog> {
     this.handleInputData(input);
     return this.db.requestLog.create({
       data: this.parseCreateData(input),
+      include: this.include,
     });
   }
 
@@ -270,13 +282,17 @@ export class RequestLogRepository {
    * @param input - 创建/更新数据
    * @returns 创建或更新后的请求日志记录
    */
-  upsert(where: Pick<RequestLogWhereUniqueInput, PickWhereUniqueFields>, input: CreateRequestLogInput) {
+  upsert(
+    where: Pick<RequestLogWhereUniqueInput, PickWhereUniqueFields>,
+    input: RequestLogCreateInput
+  ): Promise<RequestLog> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.requestLog.upsert({
       where: this.parseUniqueWhere(where),
       update: data,
       create: data,
+      include: this.include,
     });
   }
 
@@ -285,7 +301,7 @@ export class RequestLogRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 删除的请求日志记录
    */
-  delete(where: Pick<RequestLogWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<RequestLogWhereUniqueInput, PickWhereUniqueFields>): Promise<RequestLog> {
     return this.db.requestLog.delete({
       where: this.parseUniqueWhere(where),
     });

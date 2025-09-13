@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CreateMediaFolderInput, UpdateMediaFolderInput } from 'src/generated/dto';
 import {
+  MediaFolder,
   MediaFolderWhereInput,
+  MediaFolderCreateInput,
+  MediaFolderUpdateInput,
   MediaFolderWhereUniqueInput,
   MediaFolderOrderByWithRelationInput,
 } from 'src/generated/graphql/media-folder';
@@ -44,7 +46,7 @@ export class MediaFolderRepository {
    * 处理输入数据
    * @param input - 输入数据
    */
-  private handleInputData(input: CreateMediaFolderInput | UpdateMediaFolderInput) {
+  private handleInputData(input: MediaFolderCreateInput | MediaFolderUpdateInput) {
     // 此repository暂时不需要特殊处理输入数据
     return input;
   }
@@ -54,7 +56,7 @@ export class MediaFolderRepository {
    * @param input - 创建媒体文件夹的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateMediaFolderInput) {
+  private parseCreateData(input: MediaFolderCreateInput) {
     return MediaFolderCreateInputObjectZodSchema.omit({
       parent: true,
       children: true,
@@ -70,7 +72,7 @@ export class MediaFolderRepository {
    * @param input - 更新媒体文件夹的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateMediaFolderInput) {
+  private parseUpdateData(input: MediaFolderUpdateInput) {
     return MediaFolderUpdateInputObjectSchema.parse(input) as unknown as Prisma.MediaFolderUpdateInput;
   }
 
@@ -155,7 +157,7 @@ export class MediaFolderRepository {
    * @param input - 更新数据
    * @returns 更新后的媒体文件夹记录
    */
-  updateById(id: string, input: UpdateMediaFolderInput) {
+  updateById(id: string, input: MediaFolderUpdateInput): Promise<MediaFolder> {
     return this.update({ id }, input);
   }
 
@@ -182,7 +184,7 @@ export class MediaFolderRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的媒体文件夹记录或 null
    */
-  findFirst(where?: MediaFolderWhereInput, orderBy?: MediaFolderOrderByWithRelationInput) {
+  findFirst(where?: MediaFolderWhereInput, orderBy?: MediaFolderOrderByWithRelationInput): Promise<MediaFolder | null> {
     const args: Prisma.MediaFolderFindFirstArgs = {
       include: this.include,
       orderBy,
@@ -196,7 +198,7 @@ export class MediaFolderRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 匹配的媒体文件夹记录或 null
    */
-  findUnique(where: Pick<MediaFolderWhereUniqueInput, PickWhereUniqueFields>) {
+  findUnique(where: Pick<MediaFolderWhereUniqueInput, PickWhereUniqueFields>): Promise<MediaFolder | null> {
     return this.db.mediaFolder.findUnique({
       where: this.parseUniqueWhere(where),
       include: this.include,
@@ -211,7 +213,12 @@ export class MediaFolderRepository {
    * @param take - 获取的记录数量（可选）
    * @returns 符合条件的媒体文件夹列表
    */
-  findMany(where?: MediaFolderWhereInput, orderBy?: MediaFolderOrderByWithRelationInput, skip?: number, take?: number) {
+  findMany(
+    where?: MediaFolderWhereInput,
+    orderBy?: MediaFolderOrderByWithRelationInput,
+    skip?: number,
+    take?: number
+  ): Promise<MediaFolder[]> {
     const args: Prisma.MediaFolderFindManyArgs = {
       include: this.include,
       orderBy,
@@ -227,7 +234,7 @@ export class MediaFolderRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: MediaFolderWhereInput) {
+  count(where?: MediaFolderWhereInput): Promise<number> {
     const args: Prisma.MediaFolderCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.mediaFolder.count(args);
@@ -239,11 +246,15 @@ export class MediaFolderRepository {
    * @param input - 更新数据
    * @returns 更新后的媒体文件夹记录
    */
-  update(where: Pick<MediaFolderWhereUniqueInput, PickWhereUniqueFields>, input: UpdateMediaFolderInput) {
+  update(
+    where: Pick<MediaFolderWhereUniqueInput, PickWhereUniqueFields>,
+    input: MediaFolderUpdateInput
+  ): Promise<MediaFolder> {
     this.handleInputData(input);
     return this.db.mediaFolder.update({
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(input),
+      include: this.include,
     });
   }
 
@@ -252,10 +263,11 @@ export class MediaFolderRepository {
    * @param input - 创建媒体文件夹所需的数据
    * @returns 创建的媒体文件夹记录
    */
-  create(input: CreateMediaFolderInput) {
+  create(input: MediaFolderCreateInput): Promise<MediaFolder> {
     this.handleInputData(input);
     return this.db.mediaFolder.create({
       data: this.parseCreateData(input),
+      include: this.include,
     });
   }
 
@@ -265,13 +277,17 @@ export class MediaFolderRepository {
    * @param input - 创建/更新数据
    * @returns 创建或更新后的媒体文件夹记录
    */
-  upsert(where: Pick<MediaFolderWhereUniqueInput, PickWhereUniqueFields>, input: CreateMediaFolderInput) {
+  upsert(
+    where: Pick<MediaFolderWhereUniqueInput, PickWhereUniqueFields>,
+    input: MediaFolderCreateInput
+  ): Promise<MediaFolder> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.mediaFolder.upsert({
       where: this.parseUniqueWhere(where),
       update: data,
       create: data,
+      include: this.include,
     });
   }
 
@@ -280,7 +296,7 @@ export class MediaFolderRepository {
    * @param where - 唯一查询条件（只能使用 id）
    * @returns 删除的媒体文件夹记录
    */
-  delete(where: Pick<MediaFolderWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<MediaFolderWhereUniqueInput, PickWhereUniqueFields>): Promise<MediaFolder> {
     return this.db.mediaFolder.delete({
       where: this.parseUniqueWhere(where),
     });

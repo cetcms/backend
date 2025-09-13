@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CreateCompanyUserInput, UpdateCompanyUserInput } from 'src/generated/dto';
 import {
+  CompanyUser,
   CompanyUserWhereInput,
+  CompanyUserCreateInput,
+  CompanyUserUpdateInput,
   CompanyUserWhereUniqueInput,
   CompanyUserOrderByWithRelationInput,
 } from 'src/generated/graphql/company-user';
@@ -11,7 +13,7 @@ import {
   CompanyUserCreateInputObjectZodSchema,
   CompanyUserUpdateInputObjectSchema,
   CompanyUserWhereInputObjectSchema,
-  // CompanyUserWhereUniqueInputObjectSchema,
+  CompanyUserWhereUniqueInputObjectSchema,
 } from 'src/generated/schemas';
 
 type PickWhereUniqueFields = 'companyUserIdx';
@@ -44,26 +46,26 @@ export class CompanyUserRepository {
    * 处理输入数据
    * @param input - 输入数据
    */
-  private handleInputData(input: CreateCompanyUserInput | UpdateCompanyUserInput) {
+  private handleInputData(input: CompanyUserCreateInput | CompanyUserUpdateInput) {
     // 此repository暂时不需要特殊处理输入数据
     return input;
   }
 
   /**
    * 解析创建数据，验证输入数据是否符合 Prisma 模型定义
-   * @param input - 创建公司用户关联的输入数据
+   * @param input - 创建公司用户的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateCompanyUserInput) {
+  private parseCreateData(input: CompanyUserCreateInput) {
     return CompanyUserCreateInputObjectZodSchema.parse(input) as unknown as Prisma.CompanyUserCreateInput;
   }
 
   /**
    * 解析更新数据，验证输入数据是否符合 Prisma 模型定义
-   * @param input - 更新公司用户关联的输入数据
+   * @param input - 更新公司用户的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateCompanyUserInput) {
+  private parseUpdateData(input: CompanyUserUpdateInput) {
     return CompanyUserUpdateInputObjectSchema.parse(input) as unknown as Prisma.CompanyUserUpdateInput;
   }
 
@@ -82,7 +84,7 @@ export class CompanyUserRepository {
    * @returns 解析后的唯一查询条件
    */
   private parseUniqueWhere(where: CompanyUserWhereUniqueInput) {
-    return { companyUserIdx: where.companyUserIdx };
+    return CompanyUserWhereUniqueInputObjectSchema.parse(where) as unknown as Prisma.CompanyUserWhereUniqueInput;
   }
 
   /**
@@ -129,7 +131,7 @@ export class CompanyUserRepository {
    * @param input - 更新数据
    * @returns 更新后的公司用户关联记录
    */
-  updateByCompanyIdAndUserId(companyId: string, userId: string, input: UpdateCompanyUserInput) {
+  updateByCompanyIdAndUserId(companyId: string, userId: string, input: CompanyUserUpdateInput) {
     return this.update({ companyUserIdx: { companyId, userId } }, input);
   }
 
@@ -156,7 +158,7 @@ export class CompanyUserRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的公司用户关联记录或 null
    */
-  findFirst(where?: CompanyUserWhereInput, orderBy?: CompanyUserOrderByWithRelationInput) {
+  findFirst(where?: CompanyUserWhereInput, orderBy?: CompanyUserOrderByWithRelationInput): Promise<CompanyUser | null> {
     const args: Prisma.CompanyUserFindFirstArgs = {
       include: this.include,
       orderBy,
@@ -170,7 +172,7 @@ export class CompanyUserRepository {
    * @param where - 唯一查询条件（使用复合索引 companyUserIdx）
    * @returns 匹配的公司用户关联记录或 null
    */
-  findUnique(where: Pick<CompanyUserWhereUniqueInput, PickWhereUniqueFields>) {
+  findUnique(where: Pick<CompanyUserWhereUniqueInput, PickWhereUniqueFields>): Promise<CompanyUser | null> {
     return this.db.companyUser.findUnique({
       where: this.parseUniqueWhere(where),
       include: this.include,
@@ -185,7 +187,12 @@ export class CompanyUserRepository {
    * @param take - 获取的记录数量（可选）
    * @returns 符合条件的公司用户关联关系列表
    */
-  findMany(where?: CompanyUserWhereInput, orderBy?: CompanyUserOrderByWithRelationInput, skip?: number, take?: number) {
+  findMany(
+    where?: CompanyUserWhereInput,
+    orderBy?: CompanyUserOrderByWithRelationInput,
+    skip?: number,
+    take?: number
+  ): Promise<CompanyUser[]> {
     const args: Prisma.CompanyUserFindManyArgs = {
       include: this.include,
       orderBy,
@@ -201,7 +208,7 @@ export class CompanyUserRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: CompanyUserWhereInput) {
+  count(where?: CompanyUserWhereInput): Promise<number> {
     const args: Prisma.CompanyUserCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.companyUser.count(args);
@@ -213,11 +220,15 @@ export class CompanyUserRepository {
    * @param input - 更新数据
    * @returns 更新后的公司用户关联记录
    */
-  update(where: Pick<CompanyUserWhereUniqueInput, PickWhereUniqueFields>, input: UpdateCompanyUserInput) {
+  update(
+    where: Pick<CompanyUserWhereUniqueInput, PickWhereUniqueFields>,
+    input: CompanyUserUpdateInput
+  ): Promise<CompanyUser> {
     this.handleInputData(input);
     return this.db.companyUser.update({
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(input),
+      include: this.include,
     });
   }
 
@@ -226,10 +237,11 @@ export class CompanyUserRepository {
    * @param input - 创建关联关系所需的数据
    * @returns 创建的公司用户关联记录
    */
-  create(input: CreateCompanyUserInput) {
+  create(input: CompanyUserCreateInput): Promise<CompanyUser> {
     this.handleInputData(input);
     return this.db.companyUser.create({
       data: this.parseCreateData(input),
+      include: this.include,
     });
   }
 
@@ -239,13 +251,17 @@ export class CompanyUserRepository {
    * @param input - 创建/更新数据
    * @returns 创建或更新后的公司用户关联记录
    */
-  upsert(where: Pick<CompanyUserWhereUniqueInput, PickWhereUniqueFields>, input: CreateCompanyUserInput) {
+  upsert(
+    where: Pick<CompanyUserWhereUniqueInput, PickWhereUniqueFields>,
+    input: CompanyUserCreateInput
+  ): Promise<CompanyUser> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.companyUser.upsert({
       where: this.parseUniqueWhere(where),
       update: data,
       create: data,
+      include: this.include,
     });
   }
 
@@ -254,7 +270,7 @@ export class CompanyUserRepository {
    * @param where - 唯一查询条件（使用复合索引 companyUserIdx）
    * @returns 删除的公司用户关联记录
    */
-  delete(where: Pick<CompanyUserWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<CompanyUserWhereUniqueInput, PickWhereUniqueFields>): Promise<CompanyUser> {
     return this.db.companyUser.delete({
       where: this.parseUniqueWhere(where),
     });

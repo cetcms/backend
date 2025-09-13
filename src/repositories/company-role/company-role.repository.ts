@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CreateCompanyRoleInput, UpdateCompanyRoleInput } from 'src/generated/dto';
 import {
+  CompanyRole,
   CompanyRoleWhereInput,
+  CompanyRoleCreateInput,
+  CompanyRoleUpdateInput,
   CompanyRoleWhereUniqueInput,
   CompanyRoleOrderByWithRelationInput,
 } from 'src/generated/graphql/company-role';
@@ -41,7 +43,7 @@ export class CompanyRoleRepository {
     return this;
   }
 
-  private handleInputData(input: CreateCompanyRoleInput | UpdateCompanyRoleInput) {
+  private handleInputData(input: CompanyRoleCreateInput | CompanyRoleUpdateInput) {
     if (input.name) input.name = voca.titleCase(input.name);
     if (input.code) input.code = voca.snakeCase(input.code).toUpperCase();
     return input;
@@ -52,7 +54,7 @@ export class CompanyRoleRepository {
    * @param input - 创建公司角色的输入数据
    * @returns 解析后的创建数据
    */
-  private parseCreateData(input: CreateCompanyRoleInput) {
+  private parseCreateData(input: CompanyRoleCreateInput) {
     return CompanyRoleCreateInputObjectZodSchema.omit({
       users: true,
     }).parse(input) as unknown as Prisma.CompanyRoleCreateInput;
@@ -63,7 +65,7 @@ export class CompanyRoleRepository {
    * @param input - 更新公司角色的输入数据
    * @returns 解析后的更新数据
    */
-  private parseUpdateData(input: UpdateCompanyRoleInput) {
+  private parseUpdateData(input: CompanyRoleUpdateInput) {
     return CompanyRoleUpdateInputObjectSchema.parse(input) as unknown as Prisma.CompanyRoleUpdateInput;
   }
 
@@ -120,7 +122,7 @@ export class CompanyRoleRepository {
    * @param input - 更新数据
    * @returns 更新后的公司角色记录
    */
-  updateByCompanyIdAndCode(companyId: string, code: string, input: UpdateCompanyRoleInput) {
+  updateByCompanyIdAndCode(companyId: string, code: string, input: CompanyRoleUpdateInput): Promise<CompanyRole> {
     return this.update({ companyRoleIdx: { companyId, code } }, input);
   }
 
@@ -130,7 +132,7 @@ export class CompanyRoleRepository {
    * @param input - 更新数据
    * @returns 更新后的公司角色记录
    */
-  updateById(id: string, input: UpdateCompanyRoleInput) {
+  updateById(id: string, input: CompanyRoleUpdateInput): Promise<CompanyRole> {
     return this.update({ id }, input);
   }
 
@@ -157,7 +159,7 @@ export class CompanyRoleRepository {
    * @param orderBy - 排序条件
    * @returns 第一个匹配的公司角色记录或 null
    */
-  findFirst(where?: CompanyRoleWhereInput, orderBy?: CompanyRoleOrderByWithRelationInput) {
+  findFirst(where?: CompanyRoleWhereInput, orderBy?: CompanyRoleOrderByWithRelationInput): Promise<CompanyRole | null> {
     const args: Prisma.CompanyRoleFindFirstArgs = {
       include: this.include,
       orderBy,
@@ -171,7 +173,7 @@ export class CompanyRoleRepository {
    * @param where - 唯一查询条件（可使用 id 或 companyRoleIdx）
    * @returns 匹配的公司角色记录或 null
    */
-  findUnique(where: Pick<CompanyRoleWhereUniqueInput, PickWhereUniqueFields>) {
+  findUnique(where: Pick<CompanyRoleWhereUniqueInput, PickWhereUniqueFields>): Promise<CompanyRole | null> {
     return this.db.companyRole.findUnique({
       where: this.parseUniqueWhere(where),
       include: this.include,
@@ -186,7 +188,12 @@ export class CompanyRoleRepository {
    * @param take - 获取的记录数量（可选）
    * @returns 符合条件的公司角色列表
    */
-  findMany(where?: CompanyRoleWhereInput, orderBy?: CompanyRoleOrderByWithRelationInput, skip?: number, take?: number) {
+  findMany(
+    where?: CompanyRoleWhereInput,
+    orderBy?: CompanyRoleOrderByWithRelationInput,
+    skip?: number,
+    take?: number
+  ): Promise<CompanyRole[]> {
     const args: Prisma.CompanyRoleFindManyArgs = {
       include: this.include,
       orderBy,
@@ -202,7 +209,7 @@ export class CompanyRoleRepository {
    * @param where - 查询条件（可选）
    * @returns 符合条件的记录总数
    */
-  count(where?: CompanyRoleWhereInput) {
+  count(where?: CompanyRoleWhereInput): Promise<number> {
     const args: Prisma.CompanyRoleCountArgs = {};
     if (where) args.where = this.parseManyWhere(where);
     return this.db.companyRole.count(args);
@@ -214,11 +221,15 @@ export class CompanyRoleRepository {
    * @param input - 更新数据
    * @returns 更新后的公司角色记录
    */
-  update(where: Pick<CompanyRoleWhereUniqueInput, PickWhereUniqueFields>, input: UpdateCompanyRoleInput) {
+  update(
+    where: Pick<CompanyRoleWhereUniqueInput, PickWhereUniqueFields>,
+    input: CompanyRoleUpdateInput
+  ): Promise<CompanyRole> {
     this.handleInputData(input);
     return this.db.companyRole.update({
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(input),
+      include: this.include,
     });
   }
 
@@ -227,10 +238,11 @@ export class CompanyRoleRepository {
    * @param input - 创建角色所需的数据
    * @returns 创建的公司角色记录
    */
-  create(input: CreateCompanyRoleInput) {
+  create(input: CompanyRoleCreateInput): Promise<CompanyRole> {
     this.handleInputData(input);
     return this.db.companyRole.create({
       data: this.parseCreateData(input),
+      include: this.include,
     });
   }
 
@@ -240,13 +252,17 @@ export class CompanyRoleRepository {
    * @param input - 创建/更新数据
    * @returns 创建或更新后的公司角色记录
    */
-  upsert(where: Pick<CompanyRoleWhereUniqueInput, PickWhereUniqueFields>, input: CreateCompanyRoleInput) {
+  upsert(
+    where: Pick<CompanyRoleWhereUniqueInput, PickWhereUniqueFields>,
+    input: CompanyRoleCreateInput
+  ): Promise<CompanyRole> {
     this.handleInputData(input);
     const data = this.parseCreateData(input);
     return this.db.companyRole.upsert({
       where: this.parseUniqueWhere(where),
-      update: data,
       create: data,
+      update: data,
+      include: this.include,
     });
   }
 
@@ -255,7 +271,7 @@ export class CompanyRoleRepository {
    * @param where - 唯一查询条件（可使用 id 或 companyRoleIdx）
    * @returns 删除的公司角色记录
    */
-  delete(where: Pick<CompanyRoleWhereUniqueInput, PickWhereUniqueFields>) {
+  delete(where: Pick<CompanyRoleWhereUniqueInput, PickWhereUniqueFields>): Promise<CompanyRole> {
     return this.db.companyRole.delete({
       where: this.parseUniqueWhere(where),
     });
