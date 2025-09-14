@@ -180,13 +180,14 @@ export abstract class AdminAbstract {
    *
    * 根据唯一条件查询单个管理员记录
    *
-   * @param args - 查询参数
    * @returns 管理员记录或null
+   * @param where
    */
-  findUnique(args: FindUniqueAdminArgs): PrismaPromise<Admin | null> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.admin.findUnique({ include, where });
+  findUnique(where: FindUniqueAdminArgs['where']): PrismaPromise<Admin | null> {
+    return this.db.admin.findUnique({
+      where: this.parseUniqueWhere(where),
+      include: this.getInclude(),
+    });
   }
 
   /**
@@ -218,37 +219,41 @@ export abstract class AdminAbstract {
   /**
    * 计算符合条件的管理员记录数量
    *
-   * @param args - 查询参数
+   * @param where
    * @returns 记录数量
    */
-  count(args: FindManyAdminArgs): PrismaPromise<number> {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    return this.db.admin.count({ where });
+  count(where?: FindManyAdminArgs['where']): PrismaPromise<number> {
+    return this.db.admin.count({
+      where: where ? this.parseWhere(where) : undefined,
+    });
   }
 
   /**
    * 创建管理员记录
    *
-   * @param args - 创建参数
    * @returns 创建的管理员记录
+   * @param data
    */
-  create(args: CreateOneAdminArgs): PrismaPromise<Admin> {
-    const include = this.getInclude();
-    const data = this.parseCreateData(args.data);
-    return this.db.admin.create({ include, data });
+  create(data: CreateOneAdminArgs['data']): PrismaPromise<Admin> {
+    return this.db.admin.create({
+      include: this.getInclude(),
+      data: this.parseCreateData(data),
+    });
   }
 
   /**
    * 更新管理员记录
    *
-   * @param args - 更新参数
+   * @param where
+   * @param data
    * @returns 更新后的管理员记录
    */
-  update(args: UpdateOneAdminArgs): PrismaPromise<Admin> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    const data = this.parseUpdateData(args.data);
-    return this.db.admin.update({ include, where, data });
+  update(where: UpdateOneAdminArgs['where'], data: UpdateOneAdminArgs['data']): PrismaPromise<Admin> {
+    return this.db.admin.update({
+      include: this.getInclude(),
+      where: this.parseUniqueWhere(where),
+      data: this.parseUpdateData(data),
+    });
   }
 
   /**
@@ -270,24 +275,24 @@ export abstract class AdminAbstract {
   /**
    * 删除管理员记录
    *
-   * @param args - 删除参数
+   * @param where - 删除参数
    * @returns 删除的管理员记录
    */
-  delete(args: DeleteOneAdminArgs): PrismaPromise<Admin> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.admin.delete({ include, where });
+  delete(where: DeleteOneAdminArgs['where']): PrismaPromise<Admin> {
+    return this.db.admin.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
   }
 
   /**
    * 批量删除管理员记录
    *
-   * @param args - 批量删除参数
+   * @param where
+   * @param limit
    * @returns 删除操作结果
    */
-  deleteMany(args: DeleteManyAdminArgs) {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const limit = args.limit ? args.limit : undefined;
-    return this.db.admin.deleteMany({ where, limit });
+  deleteMany(where?: DeleteManyAdminArgs['where'], limit?: number) {
+    return this.db.admin.deleteMany({
+      where: where ? this.parseWhere(where) : undefined,
+      limit,
+    });
   }
 }

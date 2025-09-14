@@ -61,11 +61,7 @@ export class AdminRepository extends AdminAbstract {
    * @returns 查询到的管理员信息
    */
   findOneById(id: string) {
-    return this.findUnique({
-      where: {
-        id,
-      },
-    });
+    return this.findUnique({ id });
   }
 
   /**
@@ -75,11 +71,7 @@ export class AdminRepository extends AdminAbstract {
    * @returns 查询到的管理员信息
    */
   findOneByEmail(email: string) {
-    return this.findUnique({
-      where: {
-        email,
-      },
-    });
+    return this.findUnique({ email });
   }
 
   /**
@@ -90,7 +82,7 @@ export class AdminRepository extends AdminAbstract {
    * @returns 验证成功返回管理员信息，失败返回null
    */
   async findUniqueAndCheckPassword(where: FindUniqueAdminArgs['where'], password: string) {
-    const admin = await this.findUnique({ where });
+    const admin = await this.findUnique(where);
     if (admin && PasswordHandler(password).check(admin.password)) return admin;
     return null;
   }
@@ -124,6 +116,6 @@ export class AdminRepository extends AdminAbstract {
    * @returns 包含查询结果和总数的Promise数组
    */
   findManyAndCount(args: FindManyAdminArgs) {
-    return Promise.all([this.findMany(args), this.count(args)]);
+    return Promise.all([this.findMany(args), this.count(args.where)]);
   }
 }
