@@ -1,327 +1,111 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import {
-  MediaFile,
-  MediaFileWhereInput,
-  MediaFileCreateInput,
-  MediaFileUpdateInput,
-  MediaFileWhereUniqueInput,
-  MediaFileOrderByWithRelationInput,
-} from 'src/generated/graphql/media-file';
-import {
-  MediaFileCreateInputObjectZodSchema,
-  MediaFileUpdateInputObjectSchema,
-  MediaFileWhereInputObjectSchema,
-  MediaFileWhereUniqueInputObjectSchema,
-} from 'src/generated/schemas';
+import { FindManyMediaFileArgs, UpsertOneMediaFileArgs } from 'src/generated/graphql';
 
-type PickWhereUniqueFields = 'id';
+import { MediaFileAbstract } from './media-file.abstract';
 
 /**
- * 媒体文件数据访问层
- * 提供对媒体文件的完整 CRUD 操作
+ * 媒体文件数据访问仓库类
  *
- * @description 该仓库类封装了所有与媒体文件相关的数据库操作，
- * 包括查询、创建、更新、删除等功能，并提供了分页查询和批量操作的支持。
- * 支持按文件名、所有者、文件夹等多维度查询和管理。
+ * 继承自MediaFileAbstract抽象类，实现了媒体文件数据的具体访问方法
  */
+
 @Injectable()
-export class MediaFileRepository {
-  constructor(private readonly db: DatabaseService) {}
-
-  /** 关联查询配置，用于指定查询时需要包含的关联数据 */
-  private include: Prisma.MediaFileInclude = {};
-
+export class MediaFileRepository extends MediaFileAbstract {
   /**
-   * 设置关联查询配置
-   * @param include - Prisma 关联查询配置对象
+   * 构造函数
+   *
+   * @param db - 数据库服务实例，用于执行数据库操作
    */
-  setInclude(include: Prisma.MediaFileInclude) {
-    this.include = include;
-    return this;
+  constructor(protected readonly db: DatabaseService) {
+    super(db);
   }
 
   /**
-   * 处理输入数据
-   * @param input - 输入数据
+   * 处理解析后的数据
+   *
+   * 实现抽象方法，主要用于处理解析后的数据
+   *
+   * @param input - 输入的创建或更新数据
+   * @returns 处理后的数据
    */
-  private handleInputData(input: MediaFileCreateInput | MediaFileUpdateInput) {
-    // 此repository暂时不需要特殊处理输入数据
+  protected handleParsedData<T extends Prisma.MediaFileCreateInput | Prisma.MediaFileUpdateInput>(input: T): T {
     return input;
   }
 
   /**
-   * 解析创建数据，验证输入数据是否符合 Prisma 模型定义
-   * @param input - 创建媒体文件的输入数据
-   * @returns 解析后的创建数据
+   * 保存媒体文件记录
+   *
+   * 如果记录存在则更新，不存在则创建
+   *
+   * @param where - 唯一标识符
+   * @param data - 更新或创建数据
+   * @returns 更新或创建后的媒体文件记录
    */
-  private parseCreateData(input: MediaFileCreateInput) {
-    return MediaFileCreateInputObjectZodSchema.omit({
-      folder: true,
-      company: true,
-      admin: true,
-      user: true,
-    }).parse(input) as unknown as Prisma.MediaFileCreateInput;
+  save(where: UpsertOneMediaFileArgs['where'], data: UpsertOneMediaFileArgs['create']) {
+    return this.upsert({
+      where: where,
+      update: data,
+      create: data,
+    });
   }
 
   /**
-   * 解析更新数据，验证输入数据是否符合 Prisma 模型定义
-   * @param input - 更新媒体文件的输入数据
-   * @returns 解析后的更新数据
+   * 根据ID查找媒体文件
+   *
+   * @param id - 媒体文件ID
+   * @returns 查询到的媒体文件信息
    */
-  private parseUpdateData(input: MediaFileUpdateInput) {
-    return MediaFileUpdateInputObjectSchema.parse(input) as unknown as Prisma.MediaFileUpdateInput;
-  }
-
-  /**
-   * 解析查询条件，验证输入数据是否符合 Prisma 模型定义
-   * @param where - 查询条件
-   * @returns 解析后的查询条件
-   */
-  private parseManyWhere(where: MediaFileWhereInput) {
-    return MediaFileWhereInputObjectSchema.parse(where) as unknown as Prisma.MediaFileWhereInput;
-  }
-
-  /**
-   * 解析唯一查询条件，验证输入数据是否符合 Prisma 模型定义
-   * @param where - 唯一查询条件
-   * @returns 解析后的唯一查询条件
-   */
-  private parseUniqueWhere(where: MediaFileWhereUniqueInput) {
-    return MediaFileWhereUniqueInputObjectSchema.parse(where) as unknown as Prisma.MediaFileWhereUniqueInput;
+  findOneById(id: string) {
+    return this.findFirst({
+      where: {
+        id: {
+          equals: id,
+        },
+      },
+    });
   }
 
   /**
    * 根据文件名查找媒体文件
-   * @param fileName - 文件名
-   * @returns 匹配的媒体文件记录或 null
+   *
+   * @param filename - 文件名
+   * @returns 查询到的媒体文件信息
    */
-  findByFileName(fileName: string) {
-    return this.findFirst({ fileName: { equals: fileName } });
-  }
-
-  /**
-   * 根据文件哈希查找媒体文件
-   * @param fileHash - 文件哈希值
-   * @returns 匹配的媒体文件记录或 null
-   */
-  findByFileHash(fileHash: string) {
-    return this.findFirst({ fileHash: { equals: fileHash } });
-  }
-
-  /**
-   * 根据所有者 ID 和类型查找媒体文件
-   * @param ownerId - 所有者唯一标识符
-   * @param ownerType - 所有者类型
-   * @returns 匹配的媒体文件记录列表
-   */
-  findByOwnerIdAndType(ownerId: string, ownerType: 'Admin' | 'User') {
-    return this.findMany({
-      ownerId: { equals: ownerId },
-      ownerType: { equals: ownerType },
+  findOneByFilename(filename: string) {
+    return this.findFirst({
+      where: {
+        fileName: {
+          equals: filename,
+        },
+      },
     });
   }
 
   /**
-   * 根据文件夹 ID 查找媒体文件
-   * @param folderId - 文件夹唯一标识符
-   * @returns 该文件夹下的所有媒体文件列表
+   * 根据文件夹ID查找媒体文件
+   *
+   * @param folderId - 文件夹ID
+   * @returns 查询到的媒体文件列表
    */
   findByFolderId(folderId: string) {
-    return this.findMany({ folderId: { equals: folderId } });
-  }
-
-  /**
-   * 根据媒体文件 ID 查找记录
-   * @param id - 媒体文件唯一标识符
-   * @returns 匹配的媒体文件记录或 null
-   */
-  findById(id: string) {
-    return this.findUnique({ id });
-  }
-
-  /**
-   * 根据媒体文件 ID 更新记录
-   * @param id - 媒体文件唯一标识符
-   * @param input - 更新数据
-   * @returns 更新后的媒体文件记录
-   */
-  updateById(id: string, input: MediaFileUpdateInput): Promise<MediaFile> {
-    return this.update({ id }, input);
-  }
-
-  /**
-   * 分页查询媒体文件
-   * @param skip - 跳过的记录数量（默认为 0）
-   * @param take - 获取的记录数量（默认为 10）
-   * @param where - 查询条件
-   * @param orderBy - 排序条件
-   * @returns 包含总数和媒体文件列表的数组 [总数, 文件列表]
-   */
-  findWithPagination(
-    skip: number = 0,
-    take: number = 10,
-    where?: MediaFileWhereInput,
-    orderBy?: MediaFileOrderByWithRelationInput
-  ) {
-    return Promise.all([this.count(where), this.findMany(where, orderBy, skip, take)]);
-  }
-
-  /**
-   * 查找第一个匹配的媒体文件
-   * @param where - 查询条件
-   * @param orderBy - 排序条件
-   * @returns 第一个匹配的媒体文件记录或 null
-   */
-  findFirst(where?: MediaFileWhereInput, orderBy?: MediaFileOrderByWithRelationInput): Promise<MediaFile | null> {
-    const args: Prisma.MediaFileFindFirstArgs = {
-      include: this.include,
-      orderBy,
-    };
-    if (where) args.where = this.parseManyWhere(where);
-    return this.db.mediaFile.findFirst(args);
-  }
-
-  /**
-   * 根据唯一条件查找媒体文件
-   * @param where - 唯一查询条件（只能使用 id）
-   * @returns 匹配的媒体文件记录或 null
-   */
-  findUnique(where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>): Promise<MediaFile | null> {
-    return this.db.mediaFile.findUnique({
-      where: this.parseUniqueWhere(where),
-      include: this.include,
+    return this.findMany({
+      where: {
+        folderId: {
+          equals: folderId,
+        },
+      },
     });
   }
 
   /**
-   * 查询多个媒体文件
-   * @param where - 查询条件（可选）
-   * @param orderBy - 排序条件（可选）
-   * @param skip - 跳过的记录数量（可选）
-   * @param take - 获取的记录数量（可选）
-   * @returns 符合条件的媒体文件列表
+   * 查询多个媒体文件并返回总数
+   *
+   * @param args - 查询参数
+   * @returns 包含查询结果和总数的Promise数组
    */
-  findMany(
-    where?: MediaFileWhereInput,
-    orderBy?: MediaFileOrderByWithRelationInput,
-    skip?: number,
-    take?: number
-  ): Promise<MediaFile[]> {
-    const args: Prisma.MediaFileFindManyArgs = {
-      include: this.include,
-      orderBy,
-      skip,
-      take,
-    };
-    if (where) args.where = this.parseManyWhere(where);
-    return this.db.mediaFile.findMany(args);
-  }
-
-  /**
-   * 统计符合条件的媒体文件数量
-   * @param where - 查询条件（可选）
-   * @returns 符合条件的记录总数
-   */
-  count(where?: MediaFileWhereInput): Promise<number> {
-    const args: Prisma.MediaFileCountArgs = {};
-    if (where) args.where = this.parseManyWhere(where);
-    return this.db.mediaFile.count(args);
-  }
-
-  /**
-   * 更新媒体文件
-   * @param where - 唯一查询条件（只能使用 id）
-   * @param input - 更新数据
-   * @returns 更新后的媒体文件记录
-   */
-  update(
-    where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>,
-    input: MediaFileUpdateInput
-  ): Promise<MediaFile> {
-    this.handleInputData(input);
-    return this.db.mediaFile.update({
-      where: this.parseUniqueWhere(where),
-      data: this.parseUpdateData(input),
-      include: this.include,
-    });
-  }
-
-  /**
-   * 创建新的媒体文件
-   * @param input - 创建媒体文件所需的数据
-   * @returns 创建的媒体文件记录
-   */
-  create(input: MediaFileCreateInput): Promise<MediaFile> {
-    this.handleInputData(input);
-    return this.db.mediaFile.create({
-      data: this.parseCreateData(input),
-      include: this.include,
-    });
-  }
-
-  /**
-   * 创建或更新媒体文件（如果存在则更新，不存在则创建）
-   * @param where - 唯一查询条件
-   * @param input - 创建/更新数据
-   * @returns 创建或更新后的媒体文件记录
-   */
-  upsert(
-    where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>,
-    input: MediaFileCreateInput
-  ): Promise<MediaFile> {
-    this.handleInputData(input);
-    const data = this.parseCreateData(input);
-    return this.db.mediaFile.upsert({
-      where: this.parseUniqueWhere(where),
-      update: data,
-      create: data,
-      include: this.include,
-    });
-  }
-
-  /**
-   * 删除媒体文件
-   * @param where - 唯一查询条件（只能使用 id）
-   * @returns 删除的媒体文件记录
-   */
-  delete(where: Pick<MediaFileWhereUniqueInput, PickWhereUniqueFields>): Promise<MediaFile> {
-    return this.db.mediaFile.delete({
-      where: this.parseUniqueWhere(where),
-    });
-  }
-
-  /**
-   * 批量删除媒体文件
-   * @param where - 查询条件（可选，不指定则删除所有记录）
-   * @returns 删除操作的结果，包含删除的记录数量
-   */
-  deleteMany(where?: MediaFileWhereInput) {
-    const args: Prisma.MediaFileDeleteManyArgs = {};
-    if (where) args.where = this.parseManyWhere(where);
-    return this.db.mediaFile.deleteMany(args);
-  }
-
-  /**
-   * 根据文件夹 ID 删除该文件夹下的所有媒体文件
-   * @param folderId - 文件夹唯一标识符
-   * @returns 删除操作的结果，包含删除的记录数量
-   */
-  deleteAllByFolderId(folderId: string) {
-    return this.deleteMany({ folderId: { equals: folderId } });
-  }
-
-  /**
-   * 根据所有者 ID 和类型删除媒体文件
-   * @param ownerId - 所有者唯一标识符
-   * @param ownerType - 所有者类型
-   * @returns 删除操作的结果，包含删除的记录数量
-   */
-  deleteAllByOwnerIdAndType(ownerId: string, ownerType: 'Admin' | 'User') {
-    return this.deleteMany({
-      ownerId: { equals: ownerId },
-      ownerType: { equals: ownerType },
-    });
+  findManyAndCount(args: FindManyMediaFileArgs) {
+    return Promise.all([this.findMany(args), this.count(args)]);
   }
 }

@@ -89,7 +89,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       company: true,
       user: true,
     });
-    const auth = await this.auth.findById(options.tokenId);
+    const auth = await this.auth.findOneById(options.tokenId);
     if (!auth) {
       throw new UnauthorizedException({
         message: 'Invalid token',
@@ -116,6 +116,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * - 根据用户类型和关联信息构建权限列表
    * - 支持管理员和用户权限获取
    *
+   * 核心逻辑：
+   * - 管理员：获取角色权限并合并企业权限
+   * - 用户：根据用户ID和企业ID获取角色权限
+   *
+   * 异常处理：
+   * - 未找到管理员或用户：返回空权限列表
+   *
    * 参数说明：
    * - auth: Auth - 认证信息
    *
@@ -126,23 +133,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (auth.admin) {
       const permissions = auth.admin?.role?.permissions || [];
       if (auth.company) {
-        const adminCompany = await this.adminCompany.findUnique({
-          adminCompanyIdx: {
-            adminId: auth.admin.id,
-            companyId: auth.company.id,
-          },
-        });
+        const adminCompany = await this.adminCompany.findOneByUnique(auth.admin.id, auth.company.id);
         return [...permissions, ...(adminCompany?.permissions || [])];
       }
       return permissions;
     }
     if (auth.user && auth.company) {
-      const companyUser = await this.companyUser.setInclude({ role: true }).findUnique({
-        companyUserIdx: {
-          userId: auth.user.id,
-          companyId: auth.company.id,
-        },
-      });
+      const companyUser = await this.companyUser
+        .setInclude({ role: true })
+        .findOneByUnique(auth.user.id, auth.company.id);
       return companyUser?.role?.permissions || [];
     }
     return [];

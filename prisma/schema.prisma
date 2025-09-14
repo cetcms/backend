@@ -14,10 +14,11 @@ generator client {
 }
 
 generator graphql {
-  provider               = "prisma-nestjs-graphql"
-  output                 = "../src/generated/graphql"
-  reExport               = "All"
-  noAtomicOperations     = "true"
+  provider           = "prisma-nestjs-graphql"
+  output             = "../src/generated/graphql"
+  reExport           = "All"
+  noAtomicOperations = "true"
+
   fields_Validator_from  = "class-validator"
   fields_Validator_input = "true"
 
@@ -27,11 +28,17 @@ generator graphql {
   decorate_1_from      = "@nestjs/graphql"
   decorate_1_arguments = "[]"
 
-  decorate_2_type      = "*Nested*"
-  decorate_2_field     = "!(connect|disconnect)"
-  decorate_2_name      = "Exclude"
-  decorate_2_from      = "class-transformer"
-  decorate_2_arguments = "[]"
+  decorate_4_type      = "!(*Create*|*Update*)"
+  decorate_4_field     = "password"
+  decorate_4_name      = "HideField"
+  decorate_4_from      = "@nestjs/graphql"
+  decorate_4_arguments = "[]"
+
+  decorate_5_type      = "+(*Create*|*Update*)"
+  decorate_5_field     = "+(id|createdAt|updatedAt|expiredAt|uploadedAt)"
+  decorate_5_name      = "HideField"
+  decorate_5_from      = "@nestjs/graphql"
+  decorate_5_arguments = "[]"
 }
 
 generator zod {
@@ -74,25 +81,20 @@ enum MediaVisibility {
 }
 
 model Auth {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   id        String   @id @default(cuid())
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   expiredAt DateTime @default(now()) @map("expired_at")
 
-  adminId   String?  @map("admin_id")
-  admin     Admin?   @relation(fields: [adminId], references: [id])
-  userId    String?  @map("user_id")
-  user      User?    @relation(fields: [userId], references: [id])
-  companyId String?  @map("company_id")
-  company   Company? @relation(fields: [companyId], references: [id])
-
-  /// @HideField({ output: true })
+  adminId     String?  @map("admin_id")
+  admin       Admin?   @relation(fields: [adminId], references: [id])
+  userId      String?  @map("user_id")
+  user        User?    @relation(fields: [userId], references: [id])
+  companyId   String?  @map("company_id")
+  company     Company? @relation(fields: [companyId], references: [id])
+  /// @HideField()
   token       String
-  /// @HideField({ output: true })
+  /// @HideField()
   fingerprint String?
   device      Json?
   location    Json?
@@ -102,11 +104,8 @@ model Auth {
 }
 
 model Admin {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   id        String   @id @default(cuid())
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
 
   status Status @default(Enabled)
@@ -116,37 +115,33 @@ model Admin {
   /// @Validator.IsEmail()
   /// @zod.email().min(5).trim().toLowerCase()
   email    String @unique @db.VarChar(100)
-  /// @HideField({ output: true, match: '@(*Where*|*OrderBy*)' })
   password String
 
   roleId String    @map("role_id")
   role   AdminRole @relation(fields: [roleId], references: [id])
 
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   companies    AdminCompany[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   auths        Auth[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   logs         RequestLog[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   mediaFolders MediaFolder[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   mediaFiles   MediaFile[]
 
   @@map("admins")
 }
 
 model AdminRole {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   id        String   @id @default(cuid())
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
 
   status Status @default(Enabled)
@@ -165,9 +160,7 @@ model AdminRole {
 }
 
 model AdminCompany {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
 
   adminId   String  @map("admin_id")
@@ -182,11 +175,8 @@ model AdminCompany {
 }
 
 model User {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   id        String   @id @default(cuid())
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
 
   status Status @default(Enabled)
@@ -196,34 +186,30 @@ model User {
   /// @zod.email().min(5).trim()
   /// @Validator.IsEmail()
   email    String @unique @db.VarChar(100)
-  /// @HideField({ output: true, match: '@(*Where*|*OrderBy*)' })
   password String
 
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   companies    CompanyUser[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   auths        Auth[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   logs         RequestLog[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   mediaFolders MediaFolder[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   mediaFiles   MediaFile[]
 
   @@map("users")
 }
 
 model Company {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   id        String   @id @default(cuid())
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
 
   status Status @default(Enabled)
@@ -237,36 +223,33 @@ model Company {
   description String?
 
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*)' })
+  /// @HideField({ match: '+(*Create*|*Update*)' })
   auths        Auth[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*)' })
+  /// @HideField({ match: '+(*Create*|*Update*)' })
   admins       AdminCompany[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*)' })
+  /// @HideField({ match: '+(*Create*|*Update*)' })
   roles        CompanyRole[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*)' })
+  /// @HideField({ match: '+(*Create*|*Update*)' })
   users        CompanyUser[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*)' })
+  /// @HideField({ match: '+(*Create*|*Update*)' })
   logs         RequestLog[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*)' })
+  /// @HideField({ match: '+(*Create*|*Update*)' })
   mediaFolders MediaFolder[]
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*)' })
+  /// @HideField({ match: '+(*Create*|*Update*)' })
   mediaFiles   MediaFile[]
 
   @@map("companies")
 }
 
 model CompanyRole {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   id        String   @id @default(cuid())
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
 
   status Status @default(Enabled)
@@ -282,7 +265,7 @@ model CompanyRole {
   company   Company? @relation(fields: [companyId], references: [id])
 
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*)' })
+  /// @HideField({ match: '+(*Create*|*Update*)' })
   users CompanyUser[]
 
   @@unique([companyId, code], name: "companyRoleIdx")
@@ -290,9 +273,7 @@ model CompanyRole {
 }
 
 model CompanyUser {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
 
   status Status @default(Enabled)
@@ -320,11 +301,8 @@ enum RequestMethod {
 }
 
 model RequestLog {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   id        String   @id @default(cuid())
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
   recordAt  DateTime @default(now()) @map("record_at")
 
@@ -353,11 +331,8 @@ model RequestLog {
 }
 
 model MediaFolder {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   id        String   @id @default(cuid())
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt DateTime @updatedAt @map("updated_at")
 
   status Status @default(Enabled)
@@ -391,7 +366,7 @@ model MediaFolder {
 
   // 关联的媒体资源
   /// @zod.optional()
-  /// @HideField({ match: '@(*Create*|*Update*|*UniqueInput*)' })
+  /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   files MediaFile[]
 
   @@unique([companyId, path], name: "folderPathIdx")
@@ -401,13 +376,9 @@ model MediaFolder {
 }
 
 model MediaFile {
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   id         String   @id @default(cuid())
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   createdAt  DateTime @default(now()) @map("created_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   updatedAt  DateTime @updatedAt @map("updated_at")
-  /// @HideField({ match: '@(*Create*|*Update*)' })
   uploadedAt DateTime @default(now()) @map("uploaded_at")
 
   store  MediaStore @default(Local)

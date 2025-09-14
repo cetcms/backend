@@ -1,5 +1,4 @@
 import { DatabaseService } from 'src/database';
-import { CompanyRole } from 'src/generated/graphql/company-role';
 import {
   AdminCompanyRepository,
   AdminRepository,
@@ -13,8 +12,9 @@ import {
 const main = async () => {
   const prisma = new DatabaseService();
 
+  // 创建管理员角色
   const adminRoleRepo = new AdminRoleRepository(prisma);
-  const adminRole = await adminRoleRepo.upsert(
+  const adminRole = await adminRoleRepo.save(
     { code: 'ROOT' },
     {
       name: 'Root',
@@ -23,10 +23,11 @@ const main = async () => {
       permissions: [],
     }
   );
-  console.log('Admin role created:', adminRole);
+  console.log('Admin role saved:', adminRole);
 
+  // 创建管理员
   const adminRepo = new AdminRepository(prisma);
-  const admin = await adminRepo.upsert(
+  const admin = await adminRepo.save(
     { email: 'admin@email.com' },
     {
       name: 'Admin',
@@ -39,27 +40,20 @@ const main = async () => {
       },
     }
   );
-  console.log('Admin created:', admin);
+  console.log('Admin saved:', admin);
 
-  let companyRole: CompanyRole | null;
+  // 创建企业角色
   const companyRoleRepo = new CompanyRoleRepository(prisma);
-  companyRole = await companyRoleRepo.findFirst(
-    { code: { equals: 'OWNER' } },
-    { companyId: { sort: 'asc', nulls: 'first' } }
-  );
-  console.log('Company role found:', companyRole);
-  if (!companyRole) {
-    companyRole = await companyRoleRepo.create({
-      name: 'Owner',
-      code: 'OWNER',
-      description: '企业所有者',
-      permissions: [],
-    });
-    console.log('Company role created:', companyRole);
-  }
+  const companyRole = await companyRoleRepo.saveCommonRole('OWNER', {
+    name: 'Owner',
+    description: '企业所有者',
+    permissions: [],
+  });
+  console.log('Company role saved:', companyRole);
 
+  // 创建用户
   const userRepo = new UserRepository(prisma);
-  const user = await userRepo.upsert(
+  const user = await userRepo.save(
     { email: 'user@email.com' },
     {
       name: 'User',
@@ -67,10 +61,11 @@ const main = async () => {
       password: '123456',
     }
   );
-  console.log('User created:', user);
+  console.log('User saved:', user);
 
+  // 创建企业
   const companyRepo = new CompanyRepository(prisma);
-  const company = await companyRepo.upsert(
+  const company = await companyRepo.save(
     { code: '123456789011121314' },
     {
       name: '极客领航网络科技有限公司',
@@ -79,43 +74,41 @@ const main = async () => {
       description: '极客领航公司',
     }
   );
-  console.log('Company created:', company);
+  console.log('Company saved:', company);
 
+  // 关联管理员企业
   const adminCompanyRepo = new AdminCompanyRepository(prisma);
-  const adminCompanyExist = await adminCompanyRepo.findUnique({
-    adminCompanyIdx: {
-      adminId: admin.id,
-      companyId: company.id,
+  const adminCompany = await adminCompanyRepo.save(
+    {
+      adminCompanyIdx: {
+        adminId: admin.id,
+        companyId: company.id,
+      },
     },
-  });
-  if (!adminCompanyExist) {
-    const adminCompany = await adminCompanyRepo.create({
+    {
       admin: { connect: { id: admin.id } },
       company: { connect: { id: company.id } },
       permissions: [],
-    });
-    console.log('Admin company created:', adminCompany);
-  } else {
-    console.log('Admin company already exists', adminCompanyExist);
-  }
+    }
+  );
+  console.log('Admin company saved:', adminCompany);
 
+  // 关联用户
   const companyUserRepo = new CompanyUserRepository(prisma);
-  const companyUserExist = await companyUserRepo.findUnique({
-    companyUserIdx: {
-      companyId: company.id,
-      userId: user.id,
+  const companyUser = await companyUserRepo.save(
+    {
+      companyUserIdx: {
+        companyId: company.id,
+        userId: user.id,
+      },
     },
-  });
-  if (!companyUserExist) {
-    const companyUser = await companyUserRepo.create({
+    {
       company: { connect: { id: company.id } },
       role: { connect: { id: companyRole.id } },
       user: { connect: { id: user.id } },
-    });
-    console.log('Company user created:', companyUser);
-  } else {
-    console.log('Company user already exists', companyUserExist);
-  }
+    }
+  );
+  console.log('Company user saved:', companyUser);
 };
 
 main()
