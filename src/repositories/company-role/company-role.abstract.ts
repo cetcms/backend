@@ -182,13 +182,14 @@ export abstract class CompanyRoleAbstract {
    *
    * 根据唯一条件查询单个企业角色记录
    *
-   * @param args - 查询参数
+   * @param where - 查询条件
    * @returns 企业角色记录或null
    */
-  findUnique(args: FindUniqueCompanyRoleArgs): PrismaPromise<CompanyRole | null> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.companyRole.findUnique({ include, where });
+  findUnique(where: FindUniqueCompanyRoleArgs['where']): PrismaPromise<CompanyRole | null> {
+    return this.db.companyRole.findUnique({
+      where: this.parseUniqueWhere(where),
+      include: this.getInclude(),
+    });
   }
 
   /**
@@ -220,37 +221,41 @@ export abstract class CompanyRoleAbstract {
   /**
    * 计算符合条件的企业角色记录数量
    *
-   * @param args - 查询参数
+   * @param where - 查询条件
    * @returns 记录数量
    */
-  count(args: FindManyCompanyRoleArgs): PrismaPromise<number> {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    return this.db.companyRole.count({ where });
+  count(where?: FindManyCompanyRoleArgs['where']): PrismaPromise<number> {
+    return this.db.companyRole.count({
+      where: where ? this.parseWhere(where) : undefined,
+    });
   }
 
   /**
    * 创建企业角色记录
    *
-   * @param args - 创建参数
+   * @param data - 创建数据
    * @returns 创建的企业角色记录
    */
-  create(args: CreateOneCompanyRoleArgs): PrismaPromise<CompanyRole> {
-    const include = this.getInclude();
-    const data = this.parseCreateData(args.data);
-    return this.db.companyRole.create({ include, data });
+  create(data: CreateOneCompanyRoleArgs['data']): PrismaPromise<CompanyRole> {
+    return this.db.companyRole.create({
+      include: this.getInclude(),
+      data: this.parseCreateData(data),
+    });
   }
 
   /**
    * 更新企业角色记录
    *
-   * @param args - 更新参数
+   * @param where - 更新条件
+   * @param data - 更新数据
    * @returns 更新后的企业角色记录
    */
-  update(args: UpdateOneCompanyRoleArgs): PrismaPromise<CompanyRole> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    const data = this.parseUpdateData(args.data);
-    return this.db.companyRole.update({ include, where, data });
+  update(where: UpdateOneCompanyRoleArgs['where'], data: UpdateOneCompanyRoleArgs['data']): PrismaPromise<CompanyRole> {
+    return this.db.companyRole.update({
+      include: this.getInclude(),
+      where: this.parseUniqueWhere(where),
+      data: this.parseUpdateData(data),
+    });
   }
 
   /**
@@ -272,24 +277,24 @@ export abstract class CompanyRoleAbstract {
   /**
    * 删除企业角色记录
    *
-   * @param args - 删除参数
+   * @param where - 删除条件
    * @returns 删除的企业角色记录
    */
-  delete(args: DeleteOneCompanyRoleArgs): PrismaPromise<CompanyRole> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.companyRole.delete({ include, where });
+  delete(where: DeleteOneCompanyRoleArgs['where']): PrismaPromise<CompanyRole> {
+    return this.db.companyRole.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
   }
 
   /**
    * 批量删除企业角色记录
    *
-   * @param args - 批量删除参数
+   * @param where - 删除条件
+   * @param limit - 限制删除数量
    * @returns 删除操作结果
    */
-  deleteMany(args: DeleteManyCompanyRoleArgs) {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const limit = args.limit ? args.limit : undefined;
-    return this.db.companyRole.deleteMany({ where, limit });
+  deleteMany(where?: DeleteManyCompanyRoleArgs['where'], limit?: number) {
+    return this.db.companyRole.deleteMany({
+      where: where ? this.parseWhere(where) : undefined,
+      limit,
+    });
   }
 }

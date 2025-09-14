@@ -115,7 +115,7 @@ export class AuthRepository extends AuthAbstract {
    * @returns 包含查询结果和总数的Promise数组
    */
   findManyAndCount(args: FindManyAuthArgs) {
-    return Promise.all([this.findMany(args), this.count(args)]);
+    return Promise.all([this.findMany(args), this.count(args.where)]);
   }
 
   /**
@@ -165,7 +165,7 @@ export class AuthRepository extends AuthAbstract {
       delete data.company;
     }
     delete data.user;
-    return this.create({ data });
+    return this.create(data);
   }
 
   /**
@@ -184,7 +184,7 @@ export class AuthRepository extends AuthAbstract {
       throw new Error('you cannot manage the company');
     }
 
-    return this.create({ data });
+    return this.create(data);
   }
 
   /**
@@ -194,9 +194,7 @@ export class AuthRepository extends AuthAbstract {
    * @returns 删除操作的结果，包含删除的记录数量
    */
   deleteAllByUserId(userId: string) {
-    return this.deleteMany({
-      where: { userId: { equals: userId } },
-    });
+    return this.deleteMany({ userId: { equals: userId } });
   }
 
   /**
@@ -205,9 +203,7 @@ export class AuthRepository extends AuthAbstract {
    * @returns 删除操作的结果，包含删除的记录数量
    */
   deleteAllByAdminId(adminId: string) {
-    return this.deleteMany({
-      where: { adminId: { equals: adminId } },
-    });
+    return this.deleteMany({ adminId: { equals: adminId } });
   }
 
   /**
@@ -216,9 +212,7 @@ export class AuthRepository extends AuthAbstract {
    * @returns 删除操作的结果，包含删除的记录数量
    */
   deleteAllByCompanyId(companyId: string) {
-    return this.deleteMany({
-      where: { companyId: { equals: companyId } },
-    });
+    return this.deleteMany({ companyId: { equals: companyId } });
   }
 
   /**
@@ -244,8 +238,6 @@ export class AuthRepository extends AuthAbstract {
    * @returns 删除操作的结果，包含删除的记录数量
    */
   deleteById(id: string) {
-    return this.delete({
-      where: { id },
-    });
+    return this.delete({ id });
   }
 }

@@ -62,9 +62,7 @@ export class UserRepository extends UserAbstract {
    */
   findOneById(id: string) {
     return this.findUnique({
-      where: {
-        id,
-      },
+      id,
     });
   }
 
@@ -76,9 +74,7 @@ export class UserRepository extends UserAbstract {
    */
   findOneByEmail(email: string) {
     return this.findUnique({
-      where: {
-        email,
-      },
+      email,
     });
   }
 
@@ -90,7 +86,7 @@ export class UserRepository extends UserAbstract {
    * @returns 验证成功返回用户信息，失败返回null
    */
   async findUniqueAndCheckPassword(where: FindUniqueUserArgs['where'], password: string) {
-    const user = await this.findUnique({ where });
+    const user = await this.findUnique(where);
     if (user && PasswordHandler(password).check(user.password)) return user;
     return null;
   }
@@ -124,6 +120,6 @@ export class UserRepository extends UserAbstract {
    * @returns 包含查询结果和总数的Promise数组
    */
   findManyAndCount(args: FindManyUserArgs) {
-    return Promise.all([this.findMany(args), this.count(args)]);
+    return Promise.all([this.findMany(args), this.count(args.where)]);
   }
 }

@@ -60,11 +60,9 @@ export class CompanyUserRepository extends CompanyUserAbstract {
    */
   findOneByUnique(userId: string, companyId: string) {
     return this.findUnique({
-      where: {
-        companyUserIdx: {
-          companyId,
-          userId,
-        },
+      companyUserIdx: {
+        companyId,
+        userId,
       },
     });
   }
@@ -108,6 +106,6 @@ export class CompanyUserRepository extends CompanyUserAbstract {
    * @returns 包含查询结果和总数的Promise数组
    */
   findManyAndCount(args: FindManyCompanyUserArgs) {
-    return Promise.all([this.findMany(args), this.count(args)]);
+    return Promise.all([this.findMany(args), this.count(args.where)]);
   }
 }

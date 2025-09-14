@@ -54,9 +54,9 @@ export class CompanyRoleRepository extends CompanyRoleAbstract {
   async saveCommonRole(code: string, data: Omit<CompanyRoleCreateInput, 'code' | 'company'>) {
     const role = await this.findCommonRole(code);
     if (role) {
-      return this.update({ where: { id: role.id }, data });
+      return this.update({ id: role.id }, data);
     } else {
-      return this.create({ data: { code, ...data } });
+      return this.create({ code, ...data });
     }
   }
 
@@ -74,9 +74,7 @@ export class CompanyRoleRepository extends CompanyRoleAbstract {
    * @returns 查询到的企业角色信息
    */
   findOneById(id: string) {
-    return this.findUnique({
-      where: { id },
-    });
+    return this.findUnique({ id });
   }
 
   /**
@@ -86,9 +84,7 @@ export class CompanyRoleRepository extends CompanyRoleAbstract {
    * @returns 查询到的企业角色信息
    */
   findOneByUnique(code: string, companyId: string) {
-    return this.findUnique({
-      where: { companyRoleIdx: { companyId, code } },
-    });
+    return this.findUnique({ companyRoleIdx: { companyId, code } });
   }
 
   /**
@@ -130,6 +126,6 @@ export class CompanyRoleRepository extends CompanyRoleAbstract {
    * @returns 包含查询结果和总数的Promise数组
    */
   findManyAndCount(args: FindManyCompanyRoleArgs) {
-    return Promise.all([this.findMany(args), this.count(args)]);
+    return Promise.all([this.findMany(args), this.count(args.where)]);
   }
 }

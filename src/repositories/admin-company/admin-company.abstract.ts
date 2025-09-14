@@ -182,13 +182,14 @@ export abstract class AdminCompanyAbstract {
    *
    * 根据唯一条件查询单个管理员企业关联记录
    *
-   * @param args - 查询参数
+   * @param where - 查询条件
    * @returns 管理员企业关联记录或null
    */
-  findUnique(args: FindUniqueAdminCompanyArgs): PrismaPromise<AdminCompany | null> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.adminCompany.findUnique({ include, where });
+  findUnique(where: FindUniqueAdminCompanyArgs['where']): PrismaPromise<AdminCompany | null> {
+    return this.db.adminCompany.findUnique({
+      where: this.parseUniqueWhere(where),
+      include: this.getInclude(),
+    });
   }
 
   /**
@@ -220,37 +221,44 @@ export abstract class AdminCompanyAbstract {
   /**
    * 计算符合条件的管理员企业关联记录数量
    *
-   * @param args - 查询参数
+   * @param where - 查询条件
    * @returns 记录数量
    */
-  count(args: FindManyAdminCompanyArgs): PrismaPromise<number> {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    return this.db.adminCompany.count({ where });
+  count(where?: FindManyAdminCompanyArgs['where']): PrismaPromise<number> {
+    return this.db.adminCompany.count({
+      where: where ? this.parseWhere(where) : undefined,
+    });
   }
 
   /**
    * 创建管理员企业关联记录
    *
-   * @param args - 创建参数
+   * @param data - 创建数据
    * @returns 创建的管理员企业关联记录
    */
-  create(args: CreateOneAdminCompanyArgs): PrismaPromise<AdminCompany> {
-    const include = this.getInclude();
-    const data = this.parseCreateData(args.data);
-    return this.db.adminCompany.create({ include, data });
+  create(data: CreateOneAdminCompanyArgs['data']): PrismaPromise<AdminCompany> {
+    return this.db.adminCompany.create({
+      include: this.getInclude(),
+      data: this.parseCreateData(data),
+    });
   }
 
   /**
    * 更新管理员企业关联记录
    *
-   * @param args - 更新参数
+   * @param where - 更新条件
+   * @param data - 更新数据
    * @returns 更新后的管理员企业关联记录
    */
-  update(args: UpdateOneAdminCompanyArgs): PrismaPromise<AdminCompany> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    const data = this.parseUpdateData(args.data);
-    return this.db.adminCompany.update({ include, where, data });
+  update(
+    where: UpdateOneAdminCompanyArgs['where'],
+    data: UpdateOneAdminCompanyArgs['data']
+  ): PrismaPromise<AdminCompany> {
+    return this.db.adminCompany.update({
+      include: this.getInclude(),
+      where: this.parseUniqueWhere(where),
+      data: this.parseUpdateData(data),
+    });
   }
 
   /**
@@ -272,24 +280,24 @@ export abstract class AdminCompanyAbstract {
   /**
    * 删除管理员企业关联记录
    *
-   * @param args - 删除参数
+   * @param where - 删除条件
    * @returns 删除的管理员企业关联记录
    */
-  delete(args: DeleteOneAdminCompanyArgs): PrismaPromise<AdminCompany> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.adminCompany.delete({ include, where });
+  delete(where: DeleteOneAdminCompanyArgs['where']): PrismaPromise<AdminCompany> {
+    return this.db.adminCompany.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
   }
 
   /**
    * 批量删除管理员企业关联记录
    *
-   * @param args - 批量删除参数
+   * @param where - 删除条件
+   * @param limit - 限制删除数量
    * @returns 删除操作结果
    */
-  deleteMany(args: DeleteManyAdminCompanyArgs) {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const limit = args.limit ? args.limit : undefined;
-    return this.db.adminCompany.deleteMany({ where, limit });
+  deleteMany(where?: DeleteManyAdminCompanyArgs['where'], limit?: number) {
+    return this.db.adminCompany.deleteMany({
+      where: where ? this.parseWhere(where) : undefined,
+      limit,
+    });
   }
 }

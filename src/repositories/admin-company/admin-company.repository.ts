@@ -87,9 +87,7 @@ export class AdminCompanyRepository extends AdminCompanyAbstract {
    * @returns 查询到的管理员企业关联信息
    */
   findOneByUnique(adminId: string, companyId: string) {
-    return this.findUnique({
-      where: { adminCompanyIdx: { adminId, companyId } },
-    });
+    return this.findUnique({ adminCompanyIdx: { adminId, companyId } });
   }
 
   /**
@@ -99,7 +97,7 @@ export class AdminCompanyRepository extends AdminCompanyAbstract {
    * @returns 包含查询结果和总数的Promise数组
    */
   findManyAndCount(args: FindManyAdminCompanyArgs) {
-    return Promise.all([this.findMany(args), this.count(args)]);
+    return Promise.all([this.findMany(args), this.count(args.where)]);
   }
 
   /**
@@ -109,9 +107,7 @@ export class AdminCompanyRepository extends AdminCompanyAbstract {
    * @returns 删除的管理员公司关联记录
    */
   deleteByUnique(adminId: string, companyId: string) {
-    return this.delete({
-      where: { adminCompanyIdx: { adminId, companyId } },
-    });
+    return this.delete({ adminCompanyIdx: { adminId, companyId } });
   }
 
   /**
@@ -120,9 +116,7 @@ export class AdminCompanyRepository extends AdminCompanyAbstract {
    * @returns 删除操作的结果，包含删除的记录数量
    */
   deleteAllByAdminId(adminId: string) {
-    return this.deleteMany({
-      where: { adminId: { equals: adminId } },
-    });
+    return this.deleteMany({ adminId: { equals: adminId } });
   }
 
   /**
@@ -131,8 +125,6 @@ export class AdminCompanyRepository extends AdminCompanyAbstract {
    * @returns 删除操作的结果，包含删除的记录数量
    */
   deleteAllByCompanyId(companyId: string) {
-    return this.deleteMany({
-      where: { companyId: { equals: companyId } },
-    });
+    return this.deleteMany({ companyId: { equals: companyId } });
   }
 }

@@ -178,13 +178,14 @@ export abstract class AuthAbstract {
    *
    * 根据唯一条件查询单个认证记录
    *
-   * @param args - 查询参数
+   * @param where - 查询条件
    * @returns 认证记录或null
    */
-  findUnique(args: FindUniqueAuthArgs): PrismaPromise<Auth | null> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.auth.findUnique({ include, where });
+  findUnique(where: FindUniqueAuthArgs['where']): PrismaPromise<Auth | null> {
+    return this.db.auth.findUnique({
+      where: this.parseUniqueWhere(where),
+      include: this.getInclude(),
+    });
   }
 
   /**
@@ -216,37 +217,41 @@ export abstract class AuthAbstract {
   /**
    * 计算符合条件的认证记录数量
    *
-   * @param args - 查询参数
+   * @param where - 查询条件
    * @returns 记录数量
    */
-  count(args: FindManyAuthArgs): PrismaPromise<number> {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    return this.db.auth.count({ where });
+  count(where?: FindManyAuthArgs['where']): PrismaPromise<number> {
+    return this.db.auth.count({
+      where: where ? this.parseWhere(where) : undefined,
+    });
   }
 
   /**
    * 创建认证记录
    *
-   * @param args - 创建参数
+   * @param data - 创建数据
    * @returns 创建的认证记录
    */
-  create(args: CreateOneAuthArgs): PrismaPromise<Auth> {
-    const include = this.getInclude();
-    const data = this.parseCreateData(args.data);
-    return this.db.auth.create({ include, data });
+  create(data: CreateOneAuthArgs['data']): PrismaPromise<Auth> {
+    return this.db.auth.create({
+      include: this.getInclude(),
+      data: this.parseCreateData(data),
+    });
   }
 
   /**
    * 更新认证记录
    *
-   * @param args - 更新参数
+   * @param where - 更新条件
+   * @param data - 更新数据
    * @returns 更新后的认证记录
    */
-  update(args: UpdateOneAuthArgs): PrismaPromise<Auth> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    const data = this.parseUpdateData(args.data);
-    return this.db.auth.update({ include, where, data });
+  update(where: UpdateOneAuthArgs['where'], data: UpdateOneAuthArgs['data']): PrismaPromise<Auth> {
+    return this.db.auth.update({
+      include: this.getInclude(),
+      where: this.parseUniqueWhere(where),
+      data: this.parseUpdateData(data),
+    });
   }
 
   /**
@@ -268,24 +273,24 @@ export abstract class AuthAbstract {
   /**
    * 删除认证记录
    *
-   * @param args - 删除参数
+   * @param where - 删除条件
    * @returns 删除的认证记录
    */
-  delete(args: DeleteOneAuthArgs): PrismaPromise<Auth> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.auth.delete({ include, where });
+  delete(where: DeleteOneAuthArgs['where']): PrismaPromise<Auth> {
+    return this.db.auth.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
   }
 
   /**
    * 批量删除认证记录
    *
-   * @param args - 批量删除参数
+   * @param where - 删除条件
+   * @param limit - 限制删除数量
    * @returns 删除操作结果
    */
-  deleteMany(args: DeleteManyAuthArgs) {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const limit = args.limit ? args.limit : undefined;
-    return this.db.auth.deleteMany({ where, limit });
+  deleteMany(where?: DeleteManyAuthArgs['where'], limit?: number) {
+    return this.db.auth.deleteMany({
+      where: where ? this.parseWhere(where) : undefined,
+      limit,
+    });
   }
 }

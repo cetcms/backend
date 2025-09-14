@@ -182,13 +182,14 @@ export abstract class MediaFolderAbstract {
    *
    * 根据唯一条件查询单个媒体文件夹记录
    *
-   * @param args - 查询参数
+   * @param where - 查询条件
    * @returns 媒体文件夹记录或null
    */
-  findUnique(args: FindUniqueMediaFolderArgs): PrismaPromise<MediaFolder | null> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.mediaFolder.findUnique({ include, where });
+  findUnique(where: FindUniqueMediaFolderArgs['where']): PrismaPromise<MediaFolder | null> {
+    return this.db.mediaFolder.findUnique({
+      where: this.parseUniqueWhere(where),
+      include: this.getInclude(),
+    });
   }
 
   /**
@@ -220,37 +221,41 @@ export abstract class MediaFolderAbstract {
   /**
    * 计算符合条件的媒体文件夹记录数量
    *
-   * @param args - 查询参数
+   * @param where - 查询条件
    * @returns 记录数量
    */
-  count(args: FindManyMediaFolderArgs): PrismaPromise<number> {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    return this.db.mediaFolder.count({ where });
+  count(where?: FindManyMediaFolderArgs['where']): PrismaPromise<number> {
+    return this.db.mediaFolder.count({
+      where: where ? this.parseWhere(where) : undefined,
+    });
   }
 
   /**
    * 创建媒体文件夹记录
    *
-   * @param args - 创建参数
+   * @param data - 创建数据
    * @returns 创建的媒体文件夹记录
    */
-  create(args: CreateOneMediaFolderArgs): PrismaPromise<MediaFolder> {
-    const include = this.getInclude();
-    const data = this.parseCreateData(args.data);
-    return this.db.mediaFolder.create({ include, data });
+  create(data: CreateOneMediaFolderArgs['data']): PrismaPromise<MediaFolder> {
+    return this.db.mediaFolder.create({
+      include: this.getInclude(),
+      data: this.parseCreateData(data),
+    });
   }
 
   /**
    * 更新媒体文件夹记录
    *
-   * @param args - 更新参数
+   * @param where - 更新条件
+   * @param data - 更新数据
    * @returns 更新后的媒体文件夹记录
    */
-  update(args: UpdateOneMediaFolderArgs): PrismaPromise<MediaFolder> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    const data = this.parseUpdateData(args.data);
-    return this.db.mediaFolder.update({ include, where, data });
+  update(where: UpdateOneMediaFolderArgs['where'], data: UpdateOneMediaFolderArgs['data']): PrismaPromise<MediaFolder> {
+    return this.db.mediaFolder.update({
+      include: this.getInclude(),
+      where: this.parseUniqueWhere(where),
+      data: this.parseUpdateData(data),
+    });
   }
 
   /**
@@ -272,24 +277,24 @@ export abstract class MediaFolderAbstract {
   /**
    * 删除媒体文件夹记录
    *
-   * @param args - 删除参数
+   * @param where - 删除条件
    * @returns 删除的媒体文件夹记录
    */
-  delete(args: DeleteOneMediaFolderArgs): PrismaPromise<MediaFolder> {
-    const include = this.getInclude();
-    const where = this.parseUniqueWhere(args.where);
-    return this.db.mediaFolder.delete({ include, where });
+  delete(where: DeleteOneMediaFolderArgs['where']): PrismaPromise<MediaFolder> {
+    return this.db.mediaFolder.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
   }
 
   /**
    * 批量删除媒体文件夹记录
    *
-   * @param args - 批量删除参数
+   * @param where - 删除条件
+   * @param limit - 限制删除数量
    * @returns 删除操作结果
    */
-  deleteMany(args: DeleteManyMediaFolderArgs) {
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const limit = args.limit ? args.limit : undefined;
-    return this.db.mediaFolder.deleteMany({ where, limit });
+  deleteMany(where?: DeleteManyMediaFolderArgs['where'], limit?: number) {
+    return this.db.mediaFolder.deleteMany({
+      where: where ? this.parseWhere(where) : undefined,
+      limit,
+    });
   }
 }
