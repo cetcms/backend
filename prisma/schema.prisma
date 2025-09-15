@@ -301,23 +301,32 @@ enum RequestMethod {
 }
 
 model RequestLog {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  recordAt  DateTime @default(now()) @map("record_at")
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  recordAt  DateTime  @default(now()) @map("record_at")
+  beforeAt  DateTime  @map("before_at")
+  afterAt   DateTime? @map("after_at")
+  duration  BigInt    @default(0)
 
-  route       String?
-  method      RequestMethod?
+  route  String?
+  method RequestMethod?
+
+  headers  Json?
+  body     Json?
+  params   Json?
+  query    Json?
+  device   Json?
+  location Json?
+
   /// @zod.ipv4()
   ip          String?
   subject     String?
   action      String?
-  query       Json?
   language    String?
   fingerprint String?
-  device      Json?
-  location    Json?
-  target      Target?
+
+  target Target?
 
   userId    String?  @map("user_id")
   user      User?    @relation(fields: [userId], references: [id])

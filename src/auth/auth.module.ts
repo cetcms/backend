@@ -1,5 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import { TokenFactory } from 'src/auth/factories';
 import { JwtStrategy } from 'src/auth/strategies';
 import { ConfigService } from 'src/config';
@@ -10,8 +11,8 @@ import { AuthService } from './auth.service';
 @Global()
 @Module({
   imports: [
+    PassportModule,
     JwtModule.registerAsync({
-      global: true,
       useFactory: (configService: ConfigService) => ({
         secret: configService.getAppConfig().jwt.secret,
         signOptions: { expiresIn: configService.getAppConfig().jwt.expiresIn },
@@ -19,6 +20,7 @@ import { AuthService } from './auth.service';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, AuthResolver, TokenFactory, JwtStrategy],
+  providers: [AuthService, TokenFactory, JwtStrategy, AuthResolver],
+  exports: [PassportModule, JwtModule],
 })
 export class AuthModule {}

@@ -13,4 +13,5 @@ export const enum RequestHeaders {
   Fingerprint = 'x-fingerprint',
   UserAgent = 'user-agent',
   Ip = 'x-real-ip',
+  Language = 'x-lang',
 }

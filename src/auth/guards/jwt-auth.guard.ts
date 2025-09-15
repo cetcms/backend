@@ -70,7 +70,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * - any - Express Request 或兼容的请求对象
    */
   getRequest(context: ExecutionContext): any {
-    return ContextHandler(context);
+    return ContextHandler(context).getRequest();
   }
 
   /**
