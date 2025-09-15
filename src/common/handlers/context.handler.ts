@@ -3,25 +3,30 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { Request } from 'express';
 
 export function ContextHandler(context: ExecutionContext) {
+  const getType = () => {
+    return context.getType().toUpperCase() as 'HTTP' | 'WS' | 'RPC' | 'GRAPHQL';
+  };
+
   const getRequest = (): Request => {
-    switch (context.getType()) {
-      case 'http':
+    const type = getType();
+    switch (type) {
+      case 'HTTP':
         return context.switchToHttp().getRequest();
-      case 'rpc':
+      case 'RPC':
         return context.switchToRpc().getContext();
-      case 'ws':
+      case 'WS':
         return context.switchToWs().getClient();
+      case 'GRAPHQL': {
+        const ctx = GqlExecutionContext.create(context);
+        return ctx.getContext().req as Request;
+      }
       default:
-        if (String(context.getType()) === 'graphql') {
-          const ctx = GqlExecutionContext.create(context);
-          return ctx.getContext().req as Request;
-        }
         throw new BadRequestException({
           message: 'Invalid request type',
-          variables: { contextType: context.getType() },
+          variables: { contextType: type },
         });
     }
   };
 
-  return { getRequest };
+  return { getRequest, getType };
 }
