@@ -27,14 +27,14 @@
  * 注意事项：
  * - 当 request.authInfo 为空时抛出 UnauthorizedException（401）。
  * - 当 authInfo.user 为空时抛出 ForbiddenException（403）。
- * - 依赖 RequestHandler(ctx) 正确获取 Request；确保在认证逻辑中写入 request.authInfo。
+ * - 依赖 ContextHandler(ctx) 正确获取 Request；确保在认证逻辑中写入 request.authInfo。
  */
 import { createParamDecorator, ExecutionContext, ForbiddenException, UnauthorizedException } from '@nestjs/common';
-import { RequestHandler } from 'src/common/handlers';
+import { ContextHandler } from 'src/common/handlers';
 import { Auth } from 'src/generated/graphql/auth';
 
 export const CurrentAuthUser = createParamDecorator((data: any, ctx: ExecutionContext) => {
-  const request = RequestHandler(ctx);
+  const request = ContextHandler(ctx).getRequest();
   const authInfo = <Auth | null>request.authInfo;
   if (!authInfo) {
     throw new UnauthorizedException({

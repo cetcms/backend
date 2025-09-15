@@ -18,7 +18,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { USE_PERMISSION_KEY } from 'src/auth/decorators';
-import { RequestHandler } from 'src/common/handlers';
+import { ContextHandler } from 'src/common/handlers';
 import { Auth } from 'src/generated/graphql/auth';
 import { Target } from 'src/generated/graphql/prisma';
 
@@ -67,7 +67,7 @@ export class PermissionGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    const request = RequestHandler(context);
+    const request = ContextHandler(context).getRequest();
     const auth = <Auth & { permissions: string[] }>request.authInfo;
     const user = auth.user;
     const admin = auth.admin;

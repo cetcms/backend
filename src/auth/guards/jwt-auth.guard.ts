@@ -2,8 +2,7 @@ import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/com
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { IS_PUBLIC_ACCESS_KEY } from 'src/auth/decorators';
-import { RequestHeaders } from 'src/auth/interfaces';
-import { RequestHandler } from 'src/common/handlers';
+import { ContextHandler, RequestHandler } from 'src/common/handlers';
 import { Admin } from 'src/generated/graphql/admin';
 import { Auth } from 'src/generated/graphql/auth';
 import { User } from 'src/generated/graphql/user';
@@ -25,7 +24,7 @@ import { User } from 'src/generated/graphql/user';
  * 依赖组件：
  * - IS_PUBLIC_ACCESS_KEY: 公共访问标记键
  * - Reflector: 反射器用于读取元数据
- * - RequestHandler: 请求处理器用于适配不同环境
+ * - ContextHandler: 请求处理器用于适配不同环境
  */
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -71,7 +70,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * - any - Express Request 或兼容的请求对象
    */
   getRequest(context: ExecutionContext): any {
-    return RequestHandler(context);
+    return ContextHandler(context);
   }
 
   /**
@@ -98,8 +97,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         code: 'TOKEN_INVALID',
       });
     }
-    const req = RequestHandler(context);
-    if (req.header(RequestHeaders.Fingerprint) !== auth.fingerprint) {
+    const req = ContextHandler(context).getRequest();
+    if (RequestHandler(req).getFingerprint() !== auth.fingerprint) {
       throw new UnauthorizedException({
         message: 'Invalid fingerprint',
         code: 'FINGERPRINT_INVALID',

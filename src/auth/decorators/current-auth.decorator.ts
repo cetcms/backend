@@ -3,7 +3,7 @@
  *
  * 功能描述：
  * - 从当前请求上下文中提取认证信息（Auth），若不存在则抛出 401 Unauthorized 异常。
- * - 适用于 GraphQL、HTTP、WS、RPC 等 Nest 运行时上下文（由 RequestHandler 适配）。
+ * - 适用于 GraphQL、HTTP、WS、RPC 等 Nest 运行时上下文（由 ContextHandler 适配）。
  *
  * 参数说明：
  * - data: any
@@ -26,14 +26,14 @@
  *
  * 注意事项：
  * - 当 request.authInfo 为空时，会抛出 UnauthorizedException（401）。
- * - 依赖 RequestHandler(ctx) 从不同类型的上下文中获取 Request；确保在全局拦截器/守卫中正确设置 request.authInfo。
+ * - 依赖 ContextHandler(ctx) 从不同类型的上下文中获取 Request；确保在全局拦截器/守卫中正确设置 request.authInfo。
  */
 import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
-import { RequestHandler } from 'src/common/handlers';
+import { ContextHandler } from 'src/common/handlers';
 import { Auth } from 'src/generated/graphql/auth';
 
 export const CurrentAuth = createParamDecorator((data: any, ctx: ExecutionContext) => {
-  const request = RequestHandler(ctx);
+  const request = ContextHandler(ctx).getRequest();
   const authInfo = <Auth | null>request.authInfo;
   if (!authInfo) {
     throw new UnauthorizedException({

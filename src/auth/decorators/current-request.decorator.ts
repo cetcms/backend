@@ -3,7 +3,7 @@
  *
  * 功能描述：
  * - 从 ExecutionContext 中提取并返回底层 Request 对象（GraphQL 场景下为 ctx.getContext().req）。
- * - 兼容 HTTP、GraphQL、WS、RPC 等上下文（适配逻辑由 RequestHandler 提供）。
+ * - 兼容 HTTP、GraphQL、WS、RPC 等上下文（适配逻辑由 ContextHandler 提供）。
  *
  * 参数说明：
  * - data: any
@@ -25,11 +25,11 @@
  *   }
  *
  * 注意事项：
- * - 依赖 RequestHandler 从不同类型的上下文中获取 Request。
+ * - 依赖 ContextHandler 从不同类型的上下文中获取 Request。
  */
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { RequestHandler } from 'src/common/handlers';
+import { ContextHandler } from 'src/common/handlers';
 
 export const CurrentRequest = createParamDecorator((data: any, ctx: ExecutionContext) => {
-  return RequestHandler(ctx);
+  return ContextHandler(ctx);
 });
