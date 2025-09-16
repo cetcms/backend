@@ -60,7 +60,7 @@ const colors = {
  * 日志级别排序数组
  * 定义日志级别的优先级顺序
  */
-const sorts = [logs.FATAL, logs.ERROR, logs.WARN, logs.REQUEST, logs.VERBOSE, logs.INFO, logs.LOG, logs.DEBUG];
+const sorts = [logs.FATAL, logs.ERROR, logs.WARN, logs.VERBOSE, logs.INFO, logs.LOG, logs.REQUEST, logs.DEBUG];
 
 /**
  * 日志级别配置对象
@@ -86,7 +86,7 @@ const custom = {
  */
 const instance = createLogger({
   levels: custom.levels,
-  level: process.env.NODE_ENV === 'production' ? logs.INFO : logs.DEBUG,
+  level: process.env.NODE_ENV === 'production' ? logs.INFO : logs.LOG,
   format: format.combine(format.timestamp(), format.errors({ stack: true }), format.json()),
   defaultMeta: {
     pid: process.pid,
