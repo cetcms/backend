@@ -20,6 +20,11 @@ export class AuthResolver {
     });
   }
 
+  @Query(() => Login)
+  refresh(@CurrentAuth() auth: Auth, @CurrentRequestMeta() meta: CurrentRequestMeta) {
+    return this.service.refresh(auth, meta);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Query(() => Boolean)
   logout(@CurrentAuth() auth: Auth) {

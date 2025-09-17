@@ -3,7 +3,7 @@ import { isEmail } from 'class-validator';
 import { TokenFactory } from 'src/auth/factories';
 import { Login, LoginInput, LoginMeta } from 'src/auth/graphql';
 import { DateHandler } from 'src/common/handlers';
-import { FindManyCompanyArgs } from 'src/generated/graphql';
+import { Company, FindManyCompanyArgs } from 'src/generated/graphql';
 import { Admin } from 'src/generated/graphql/admin';
 import { Auth } from 'src/generated/graphql/auth';
 import { Target } from 'src/generated/graphql/prisma';
@@ -58,6 +58,7 @@ export class AuthService {
       accessTimeout: DateHandler(auth.expiredAt).diff(auth.createdAt, 'milliseconds'),
     };
   }
+
   /**
    * 用户登录方法
    * @param input - 登录输入数据，包含账户、密码、目标类型和公司ID
@@ -106,11 +107,51 @@ export class AuthService {
       return Boolean(await this.auth.deleteById(auth.id));
     } catch (error) {
       this.logger.error(error);
-      return false;
+      throw error;
     }
   }
 
-  listCompanies(auth: Auth, name?: string) {
+  /**
+   * 刷新令牌
+   * @param auth
+   * @param meta
+   */
+  async refresh(auth: Auth, meta: LoginMeta) {
+    const target = auth.target as Target;
+    const targetId = target === Target.Admin ? auth.adminId : auth.userId;
+    try {
+      await this.auth.deleteByTarget(target, String(targetId));
+      return this.targetLogin(auth.target as Target, auth.id, meta, auth.companyId || undefined);
+    } catch (error) {
+      this.logger.error(error);
+      throw new UnprocessableEntityException('Refresh error');
+    }
+  }
+
+  /**
+   * 切换公司
+   * @param auth
+   * @param meta
+   * @param companyId
+   */
+  async switchCompany(auth: Auth, meta: LoginMeta, companyId: string) {
+    const target = auth.target as Target;
+    const targetId = target === Target.Admin ? auth.adminId : auth.userId;
+    try {
+      await this.auth.deleteByTarget(target, String(targetId));
+      return this.targetLogin(auth.target as Target, String(targetId), meta, companyId);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  /**
+   * 获取当前认证公司列表
+   * @param auth
+   * @param name
+   */
+  async listCompanies(auth: Auth, name?: string) {
     const args: FindManyCompanyArgs = { take: 5 };
     // 构建查询条件
     let where: FindManyCompanyArgs['where'] = {};
@@ -131,19 +172,8 @@ export class AuthService {
         ],
       };
     }
+    const result: Company[] = await this.company.findMany(args);
     // 返回公司列表
-    return this.company.findMany(args);
-  }
-
-  switchCompany(auth: Auth, meta: LoginMeta, companyId: string) {
-    const target = auth.target as Target;
-    const targetId = target === Target.Admin ? auth.adminId : auth.userId;
-    try {
-      this.auth.deleteByTarget(target, String(targetId));
-      return this.targetLogin(auth.target as Target, String(targetId), meta, companyId);
-    } catch (error) {
-      this.logger.error(error);
-      throw error;
-    }
+    return result;
   }
 }
