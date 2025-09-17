@@ -194,7 +194,7 @@ export abstract class AdminAbstract {
    * @returns 处理后的查询参数对象
    * @private
    */
-  private parseManyOrFirstArgs<T extends FindManyAdminArgs | FindFirstAdminArgs>(args: T): T {
+  private parseManyOrFirstArgs<T extends FindManyAdminArgs | FindFirstAdminArgs>(args: T) {
     return {
       ...args,
       where: args.where ? this.parseWhere(args.where) : undefined,
@@ -248,7 +248,8 @@ export abstract class AdminAbstract {
    * @param args - 查询参数
    * @returns 管理员记录数组
    */
-  findMany(args: FindManyAdminArgs): PrismaPromise<Admin[]> {    args = this.parseManyOrFirstArgs(args);
+  findMany(args: FindManyAdminArgs): PrismaPromise<Admin[]> {
+    args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.admin.findMany({

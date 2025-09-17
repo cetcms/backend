@@ -21,6 +21,7 @@ import {
   AuthCreateInputObjectZodSchema,
   AuthIncludeObjectZodSchema,
   AuthOrderByWithRelationInputObjectZodSchema,
+  AuthSelectObjectZodSchema,
   AuthUpdateInputObjectZodSchema,
   AuthWhereInputObjectZodSchema,
   AuthWhereUniqueInputObjectZodSchema,
@@ -62,6 +63,13 @@ export abstract class AuthAbstract {
   protected include: Prisma.AuthInclude = {};
 
   /**
+   * 选择字段配置
+   *
+   * 用于指定查询时需要选择的字段
+   */
+  protected select: Prisma.AuthSelect = {};
+
+  /**
    * 设置包含关系
    *
    * 设置查询时需要包含的关联数据
@@ -81,6 +89,28 @@ export abstract class AuthAbstract {
    */
   getInclude() {
     return this.include;
+  }
+
+  /**
+   * 设置选择字段
+   *
+   * 设置查询时需要选择的字段
+   *
+   * @param select - 选择字段配置对象
+   * @returns 当前实例，支持链式调用
+   */
+  setSelect(select?: Prisma.AuthSelect) {
+    this.select = AuthSelectObjectZodSchema.parse(select) as Prisma.AuthSelect;
+    return this;
+  }
+
+  /**
+   * 获取选择字段配置
+   *
+   * @returns 当前设置的选择字段配置
+   */
+  getSelect() {
+    return this.select;
   }
 
   /**
@@ -162,15 +192,13 @@ export abstract class AuthAbstract {
    * @returns 处理后的查询参数对象
    * @private
    */
-  private parseManyOrFirstArgs(args: FindManyAuthArgs | FindFirstAuthArgs) {
-    const include = this.getInclude();
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const orderBy = args.orderBy ? this.parseOrderBy(args.orderBy) : undefined;
-    const skip = args.skip ? args.skip : undefined;
-    const take = args.take ? args.take : undefined;
-    const distinct = args.distinct ? args.distinct : undefined;
-    const cursor = args.cursor ? this.parseUniqueWhere(args.cursor) : undefined;
-    return { include, where, orderBy, skip, take, distinct, cursor };
+  private parseManyOrFirstArgs<T extends FindManyAuthArgs | FindFirstAuthArgs>(args: T) {
+    return {
+      ...args,
+      where: args.where ? this.parseWhere(args.where) : undefined,
+      orderBy: args.orderBy ? this.parseOrderBy(args.orderBy) : undefined,
+      cursor: args.cursor ? this.parseUniqueWhere(args.cursor) : undefined,
+    };
   }
 
   /**
@@ -182,9 +210,12 @@ export abstract class AuthAbstract {
    * @returns 认证记录或null
    */
   findUnique(where: FindUniqueAuthArgs['where']): PrismaPromise<Auth | null> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.auth.findUnique({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
-      include: this.getInclude(),
     });
   }
 
@@ -197,8 +228,14 @@ export abstract class AuthAbstract {
    * @returns 认证记录或null
    */
   findFirst(args: FindFirstAuthArgs): PrismaPromise<Auth | null> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.auth.findFirst({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.auth.findFirst({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -210,8 +247,14 @@ export abstract class AuthAbstract {
    * @returns 认证记录数组
    */
   findMany(args: FindManyAuthArgs): PrismaPromise<Auth[]> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.auth.findMany({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.auth.findMany({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -233,8 +276,11 @@ export abstract class AuthAbstract {
    * @returns 创建的认证记录
    */
   create(data: CreateOneAuthArgs['data']): PrismaPromise<Auth> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.auth.create({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       data: this.parseCreateData(data),
     });
   }
@@ -247,8 +293,11 @@ export abstract class AuthAbstract {
    * @returns 更新后的认证记录
    */
   update(where: UpdateOneAuthArgs['where'], data: UpdateOneAuthArgs['data']): PrismaPromise<Auth> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.auth.update({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(data),
     });
@@ -264,10 +313,17 @@ export abstract class AuthAbstract {
    */
   upsert(args: UpsertOneAuthArgs): PrismaPromise<Auth> {
     const include = this.getInclude();
+    const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
     const create = this.handleParsedData(this.parseCreateData(args.create));
     const update = this.handleParsedData(this.parseUpdateData(args.update));
-    return this.db.auth.upsert({ include, where, create, update });
+    return this.db.auth.upsert({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where,
+      create,
+      update,
+    });
   }
 
   /**
@@ -277,7 +333,13 @@ export abstract class AuthAbstract {
    * @returns 删除的认证记录
    */
   delete(where: DeleteOneAuthArgs['where']): PrismaPromise<Auth> {
-    return this.db.auth.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.auth.delete({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where: this.parseUniqueWhere(where),
+    });
   }
 
   /**

@@ -21,6 +21,7 @@ import {
   AdminCompanyCreateInputObjectZodSchema,
   AdminCompanyIncludeObjectZodSchema,
   AdminCompanyOrderByWithRelationInputObjectZodSchema,
+  AdminCompanySelectObjectZodSchema,
   AdminCompanyUpdateInputObjectZodSchema,
   AdminCompanyWhereInputObjectZodSchema,
   AdminCompanyWhereUniqueInputObjectZodSchema,
@@ -64,6 +65,13 @@ export abstract class AdminCompanyAbstract {
   protected include: Prisma.AdminCompanyInclude = {};
 
   /**
+   * 选择字段配置
+   *
+   * 用于指定查询时需要选择的字段
+   */
+  protected select: Prisma.AdminCompanySelect = {};
+
+  /**
    * 设置包含关系
    *
    * 设置查询时需要包含的关联数据
@@ -83,6 +91,28 @@ export abstract class AdminCompanyAbstract {
    */
   getInclude() {
     return this.include;
+  }
+
+  /**
+   * 设置选择字段
+   *
+   * 设置查询时需要选择的字段
+   *
+   * @param select - 选择字段配置对象
+   * @returns 当前实例，支持链式调用
+   */
+  setSelect(select?: Prisma.AdminCompanySelect) {
+    this.select = AdminCompanySelectObjectZodSchema.parse(select) as Prisma.AdminCompanySelect;
+    return this;
+  }
+
+  /**
+   * 获取选择字段配置
+   *
+   * @returns 当前设置的选择字段配置
+   */
+  getSelect() {
+    return this.select;
   }
 
   /**
@@ -166,15 +196,13 @@ export abstract class AdminCompanyAbstract {
    * @returns 处理后的查询参数对象
    * @private
    */
-  private parseManyOrFirstArgs(args: FindManyAdminCompanyArgs | FindFirstAdminCompanyArgs) {
-    const include = this.getInclude();
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const orderBy = args.orderBy ? this.parseOrderBy(args.orderBy) : undefined;
-    const skip = args.skip ? args.skip : undefined;
-    const take = args.take ? args.take : undefined;
-    const distinct = args.distinct ? args.distinct : undefined;
-    const cursor = args.cursor ? this.parseUniqueWhere(args.cursor) : undefined;
-    return { include, where, orderBy, skip, take, distinct, cursor };
+  private parseManyOrFirstArgs<T extends FindManyAdminCompanyArgs | FindFirstAdminCompanyArgs>(args: T) {
+    return {
+      ...args,
+      where: args.where ? this.parseWhere(args.where) : undefined,
+      orderBy: args.orderBy ? this.parseOrderBy(args.orderBy) : undefined,
+      cursor: args.cursor ? this.parseUniqueWhere(args.cursor) : undefined,
+    };
   }
 
   /**
@@ -186,9 +214,12 @@ export abstract class AdminCompanyAbstract {
    * @returns 管理员企业关联记录或null
    */
   findUnique(where: FindUniqueAdminCompanyArgs['where']): PrismaPromise<AdminCompany | null> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.adminCompany.findUnique({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
-      include: this.getInclude(),
     });
   }
 
@@ -201,8 +232,14 @@ export abstract class AdminCompanyAbstract {
    * @returns 管理员企业关联记录或null
    */
   findFirst(args: FindFirstAdminCompanyArgs): PrismaPromise<AdminCompany | null> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.adminCompany.findFirst({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.adminCompany.findFirst({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -214,8 +251,14 @@ export abstract class AdminCompanyAbstract {
    * @returns 管理员企业关联记录数组
    */
   findMany(args: FindManyAdminCompanyArgs): PrismaPromise<AdminCompany[]> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.adminCompany.findMany({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.adminCompany.findMany({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -237,8 +280,11 @@ export abstract class AdminCompanyAbstract {
    * @returns 创建的管理员企业关联记录
    */
   create(data: CreateOneAdminCompanyArgs['data']): PrismaPromise<AdminCompany> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.adminCompany.create({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       data: this.parseCreateData(data),
     });
   }
@@ -254,8 +300,11 @@ export abstract class AdminCompanyAbstract {
     where: UpdateOneAdminCompanyArgs['where'],
     data: UpdateOneAdminCompanyArgs['data']
   ): PrismaPromise<AdminCompany> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.adminCompany.update({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(data),
     });
@@ -271,10 +320,17 @@ export abstract class AdminCompanyAbstract {
    */
   upsert(args: UpsertOneAdminCompanyArgs): PrismaPromise<AdminCompany> {
     const include = this.getInclude();
+    const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
     const create = this.handleParsedData(this.parseCreateData(args.create));
     const update = this.handleParsedData(this.parseUpdateData(args.update));
-    return this.db.adminCompany.upsert({ include, where, create, update });
+    return this.db.adminCompany.upsert({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where,
+      create,
+      update,
+    });
   }
 
   /**
@@ -284,7 +340,13 @@ export abstract class AdminCompanyAbstract {
    * @returns 删除的管理员企业关联记录
    */
   delete(where: DeleteOneAdminCompanyArgs['where']): PrismaPromise<AdminCompany> {
-    return this.db.adminCompany.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.adminCompany.delete({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where: this.parseUniqueWhere(where),
+    });
   }
 
   /**

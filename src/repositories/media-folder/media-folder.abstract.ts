@@ -21,6 +21,7 @@ import {
   MediaFolderCreateInputObjectZodSchema,
   MediaFolderIncludeObjectZodSchema,
   MediaFolderOrderByWithRelationInputObjectZodSchema,
+  MediaFolderSelectObjectZodSchema,
   MediaFolderUpdateInputObjectZodSchema,
   MediaFolderWhereInputObjectZodSchema,
   MediaFolderWhereUniqueInputObjectZodSchema,
@@ -64,6 +65,13 @@ export abstract class MediaFolderAbstract {
   protected include: Prisma.MediaFolderInclude = {};
 
   /**
+   * 选择字段配置
+   *
+   * 用于指定查询时需要选择的字段
+   */
+  protected select: Prisma.MediaFolderSelect = {};
+
+  /**
    * 设置包含关系
    *
    * 设置查询时需要包含的关联数据
@@ -83,6 +91,28 @@ export abstract class MediaFolderAbstract {
    */
   getInclude() {
     return this.include;
+  }
+
+  /**
+   * 设置选择字段
+   *
+   * 设置查询时需要选择的字段
+   *
+   * @param select - 选择字段配置对象
+   * @returns 当前实例，支持链式调用
+   */
+  setSelect(select?: Prisma.MediaFolderSelect) {
+    this.select = MediaFolderSelectObjectZodSchema.parse(select) as Prisma.MediaFolderSelect;
+    return this;
+  }
+
+  /**
+   * 获取选择字段配置
+   *
+   * @returns 当前设置的选择字段配置
+   */
+  getSelect() {
+    return this.select;
   }
 
   /**
@@ -166,15 +196,13 @@ export abstract class MediaFolderAbstract {
    * @returns 处理后的查询参数对象
    * @private
    */
-  private parseManyOrFirstArgs(args: FindManyMediaFolderArgs | FindFirstMediaFolderArgs) {
-    const include = this.getInclude();
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const orderBy = args.orderBy ? this.parseOrderBy(args.orderBy) : undefined;
-    const skip = args.skip ? args.skip : undefined;
-    const take = args.take ? args.take : undefined;
-    const distinct = args.distinct ? args.distinct : undefined;
-    const cursor = args.cursor ? this.parseUniqueWhere(args.cursor) : undefined;
-    return { include, where, orderBy, skip, take, distinct, cursor };
+  private parseManyOrFirstArgs<T extends FindManyMediaFolderArgs | FindFirstMediaFolderArgs>(args: T) {
+    return {
+      ...args,
+      where: args.where ? this.parseWhere(args.where) : undefined,
+      orderBy: args.orderBy ? this.parseOrderBy(args.orderBy) : undefined,
+      cursor: args.cursor ? this.parseUniqueWhere(args.cursor) : undefined,
+    };
   }
 
   /**
@@ -186,9 +214,12 @@ export abstract class MediaFolderAbstract {
    * @returns 媒体文件夹记录或null
    */
   findUnique(where: FindUniqueMediaFolderArgs['where']): PrismaPromise<MediaFolder | null> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.mediaFolder.findUnique({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
-      include: this.getInclude(),
     });
   }
 
@@ -201,8 +232,14 @@ export abstract class MediaFolderAbstract {
    * @returns 媒体文件夹记录或null
    */
   findFirst(args: FindFirstMediaFolderArgs): PrismaPromise<MediaFolder | null> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.mediaFolder.findFirst({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.mediaFolder.findFirst({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -214,8 +251,14 @@ export abstract class MediaFolderAbstract {
    * @returns 媒体文件夹记录数组
    */
   findMany(args: FindManyMediaFolderArgs): PrismaPromise<MediaFolder[]> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.mediaFolder.findMany({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.mediaFolder.findMany({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -237,8 +280,11 @@ export abstract class MediaFolderAbstract {
    * @returns 创建的媒体文件夹记录
    */
   create(data: CreateOneMediaFolderArgs['data']): PrismaPromise<MediaFolder> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.mediaFolder.create({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       data: this.parseCreateData(data),
     });
   }
@@ -251,8 +297,11 @@ export abstract class MediaFolderAbstract {
    * @returns 更新后的媒体文件夹记录
    */
   update(where: UpdateOneMediaFolderArgs['where'], data: UpdateOneMediaFolderArgs['data']): PrismaPromise<MediaFolder> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.mediaFolder.update({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(data),
     });
@@ -268,10 +317,17 @@ export abstract class MediaFolderAbstract {
    */
   upsert(args: UpsertOneMediaFolderArgs): PrismaPromise<MediaFolder> {
     const include = this.getInclude();
+    const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
     const create = this.handleParsedData(this.parseCreateData(args.create));
     const update = this.handleParsedData(this.parseUpdateData(args.update));
-    return this.db.mediaFolder.upsert({ include, where, create, update });
+    return this.db.mediaFolder.upsert({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where,
+      create,
+      update,
+    });
   }
 
   /**
@@ -281,7 +337,13 @@ export abstract class MediaFolderAbstract {
    * @returns 删除的媒体文件夹记录
    */
   delete(where: DeleteOneMediaFolderArgs['where']): PrismaPromise<MediaFolder> {
-    return this.db.mediaFolder.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.mediaFolder.delete({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where: this.parseUniqueWhere(where),
+    });
   }
 
   /**

@@ -21,6 +21,7 @@ import {
   RequestLogCreateInputObjectZodSchema,
   RequestLogIncludeObjectZodSchema,
   RequestLogOrderByWithRelationInputObjectZodSchema,
+  RequestLogSelectObjectZodSchema,
   RequestLogUpdateInputObjectZodSchema,
   RequestLogWhereInputObjectZodSchema,
   RequestLogWhereUniqueInputObjectZodSchema,
@@ -64,6 +65,13 @@ export abstract class RequestLogAbstract {
   protected include: Prisma.RequestLogInclude = {};
 
   /**
+   * 选择字段配置
+   *
+   * 用于指定查询时需要选择的字段
+   */
+  protected select: Prisma.RequestLogSelect = {};
+
+  /**
    * 设置包含关系
    *
    * 设置查询时需要包含的关联数据
@@ -83,6 +91,28 @@ export abstract class RequestLogAbstract {
    */
   getInclude() {
     return this.include;
+  }
+
+  /**
+   * 设置选择字段
+   *
+   * 设置查询时需要选择的字段
+   *
+   * @param select - 选择字段配置对象
+   * @returns 当前实例，支持链式调用
+   */
+  setSelect(select?: Prisma.RequestLogSelect) {
+    this.select = RequestLogSelectObjectZodSchema.parse(select) as Prisma.RequestLogSelect;
+    return this;
+  }
+
+  /**
+   * 获取选择字段配置
+   *
+   * @returns 当前设置的选择字段配置
+   */
+  getSelect() {
+    return this.select;
   }
 
   /**
@@ -166,15 +196,13 @@ export abstract class RequestLogAbstract {
    * @returns 处理后的查询参数对象
    * @private
    */
-  private parseManyOrFirstArgs(args: FindManyRequestLogArgs | FindFirstRequestLogArgs) {
-    const include = this.getInclude();
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const orderBy = args.orderBy ? this.parseOrderBy(args.orderBy) : undefined;
-    const skip = args.skip ? args.skip : undefined;
-    const take = args.take ? args.take : undefined;
-    const distinct = args.distinct ? args.distinct : undefined;
-    const cursor = args.cursor ? this.parseUniqueWhere(args.cursor) : undefined;
-    return { include, where, orderBy, skip, take, distinct, cursor };
+  private parseManyOrFirstArgs<T extends FindManyRequestLogArgs | FindFirstRequestLogArgs>(args: T) {
+    return {
+      ...args,
+      where: args.where ? this.parseWhere(args.where) : undefined,
+      orderBy: args.orderBy ? this.parseOrderBy(args.orderBy) : undefined,
+      cursor: args.cursor ? this.parseUniqueWhere(args.cursor) : undefined,
+    };
   }
 
   /**
@@ -186,9 +214,12 @@ export abstract class RequestLogAbstract {
    * @returns 请求日志记录或null
    */
   findUnique(where: FindUniqueRequestLogArgs['where']): PrismaPromise<RequestLog | null> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.requestLog.findUnique({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
-      include: this.getInclude(),
     });
   }
 
@@ -201,8 +232,14 @@ export abstract class RequestLogAbstract {
    * @returns 请求日志记录或null
    */
   findFirst(args: FindFirstRequestLogArgs): PrismaPromise<RequestLog | null> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.requestLog.findFirst({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.requestLog.findFirst({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -214,8 +251,14 @@ export abstract class RequestLogAbstract {
    * @returns 请求日志记录数组
    */
   findMany(args: FindManyRequestLogArgs): PrismaPromise<RequestLog[]> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.requestLog.findMany({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.requestLog.findMany({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -237,8 +280,11 @@ export abstract class RequestLogAbstract {
    * @returns 创建的请求日志记录
    */
   create(data: CreateOneRequestLogArgs['data']): PrismaPromise<RequestLog> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.requestLog.create({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       data: this.parseCreateData(data),
     });
   }
@@ -251,8 +297,11 @@ export abstract class RequestLogAbstract {
    * @returns 更新后的请求日志记录
    */
   update(where: UpdateOneRequestLogArgs['where'], data: UpdateOneRequestLogArgs['data']): PrismaPromise<RequestLog> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.requestLog.update({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(data),
     });
@@ -268,10 +317,17 @@ export abstract class RequestLogAbstract {
    */
   upsert(args: UpsertOneRequestLogArgs): PrismaPromise<RequestLog> {
     const include = this.getInclude();
+    const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
     const create = this.handleParsedData(this.parseCreateData(args.create));
     const update = this.handleParsedData(this.parseUpdateData(args.update));
-    return this.db.requestLog.upsert({ include, where, create, update });
+    return this.db.requestLog.upsert({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where,
+      create,
+      update,
+    });
   }
 
   /**
@@ -281,7 +337,13 @@ export abstract class RequestLogAbstract {
    * @returns 删除的请求日志记录
    */
   delete(where: DeleteOneRequestLogArgs['where']): PrismaPromise<RequestLog> {
-    return this.db.requestLog.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.requestLog.delete({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where: this.parseUniqueWhere(where),
+    });
   }
 
   /**

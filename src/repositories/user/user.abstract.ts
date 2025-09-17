@@ -21,6 +21,7 @@ import {
   UserCreateInputObjectZodSchema,
   UserIncludeObjectZodSchema,
   UserOrderByWithRelationInputObjectZodSchema,
+  UserSelectObjectZodSchema,
   UserUpdateInputObjectZodSchema,
   UserWhereInputObjectZodSchema,
   UserWhereUniqueInputObjectZodSchema,
@@ -62,6 +63,13 @@ export abstract class UserAbstract {
   protected include: Prisma.UserInclude = {};
 
   /**
+   * 选择字段配置
+   *
+   * 用于指定查询时需要选择的字段
+   */
+  protected select: Prisma.UserSelect = {};
+
+  /**
    * 设置包含关系
    *
    * 设置查询时需要包含的关联数据
@@ -81,6 +89,28 @@ export abstract class UserAbstract {
    */
   getInclude() {
     return this.include;
+  }
+
+  /**
+   * 设置选择字段
+   *
+   * 设置查询时需要选择的字段
+   *
+   * @param select - 选择字段配置对象
+   * @returns 当前实例，支持链式调用
+   */
+  setSelect(select?: Prisma.UserSelect) {
+    this.select = UserSelectObjectZodSchema.parse(select) as Prisma.UserSelect;
+    return this;
+  }
+
+  /**
+   * 获取选择字段配置
+   *
+   * @returns 当前设置的选择字段配置
+   */
+  getSelect() {
+    return this.select;
   }
 
   /**
@@ -162,15 +192,13 @@ export abstract class UserAbstract {
    * @returns 处理后的查询参数对象
    * @private
    */
-  private parseManyOrFirstArgs(args: FindManyUserArgs | FindFirstUserArgs) {
-    const include = this.getInclude();
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const orderBy = args.orderBy ? this.parseOrderBy(args.orderBy) : undefined;
-    const skip = args.skip ? args.skip : undefined;
-    const take = args.take ? args.take : undefined;
-    const distinct = args.distinct ? args.distinct : undefined;
-    const cursor = args.cursor ? this.parseUniqueWhere(args.cursor) : undefined;
-    return { include, where, orderBy, skip, take, distinct, cursor };
+  private parseManyOrFirstArgs<T extends FindManyUserArgs | FindFirstUserArgs>(args: T) {
+    return {
+      ...args,
+      where: args.where ? this.parseWhere(args.where) : undefined,
+      orderBy: args.orderBy ? this.parseOrderBy(args.orderBy) : undefined,
+      cursor: args.cursor ? this.parseUniqueWhere(args.cursor) : undefined,
+    };
   }
 
   /**
@@ -182,9 +210,12 @@ export abstract class UserAbstract {
    * @returns 用户记录或null
    */
   findUnique(where: FindUniqueUserArgs['where']): PrismaPromise<User | null> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.user.findUnique({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
-      include: this.getInclude(),
     });
   }
 
@@ -197,8 +228,14 @@ export abstract class UserAbstract {
    * @returns 用户记录或null
    */
   findFirst(args: FindFirstUserArgs): PrismaPromise<User | null> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.user.findFirst({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.user.findFirst({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -210,8 +247,14 @@ export abstract class UserAbstract {
    * @returns 用户记录数组
    */
   findMany(args: FindManyUserArgs): PrismaPromise<User[]> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.user.findMany({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.user.findMany({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -233,8 +276,11 @@ export abstract class UserAbstract {
    * @returns 创建的用户记录
    */
   create(data: CreateOneUserArgs['data']): PrismaPromise<User> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.user.create({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       data: this.parseCreateData(data),
     });
   }
@@ -247,8 +293,11 @@ export abstract class UserAbstract {
    * @returns 更新后的用户记录
    */
   update(where: UpdateOneUserArgs['where'], data: UpdateOneUserArgs['data']): PrismaPromise<User> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.user.update({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(data),
     });
@@ -264,10 +313,17 @@ export abstract class UserAbstract {
    */
   upsert(args: UpsertOneUserArgs): PrismaPromise<User> {
     const include = this.getInclude();
+    const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
     const create = this.handleParsedData(this.parseCreateData(args.create));
     const update = this.handleParsedData(this.parseUpdateData(args.update));
-    return this.db.user.upsert({ include, where, create, update });
+    return this.db.user.upsert({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where,
+      create,
+      update,
+    });
   }
 
   /**
@@ -277,7 +333,13 @@ export abstract class UserAbstract {
    * @returns 删除的用户记录
    */
   delete(where: DeleteOneUserArgs['where']): PrismaPromise<User> {
-    return this.db.user.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.user.delete({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where: this.parseUniqueWhere(where),
+    });
   }
 
   /**

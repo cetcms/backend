@@ -21,6 +21,7 @@ import {
   CompanyUserCreateInputObjectZodSchema,
   CompanyUserIncludeObjectZodSchema,
   CompanyUserOrderByWithRelationInputObjectZodSchema,
+  CompanyUserSelectObjectZodSchema,
   CompanyUserUpdateInputObjectZodSchema,
   CompanyUserWhereInputObjectZodSchema,
   CompanyUserWhereUniqueInputObjectZodSchema,
@@ -64,6 +65,13 @@ export abstract class CompanyUserAbstract {
   protected include: Prisma.CompanyUserInclude = {};
 
   /**
+   * 选择字段配置
+   *
+   * 用于指定查询时需要选择的字段
+   */
+  protected select: Prisma.CompanyUserSelect = {};
+
+  /**
    * 设置包含关系
    *
    * 设置查询时需要包含的关联数据
@@ -83,6 +91,28 @@ export abstract class CompanyUserAbstract {
    */
   getInclude() {
     return this.include;
+  }
+
+  /**
+   * 设置选择字段
+   *
+   * 设置查询时需要选择的字段
+   *
+   * @param select - 选择字段配置对象
+   * @returns 当前实例，支持链式调用
+   */
+  setSelect(select?: Prisma.CompanyUserSelect) {
+    this.select = CompanyUserSelectObjectZodSchema.parse(select) as Prisma.CompanyUserSelect;
+    return this;
+  }
+
+  /**
+   * 获取选择字段配置
+   *
+   * @returns 当前设置的选择字段配置
+   */
+  getSelect() {
+    return this.select;
   }
 
   /**
@@ -166,15 +196,13 @@ export abstract class CompanyUserAbstract {
    * @returns 处理后的查询参数对象
    * @private
    */
-  private parseManyOrFirstArgs(args: FindManyCompanyUserArgs | FindFirstCompanyUserArgs) {
-    const include = this.getInclude();
-    const where = args.where ? this.parseWhere(args.where) : undefined;
-    const orderBy = args.orderBy ? this.parseOrderBy(args.orderBy) : undefined;
-    const skip = args.skip ? args.skip : undefined;
-    const take = args.take ? args.take : undefined;
-    const distinct = args.distinct ? args.distinct : undefined;
-    const cursor = args.cursor ? this.parseUniqueWhere(args.cursor) : undefined;
-    return { include, where, orderBy, skip, take, distinct, cursor };
+  private parseManyOrFirstArgs<T extends FindManyCompanyUserArgs | FindFirstCompanyUserArgs>(args: T) {
+    return {
+      ...args,
+      where: args.where ? this.parseWhere(args.where) : undefined,
+      orderBy: args.orderBy ? this.parseOrderBy(args.orderBy) : undefined,
+      cursor: args.cursor ? this.parseUniqueWhere(args.cursor) : undefined,
+    };
   }
 
   /**
@@ -186,9 +214,12 @@ export abstract class CompanyUserAbstract {
    * @returns 企业用户关联记录或null
    */
   findUnique(where: FindUniqueCompanyUserArgs['where']): PrismaPromise<CompanyUser | null> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.companyUser.findUnique({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
-      include: this.getInclude(),
     });
   }
 
@@ -201,8 +232,14 @@ export abstract class CompanyUserAbstract {
    * @returns 企业用户关联记录或null
    */
   findFirst(args: FindFirstCompanyUserArgs): PrismaPromise<CompanyUser | null> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.companyUser.findFirst({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.companyUser.findFirst({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -214,8 +251,14 @@ export abstract class CompanyUserAbstract {
    * @returns 企业用户关联记录数组
    */
   findMany(args: FindManyCompanyUserArgs): PrismaPromise<CompanyUser[]> {
-    const { include, where, orderBy, skip, take, distinct, cursor } = this.parseManyOrFirstArgs(args);
-    return this.db.companyUser.findMany({ include, where, orderBy, skip, take, distinct, cursor });
+    args = this.parseManyOrFirstArgs(args);
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.companyUser.findMany({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      ...args,
+    });
   }
 
   /**
@@ -237,8 +280,11 @@ export abstract class CompanyUserAbstract {
    * @returns 创建的企业用户关联记录
    */
   create(data: CreateOneCompanyUserArgs['data']): PrismaPromise<CompanyUser> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.companyUser.create({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       data: this.parseCreateData(data),
     });
   }
@@ -251,8 +297,11 @@ export abstract class CompanyUserAbstract {
    * @returns 更新后的企业用户关联记录
    */
   update(where: UpdateOneCompanyUserArgs['where'], data: UpdateOneCompanyUserArgs['data']): PrismaPromise<CompanyUser> {
+    const include = this.getInclude();
+    const select = this.getSelect();
     return this.db.companyUser.update({
-      include: this.getInclude(),
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
       data: this.parseUpdateData(data),
     });
@@ -268,10 +317,17 @@ export abstract class CompanyUserAbstract {
    */
   upsert(args: UpsertOneCompanyUserArgs): PrismaPromise<CompanyUser> {
     const include = this.getInclude();
+    const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
     const create = this.handleParsedData(this.parseCreateData(args.create));
     const update = this.handleParsedData(this.parseUpdateData(args.update));
-    return this.db.companyUser.upsert({ include, where, create, update });
+    return this.db.companyUser.upsert({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where,
+      create,
+      update,
+    });
   }
 
   /**
@@ -281,7 +337,13 @@ export abstract class CompanyUserAbstract {
    * @returns 删除的企业用户关联记录
    */
   delete(where: DeleteOneCompanyUserArgs['where']): PrismaPromise<CompanyUser> {
-    return this.db.companyUser.delete({ where: this.parseUniqueWhere(where), include: this.getInclude() });
+    const include = this.getInclude();
+    const select = this.getSelect();
+    return this.db.companyUser.delete({
+      ...(Object.keys(include).length > 0 && { include }),
+      ...(Object.keys(select).length > 0 && { select }),
+      where: this.parseUniqueWhere(where),
+    });
   }
 
   /**
