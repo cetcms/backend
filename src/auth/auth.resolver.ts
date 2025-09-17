@@ -33,14 +33,18 @@ export class AuthResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query(() => Company, { nullable: true })
-  async findAuthCompany(@Args('name') name: string) {
-    const company = await this.service.findCompany(name);
-    if (!company) return null;
-    return {
-      id: company.id,
-      name: company.name,
-      alias: company.alias,
-    };
+  @Mutation(() => Login)
+  switchAuthCompany(
+    @CurrentAuth() auth: Auth,
+    @CurrentRequestMeta() meta: CurrentRequestMeta,
+    @Args('companyId') companyId: string
+  ) {
+    return this.service.switchCompany(auth, meta, companyId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => [Company], { nullable: true })
+  listAuthCompanies(@CurrentAuth() auth: Auth, @Args('name') name: string) {
+    return this.service.listCompanies(auth, name);
   }
 }

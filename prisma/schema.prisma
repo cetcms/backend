@@ -18,6 +18,7 @@ generator graphql {
   output             = "../src/generated/graphql"
   reExport           = "All"
   noAtomicOperations = "true"
+  omitModelsCount    = "true"
 
   fields_Validator_from  = "class-validator"
   fields_Validator_input = "true"
@@ -280,31 +281,31 @@ model Company {
 
   /// @zod.optional()
   /// @DtoEntityHidden()
-  /// @HideField({ match: '+(*Create*|*Update*)' })
+  /// @HideField()
   auths        Auth[]
   /// @zod.optional()
   /// @DtoEntityHidden()
-  /// @HideField({ match: '+(*Create*|*Update*)' })
+  /// @HideField()
   admins       AdminCompany[]
   /// @zod.optional()
   /// @DtoEntityHidden()
-  /// @HideField({ match: '+(*Create*|*Update*)' })
+  /// @HideField()
   roles        CompanyRole[]
   /// @zod.optional()
   /// @DtoEntityHidden()
-  /// @HideField({ match: '+(*Create*|*Update*)' })
+  /// @HideField()
   users        CompanyUser[]
   /// @zod.optional()
   /// @DtoEntityHidden()
-  /// @HideField({ match: '+(*Create*|*Update*)' })
+  /// @HideField()
   logs         RequestLog[]
   /// @zod.optional()
   /// @DtoEntityHidden()
-  /// @HideField({ match: '+(*Create*|*Update*)' })
+  /// @HideField()
   mediaFolders MediaFolder[]
   /// @zod.optional()
   /// @DtoEntityHidden()
-  /// @HideField({ match: '+(*Create*|*Update*)' })
+  /// @HideField()
   mediaFiles   MediaFile[]
 
   @@map("companies")

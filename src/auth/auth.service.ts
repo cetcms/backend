@@ -3,6 +3,7 @@ import { isEmail } from 'class-validator';
 import { TokenFactory } from 'src/auth/factories';
 import { Login, LoginInput, LoginMeta } from 'src/auth/graphql';
 import { DateHandler } from 'src/common/handlers';
+import { FindManyCompanyArgs } from 'src/generated/graphql';
 import { Admin } from 'src/generated/graphql/admin';
 import { Auth } from 'src/generated/graphql/auth';
 import { Target } from 'src/generated/graphql/prisma';
@@ -24,6 +25,39 @@ export class AuthService {
     private readonly tokenFactory: TokenFactory
   ) {}
 
+  /**
+   * 处理目标对象
+   * @param target
+   * @param targetId
+   * @param meta
+   * @param companyId
+   * @private
+   */
+  private async targetLogin(target: Target, targetId: string, meta: LoginMeta, companyId?: string) {
+    // 使用令牌工厂创建认证令牌相关信息
+    const { tokenId, token, expiredAt } = this.tokenFactory.create({
+      target: target,
+      targetId: targetId,
+      companyId: companyId,
+    });
+    // 创建认证记录
+    const auth = await this.auth.createByTarget(targetId, companyId || null, {
+      fingerprint: meta.fingerprint || undefined,
+      location: undefined,
+      device: undefined,
+      id: tokenId,
+      expiredAt,
+      target,
+      token,
+    });
+    // 返回登录结果
+    return {
+      target: target,
+      accessType: 'Bearer',
+      accessToken: auth.token,
+      accessTimeout: DateHandler(auth.expiredAt).diff(auth.createdAt, 'milliseconds'),
+    };
+  }
   /**
    * 用户登录方法
    * @param input - 登录输入数据，包含账户、密码、目标类型和公司ID
@@ -50,33 +84,11 @@ export class AuthService {
       throw new UnprocessableEntityException('Invalid login credentials');
     }
 
-    // 删除所有与目标相关的认证记录
-    await this.auth.deleteByTarget(input.target, target.id);
-
     try {
-      // 使用令牌工厂创建认证令牌相关信息
-      const { tokenId, token, expiredAt } = this.tokenFactory.create({
-        target: input.target,
-        targetId: target.id,
-        companyId: input.companyId,
-      });
-      // 创建认证记录
-      const auth = await this.auth.createByTarget(target.id, input.companyId || null, {
-        fingerprint: meta.fingerprint || undefined,
-        target: input.target,
-        location: undefined,
-        device: undefined,
-        id: tokenId,
-        expiredAt,
-        token,
-      });
-      // 返回登录结果
-      return {
-        target: auth.target as Target,
-        accessType: 'Bearer',
-        accessToken: auth.token,
-        accessTimeout: DateHandler(auth.expiredAt).diff(auth.createdAt, 'milliseconds'),
-      };
+      // 删除所有与目标相关的认证记录
+      await this.auth.deleteByTarget(input.target, target.id);
+      // 创建新的认证记录
+      return await this.targetLogin(input.target, target.id, meta, input.companyId);
     } catch (error) {
       // 打印错误日志
       this.logger.error(error);
@@ -98,14 +110,40 @@ export class AuthService {
     }
   }
 
-  /**
-   * 根据公司名称查找公司信息
-   * @param name - 公司名称
-   * @returns 公司信息，包含ID、名称和别名
-   */
-  findCompany(name: string) {
-    return this.company.findFirst({
-      where: { OR: [{ name: { contains: name } }, { alias: { contains: name } }] },
-    });
+  listCompanies(auth: Auth, name?: string) {
+    const args: FindManyCompanyArgs = { take: 5 };
+    // 构建查询条件
+    let where: FindManyCompanyArgs['where'] = {};
+    // 根据目标类型构建查询条件: 管理员
+    if (auth.target === Target.Admin && auth.adminId) {
+      where = { admins: { some: { adminId: { equals: auth.adminId } } } };
+    }
+    // 根据目标类型构建查询条件: 用户
+    if (auth.target === Target.User && auth.userId) {
+      where = { users: { some: { userId: { equals: auth.userId } } } };
+    }
+    // 如果指定了名称，则添加名称模糊匹配条件
+    if (name) {
+      args.where = {
+        OR: [
+          { name: { contains: name, mode: 'insensitive' }, ...where },
+          { alias: { contains: name, mode: 'insensitive' }, ...where },
+        ],
+      };
+    }
+    // 返回公司列表
+    return this.company.findMany(args);
+  }
+
+  switchCompany(auth: Auth, meta: LoginMeta, companyId: string) {
+    const target = auth.target as Target;
+    const targetId = target === Target.Admin ? auth.adminId : auth.userId;
+    try {
+      this.auth.deleteByTarget(target, String(targetId));
+      return this.targetLogin(auth.target as Target, String(targetId), meta, companyId);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
   }
 }
