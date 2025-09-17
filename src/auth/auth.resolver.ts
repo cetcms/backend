@@ -4,6 +4,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { CurrentAuth, CurrentRequestMeta } from 'src/auth/decorators';
 import { Login, LoginInput } from 'src/auth/graphql';
 import { JwtAuthGuard } from 'src/auth/guards';
+import { Company } from 'src/generated/graphql';
 import { Auth } from 'src/generated/graphql/auth';
 
 @Resolver()
@@ -29,5 +30,17 @@ export class AuthResolver {
   @Query(() => Auth)
   authInfo(@CurrentAuth() auth: Auth) {
     return auth;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => Company, { nullable: true })
+  async findAuthCompany(@Args('name') name: string) {
+    const company = await this.service.findCompany(name);
+    if (!company) return null;
+    return {
+      id: company.id,
+      name: company.name,
+      alias: company.alias,
+    };
   }
 }

@@ -90,7 +90,6 @@ export class TokenFactory {
       expiresIn,
     });
     const { value, unit } = TimeHandler().serialize(expiresIn);
-    console.log({ value, unit });
     return {
       token,
       tokenId,

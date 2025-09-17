@@ -130,9 +130,6 @@ export class AuthRepository extends AuthAbstract {
       case Target.Admin:
         return this.createOnlyAdmin(targetId, companyId, input);
       case Target.User:
-        if (!companyId) {
-          throw new UnprocessableEntityException('you cannot auth without company');
-        }
         return this.createOnlyUser(targetId, companyId, input);
       default:
         throw new UnprocessableEntityException('target not supported');
@@ -175,15 +172,18 @@ export class AuthRepository extends AuthAbstract {
    * @param data 创建认证记录输入数据
    * @returns 创建的认证记录
    */
-  async createOnlyUser(userId: string, companyId: string, data: AuthCreateInput) {
+  async createOnlyUser(userId: string, companyId: string | null, data: AuthCreateInput) {
     data.target = Target.User;
     data.user = { connect: { id: userId } };
-    data.company = { connect: { id: companyId } };
-    const companyUser = await this.companyUser.findOneByUnique(userId, companyId);
-    if (!companyUser) {
-      throw new Error('you cannot manage the company');
+    if (companyId) {
+      data.company = { connect: { id: companyId } };
+      const companyUser = await this.companyUser.findOneByUnique(userId, companyId);
+      if (!companyUser) {
+        throw new Error('you cannot manage the company');
+      }
+    } else {
+      delete data.company;
     }
-
     return this.create(data);
   }
 

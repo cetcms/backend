@@ -11,8 +11,11 @@
  * - CurrentAuthAdmin: 当前管理员装饰器
  * - CurrentAuthCompany: 当前公司装饰器
  * - CurrentAuthUser: 当前用户装饰器
+ * - CurrentRequestMeta: 当前请求元信息装饰器
  * - CurrentRequest: 当前请求装饰器
  * - UsePermission: 权限装饰器
+ * - ApiCommon: API文档通用装饰器
+ * - RequireCompany: 需要公司上下文装饰器
  */
 export * from './is-public-access.decorator';
 export * from './current-auth.decorator';
@@ -23,3 +26,4 @@ export * from './current-request-meta.decorator';
 export * from './current-request.decorator';
 export * from './use-permission.decorator';
 export * from './api-common.decorator';
+export * from './require-company.decorator';

@@ -7,7 +7,7 @@ import { Admin } from 'src/generated/graphql/admin';
 import { Auth } from 'src/generated/graphql/auth';
 import { Target } from 'src/generated/graphql/prisma';
 import { User } from 'src/generated/graphql/user';
-import { AdminRepository, AuthRepository, UserRepository } from 'src/repositories';
+import { AdminRepository, AuthRepository, CompanyRepository, UserRepository } from 'src/repositories';
 
 /**
  * 认证服务类
@@ -20,6 +20,7 @@ export class AuthService {
     private readonly auth: AuthRepository,
     private readonly user: UserRepository,
     private readonly admin: AdminRepository,
+    private readonly company: CompanyRepository,
     private readonly tokenFactory: TokenFactory
   ) {}
 
@@ -32,11 +33,6 @@ export class AuthService {
   async login(input: LoginInput, meta: LoginMeta): Promise<Login> {
     // 如果未指定目标类型，默认设置为用户类型
     if (!input.target) input.target = Target.User;
-
-    // 如果目标是用户类型但未提供公司ID，则抛出异常
-    if (input.target === Target.User && !input.companyId) {
-      throw new UnprocessableEntityException('you cannot login without company');
-    }
 
     // 初始化目标对象（管理员或用户）
     let target: Admin | User | null = null;
@@ -100,5 +96,16 @@ export class AuthService {
       this.logger.error(error);
       return false;
     }
+  }
+
+  /**
+   * 根据公司名称查找公司信息
+   * @param name - 公司名称
+   * @returns 公司信息，包含ID、名称和别名
+   */
+  findCompany(name: string) {
+    return this.company.findFirst({
+      where: { OR: [{ name: { contains: name } }, { alias: { contains: name } }] },
+    });
   }
 }

@@ -1,7 +1,7 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { IS_PUBLIC_ACCESS_KEY } from 'src/auth/decorators';
+import { IS_PUBLIC_ACCESS_KEY, REQUIRE_COMPANY_KEY, RequireCompany, RequireCompanyMetadata } from 'src/auth/decorators';
 import { ContextHandler, RequestHandler } from 'src/common/handlers';
 import { Admin } from 'src/generated/graphql/admin';
 import { Auth } from 'src/generated/graphql/auth';
@@ -104,7 +104,22 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         code: 'FINGERPRINT_INVALID',
       });
     }
-    return [user, auth];
+
+    const metadata = this.getRequireCompanyMetadata(context);
+    if (metadata.admin && (!auth.admin || !auth.companyId)) {
+      throw new UnauthorizedException({
+        message: 'Invalid company',
+        code: 'COMPANY_INVALID',
+      });
+    }
+    if (metadata.user && (!auth.user || !auth.companyId)) {
+      throw new UnauthorizedException({
+        message: 'Invalid company',
+        code: 'COMPANY_INVALID',
+      });
+    }
+
+    return user;
   }
 
   /**
@@ -121,5 +136,24 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    */
   private isPublicAccess(context: ExecutionContext): boolean {
     return this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_ACCESS_KEY, [context.getHandler(), context.getClass()]);
+  }
+
+  /**
+   * 获取处理器/控制器的 requireCompany 元数据
+   *
+   * 功能描述：
+   * - 获取类或方法上的 requireCompany 元数据
+   *
+   * 参数说明：
+   * - context: ExecutionContext - 当前执行上下文
+   *
+   * 返回值说明：
+   * - RequireCompanyMetadata - requireCompany 元数据
+   */
+  private getRequireCompanyMetadata(context: ExecutionContext): RequireCompanyMetadata {
+    return this.reflector.getAllAndOverride<RequireCompanyMetadata>(REQUIRE_COMPANY_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
   }
 }
