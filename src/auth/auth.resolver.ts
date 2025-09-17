@@ -44,7 +44,7 @@ export class AuthResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => [Company], { nullable: true })
-  listAuthCompanies(@CurrentAuth() auth: Auth, @Args('name') name: string) {
+  listAuthCompanies(@CurrentAuth() auth: Auth, @Args('name', { nullable: true }) name?: string) {
     return this.service.listCompanies(auth, name);
   }
 }

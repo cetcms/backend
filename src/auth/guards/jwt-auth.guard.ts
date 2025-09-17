@@ -106,13 +106,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     const metadata = this.getRequireCompanyMetadata(context);
-    if (metadata.admin && (!auth.admin || !auth.companyId)) {
+    if (metadata && metadata.admin && (!auth.admin || !auth.companyId)) {
       throw new UnauthorizedException({
         message: 'Invalid company',
         code: 'COMPANY_INVALID',
       });
     }
-    if (metadata.user && (!auth.user || !auth.companyId)) {
+    if (metadata && metadata.user && (!auth.user || !auth.companyId)) {
       throw new UnauthorizedException({
         message: 'Invalid company',
         code: 'COMPANY_INVALID',
