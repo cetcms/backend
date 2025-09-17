@@ -4,6 +4,20 @@
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
-  }
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        "useESM": true
+      }
+    ]
+  },
+  "extensionsToTreatAsEsm": [".ts"],
+  "moduleNameMapper": {
+    "^src/(.*)$": "<rootDir>/../src/$1"
+  },
+  "transformIgnorePatterns": [
+    "node_modules/(?!chalk/.*)",
+    "node_modules/(?!uuid/.*)"
+  ],
+  "setupFilesAfterEnv": ["<rootDir>/jest-setup.ts"]
 }

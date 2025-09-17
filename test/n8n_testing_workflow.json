@@ -1,0 +1,356 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Start').item.json.Testing }}",
+                    "rightValue": "Base",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "f11caee5-42c5-4921-af58-c2dc5f666f32"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c38b847d-26ad-42f9-9019-9e3e050aeb05",
+                    "leftValue": "={{ $('Start').item.json.Testing }}",
+                    "rightValue": "SwitchAuthCompany",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -140,
+        -200
+      ],
+      "id": "b8fd4314-d6b0-4da1-bac4-b28a77f820cf",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "endpoint": "http://192.168.2.15:3000/graphql",
+        "query": "mutation Login($account: String!, $password: String!, $target: Target) {\n    login(input: { account: $account, password: $password, target: $target }) {\n        target\n        accessType\n        accessToken\n        accessTimeout\n    }\n}",
+        "variables": "={\n  \"account\": \"{{ $json.Account }}\",\n  \"password\": \"{{ $json.Password }}\",\n  \"target\": \"{{ $json.Target }}\"\n}",
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "X-Fingerprint",
+              "value": "={{ $json.Fingerprint }}"
+            },
+            {
+              "name": "X-Lang",
+              "value": "={{ $json.Language }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.graphql",
+      "typeVersion": 1.1,
+      "position": [
+        -280,
+        -200
+      ],
+      "id": "6d7772c8-b020-4dc2-aa6b-d5c05ab1f583",
+      "name": "Login"
+    },
+    {
+      "parameters": {
+        "formTitle": "Admin API 功能测试",
+        "formDescription": "CETCMS Admin API 功能测试",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Target",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Admin"
+                  },
+                  {
+                    "option": "User"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Account",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Password",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Fingerprint"
+            },
+            {
+              "fieldLabel": "Language",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "en"
+                  },
+                  {
+                    "option": "zh"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Testing",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Base"
+                  },
+                  {
+                    "option": "SwitchAuthCompany"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -420,
+        -200
+      ],
+      "id": "0fba45fd-b3da-4497-8078-235d58d61b2f",
+      "name": "Start",
+      "webhookId": "81f6c7e6-09ca-4707-b5b9-5b05b5fdcf5f"
+    },
+    {
+      "parameters": {
+        "endpoint": "http://192.168.2.15:3000/graphql",
+        "query": "=query ListAuthCompanies($name: String) {\n    listAuthCompanies(name: $name) {\n        id\n        createdAt\n        updatedAt\n        status\n        name\n        alias\n        code\n        description\n    }\n}",
+        "variables": "{\n  \"name\": \"\"\n}",
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "X-Fingerprint",
+              "value": "={{ $('Start').item.json.Fingerprint }}"
+            },
+            {
+              "name": "X-Lang",
+              "value": "={{ $('Start').item.json.Language }}"
+            },
+            {
+              "name": "Authorization",
+              "value": "={{ $('Login').item.json.data.login.accessType }} {{ $('Login').item.json.data.login.accessToken }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.graphql",
+      "typeVersion": 1.1,
+      "position": [
+        -140,
+        100
+      ],
+      "id": "d1af235f-2aec-4148-8df8-35117e191272",
+      "name": "ListAuthCompanies"
+    },
+    {
+      "parameters": {
+        "endpoint": "http://192.168.2.15:3000/graphql",
+        "query": "=mutation SwitchAuthCompany($companyId: String!) {\n    switchAuthCompany(companyId: $companyId) {\n        target\n        accessType\n        accessToken\n        accessTimeout\n    }\n}",
+        "variables": "={\n  \"companyId\": \"{{ $json.data.listAuthCompanies[0].id }}\"\n}",
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "X-Fingerprint",
+              "value": "={{ $('Start').item.json.Fingerprint }}"
+            },
+            {
+              "name": "X-Lang",
+              "value": "={{ $('Start').item.json.Language }}"
+            },
+            {
+              "name": "Authorization",
+              "value": "={{ $('Login').item.json.data.login.accessType }} {{ $('Login').item.json.data.login.accessToken }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.graphql",
+      "typeVersion": 1.1,
+      "position": [
+        -140,
+        240
+      ],
+      "id": "81908b26-17b1-406e-8746-3a4628169c91",
+      "name": "SwitchAuthCompany"
+    },
+    {
+      "parameters": {
+        "endpoint": "http://192.168.2.15:3000/graphql",
+        "query": "=query AuthInfo {\n    authInfo {\n        id\n        createdAt\n        updatedAt\n        expiredAt\n        adminId\n        userId\n        companyId\n        device\n        location\n        target\n        admin {\n            id\n            createdAt\n            updatedAt\n            status\n            name\n            email\n            roleId\n        }\n        user {\n            id\n            createdAt\n            updatedAt\n            status\n            name\n            email\n        }\n        company {\n            id\n            createdAt\n            updatedAt\n            status\n            name\n            alias\n            code\n            description\n        }\n    }\n}",
+        "variables": "={}",
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "X-Fingerprint",
+              "value": "={{ $('Start').item.json.Fingerprint }}"
+            },
+            {
+              "name": "X-Lang",
+              "value": "={{ $('Start').item.json.Language }}"
+            },
+            {
+              "name": "Authorization",
+              "value": "={{ $json.data.switchAuthCompany.accessType }} {{ $json.data.switchAuthCompany.accessToken }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.graphql",
+      "typeVersion": 1.1,
+      "position": [
+        -140,
+        380
+      ],
+      "id": "ebe1093d-92ed-4efa-b033-e75e30ed4117",
+      "name": "AuthInfo"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>My HTML document</title>\n</head>\n<body>\n  <div class=\"container\">\n    <p>ID: {{ $json.data.authInfo.id }}</p>\n    <p>UserId: {{ $json.data.authInfo.userId }}</p>\n    <p>User Name: {{ $json.data.authInfo.user.name }}</p>\n    <p>AdminId: {{ $json.data.authInfo.adminId }}</p>\n    <p>Admin Name: {{ $json.data.authInfo.admin.name }}</p>\n    <p>Company Name: {{ $json.data.authInfo.company.name }}</p>\n  </div>\n</body>\n</html>\n\n<style>\n.container {\n  background-color: #ffffff;\n  text-align: center;\n  padding: 16px;\n  border-radius: 8px;\n}\n\nh1 {\n  color: #ff6d5a;\n  font-size: 24px;\n  font-weight: bold;\n  padding: 8px;\n}\n\nh2 {\n  color: #909399;\n  font-size: 18px;\n  font-weight: bold;\n  padding: 8px;\n}\n</style>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -140,
+        520
+      ],
+      "id": "360c1883-20b9-4ed1-93d2-c64502ef84db",
+      "name": "HTML"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Switch": {
+      "main": [
+        [],
+        [
+          {
+            "node": "ListAuthCompanies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Login": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Login",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ListAuthCompanies": {
+      "main": [
+        [
+          {
+            "node": "SwitchAuthCompany",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SwitchAuthCompany": {
+      "main": [
+        [
+          {
+            "node": "AuthInfo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AuthInfo": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1887985b-34b1-4288-a717-c699ff884a85",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "58e98e0ea2807bc806d820734ec5137284db0f2c4781b1fd7d670162b66507c5"
+  },
+  "id": "3iBJ8l4nV7uB8ALq",
+  "tags": []
+}
