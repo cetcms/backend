@@ -2,7 +2,7 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import { AuthCreateInput, FindManyAuthArgs, Target, UpsertOneAuthArgs } from 'src/generated/graphql';
-import { AdminCompanyRepository, AdminRepository, CompanyUserRepository } from 'src/repositories';
+import { AdminCompanyRepository, AdminRepository, CompanyUserRepository, UserRepository } from 'src/repositories';
 
 import { AuthAbstract } from './auth.abstract';
 
@@ -25,6 +25,7 @@ export class AuthRepository extends AuthAbstract {
   constructor(
     protected readonly db: DatabaseService,
     private readonly admin: AdminRepository,
+    private readonly user: UserRepository,
     private readonly adminCompany: AdminCompanyRepository,
     private readonly companyUser: CompanyUserRepository
   ) {
@@ -148,15 +149,25 @@ export class AuthRepository extends AuthAbstract {
     data.admin = { connect: { id: adminId } };
     if (companyId) {
       data.company = { connect: { id: companyId } };
-      const admin = await this.admin.setInclude({ role: true }).findOneById(adminId);
+      // 设置查询信息
+      const service = this.admin.setInclude({
+        role: true,
+        companies: {
+          where: {
+            companyId: {
+              equals: companyId,
+            },
+          },
+        },
+      });
+      // 获取管理员信息
+      const admin = await service.findOneById(adminId);
       if (!admin) {
         throw new Error('target not found');
       }
-      if (admin.role?.name !== 'ROOT') {
-        const adminCompany = await this.adminCompany.findOneByUnique(adminId, companyId);
-        if (!adminCompany) {
-          throw new Error('you cannot manage the company');
-        }
+      // 非 ROOT 角色必须检查是否拥有管理公司的权限
+      if (admin.role?.name !== 'ROOT' && !admin.companies?.length) {
+        throw new Error('you cannot manage the company');
       }
     } else {
       delete data.company;
@@ -177,13 +188,29 @@ export class AuthRepository extends AuthAbstract {
     data.user = { connect: { id: userId } };
     if (companyId) {
       data.company = { connect: { id: companyId } };
-      const companyUser = await this.companyUser.findOneByUnique(userId, companyId);
-      if (!companyUser) {
+      // 设置查询信息
+      const service = this.user.setInclude({
+        companies: {
+          where: {
+            companyId: {
+              equals: companyId,
+            },
+          },
+        },
+      });
+      // 获取用户信息
+      const user = await service.findOneById(userId);
+      if (!user) {
+        throw new Error('target not found');
+      }
+      // 检查用户是否拥有管理公司的权限
+      if (!user.companies?.length) {
         throw new Error('you cannot manage the company');
       }
     } else {
       delete data.company;
     }
+    delete data.admin;
     return this.create(data);
   }
 
