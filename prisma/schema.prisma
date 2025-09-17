@@ -23,7 +23,7 @@ generator graphql {
   fields_Validator_from  = "class-validator"
   fields_Validator_input = "true"
 
-  decorate_1_type      = "*Nested*"
+  decorate_1_type      = "*Nested*Input*"
   decorate_1_field     = "!(connect|disconnect)"
   decorate_1_name      = "HideField"
   decorate_1_from      = "@nestjs/graphql"

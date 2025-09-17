@@ -6,7 +6,7 @@
  * - PermissionGuard 会：
  *   1) 校验是否已登录（存在 user 或 admin）。
  *   2) 若指定了 targets，则要求当前会话的 auth.target 必须包含在 targets 中。
- *   3) 使用 ClassName.MethodName 组装资源标识，并在权限列表中查找是否具备该权限。
+ *   3) 使用 ClassName:MethodName 组装资源标识，并在权限列表中查找是否具备该权限。
  *
  * 参数说明：
  * - targets?: Target[] = []
@@ -27,7 +27,7 @@
  *   someCommonQuery() {}
  *
  * 注意事项：
- * - 对应的权限点格式：`${ClassName}.${methodName}`，需要与系统权限数据保持一致。
+ * - 对应的权限点格式：`${ClassName}:${methodName}`，需要与系统权限数据保持一致。
  * - 依赖 USE_PERMISSION_KEY 元数据键与 PermissionGuard，须确保两者在应用中已正确引入与提供。
  */
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';

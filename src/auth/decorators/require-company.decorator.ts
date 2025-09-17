@@ -7,36 +7,38 @@
  * - 与相应的守卫配合使用，确保请求上下文中包含公司信息
  *
  * 参数说明：
- * - options: RequireCompanyMetadata = { admin: true, user: true }
+ * - options: RequireCompanyMetadata = [Target.Admin, Target.User]
  *   - 类型：RequireCompanyMetadata
  *   - 用途：配置选项，指定哪些用户类型需要公司上下文
- *   - admin：管理员是否需要公司上下文，默认为 true
- *   - user：普通用户是否需要公司上下文，默认为 true
+ *   - Target.Admin：管理员是否需要公司上下文，存在时表示需要
+ *   - Target.User：普通用户是否需要公司上下文，存在时表示需要
  *
  * 返回值说明：
  * - 返回类型：MethodDecorator & ClassDecorator
  * - 含义：设置元数据的装饰器
  *
  * 使用示例：
- * - 要求所有用户类型都必须有关联公司：
- *   @RequireCompany()
+ * - 仅要求用户必须有关联公司：
+ *   @RequireCompany([Target.User])
  *   someMethod() {}
  *
  * - 仅要求管理员必须有关联公司：
- *   @RequireCompany({ admin: true, user: false })
+ *   @RequireCompany([Target.Admin])
+ *   adminOnlyMethod() {}
+ *
+ * - 要求管理员和用户都必须有关联公司：
+ *   @RequireCompany([Target.User, Target.Admin])
  *   adminOnlyMethod() {}
  *
  * 注意事项：
  * - 需要在相应的守卫中读取该元数据并进行验证
  * - 与认证装饰器配合使用，确保请求上下文中包含有效的用户信息
  */
-import { SetMetadata } from '@nestjs/common';
+import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
+import { CompanyGuard } from 'src/auth/guards';
+import { Target } from 'src/generated/graphql';
 
-export interface RequireCompanyMetadata {
-  admin?: boolean;
-  user?: boolean;
-}
 export const REQUIRE_COMPANY_KEY = 'isPublicAccess';
-export const RequireCompany = (options: RequireCompanyMetadata = { admin: true, user: true }) => {
-  return SetMetadata(REQUIRE_COMPANY_KEY, options);
+export const RequireCompany = (targets: Target[] = []) => {
+  return applyDecorators(SetMetadata(REQUIRE_COMPANY_KEY, targets), UseGuards(CompanyGuard));
 };

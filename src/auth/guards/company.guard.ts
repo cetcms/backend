@@ -2,7 +2,7 @@
  * 权限守卫
  *
  * 功能描述：
- * - 结合 @UsePermission 装饰器提供的元数据进行权限校验
+ * - 结合 @RequireCompany 装饰器提供的元数据进行权限校验
  * - 校验用户身份和权限点
  * - 支持目标类型限制
  *
@@ -17,13 +17,13 @@
  */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { USE_PERMISSION_KEY } from 'src/auth/decorators';
+import { REQUIRE_COMPANY_KEY } from 'src/auth/decorators';
 import { ContextHandler } from 'src/common/handlers';
 import { Auth } from 'src/generated/graphql/auth';
 import { Target } from 'src/generated/graphql/prisma';
 
 @Injectable()
-export class PermissionGuard implements CanActivate {
+export class CompanyGuard implements CanActivate {
   /**
    * 构造函数
    *
@@ -45,7 +45,7 @@ export class PermissionGuard implements CanActivate {
    * - boolean - 是否允许访问
    */
   canActivate(context: ExecutionContext): boolean {
-    return this.checkPermission(context);
+    return this.checkRequire(context);
   }
 
   /**
@@ -61,31 +61,20 @@ export class PermissionGuard implements CanActivate {
    * 返回值说明：
    * - boolean - 是否具有权限
    */
-  private checkPermission(context: ExecutionContext): boolean {
-    const targets = this.reflector.getAllAndOverride<Target[]>(USE_PERMISSION_KEY, [
+  private checkRequire(context: ExecutionContext): boolean {
+    const targets = this.reflector.getAllAndOverride<Target[]>(REQUIRE_COMPANY_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
 
     const request = ContextHandler(context).getRequest();
-    const auth = <Auth & { permissions: string[] }>request.authInfo;
-    const user = auth.user;
-    const admin = auth.admin;
-    const permissions = auth.permissions || [];
+    const auth = <Auth>request.authInfo;
 
-    // Check if user is authenticated
-    if (!user && !admin) {
+    // 检查是否必须登录公司才允许访问
+    if (targets && targets.includes(auth.target as Target) && !auth.companyId) {
       return false;
     }
 
-    if (targets?.length && !targets.includes(auth.target as Target)) {
-      return false;
-    }
-
-    // Get resource and action from context
-    const subject = context.getClass().name;
-    const action = context.getHandler().name;
-
-    return permissions.includes(`${subject}:${action}`);
+    return Boolean(auth);
   }
 }

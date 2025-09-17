@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:push": "pnpm dlx prisma db push",
-    "db:migrate": "prisma migrate dev",
+    "db:migrate": "pnpm dlx prisma migrate dev",
     "db:reset": "pnpm dlx prisma migrate reset",
     "db:studio": "pnpm dlx prisma studio",
     "db:seed": "pnpm dlx tsx src/database/seeds/base.ts",

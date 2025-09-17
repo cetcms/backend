@@ -10,7 +10,7 @@ export class PermissionInfo {
   subjectLabel: string;
 
   @Field(() => String)
-  group: string;
+  module: string;
 
   @Field(() => String)
   action: string;

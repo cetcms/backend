@@ -8,6 +8,8 @@
  * 导出内容：
  * - JwtAuthGuard: JWT 认证守卫
  * - PermissionGuard: 权限守卫
+ * - CompanyGuard: 公司守卫
  */
 export * from './jwt-auth.guard';
 export * from './permission.guard';
+export * from './company.guard';
