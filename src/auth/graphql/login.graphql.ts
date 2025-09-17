@@ -15,12 +15,12 @@ export class LoginInput {
 
 @InputType()
 export class LoginMeta {
-  @Field(() => String)
-  fingerprint: string;
-  @Field(() => String)
-  userAgent: string;
-  @Field(() => String)
-  ip: string;
+  @Field(() => String, { nullable: true })
+  fingerprint?: string | null;
+  @Field(() => String, { nullable: true })
+  userAgent?: string | null;
+  @Field(() => String, { nullable: true })
+  ip?: string | null;
 }
 
 @ObjectType()

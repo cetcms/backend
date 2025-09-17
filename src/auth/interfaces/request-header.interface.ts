@@ -5,13 +5,12 @@
  * - 定义认证相关的请求头字段
  *
  * 枚举值说明：
- * - Fingerprint: 'x-fingerprint' - 指纹信息
- * - UserAgent: 'user-agent' - 用户代理
- * - Ip: 'x-real-ip' - 真实 IP 地址
+ * - Fingerprint: 'X-Fingerprint' - 指纹信息
+ * - UserAgent: 'User-Agent' - 用户代理
+ * - Language: 'X-Lang' - 请求语言
  */
 export const enum RequestHeaders {
-  Fingerprint = 'x-fingerprint',
-  UserAgent = 'user-agent',
-  Ip = 'x-real-ip',
-  Language = 'x-lang',
+  Fingerprint = 'X-Fingerprint',
+  UserAgent = 'User-Agent',
+  Language = 'X-Lang',
 }

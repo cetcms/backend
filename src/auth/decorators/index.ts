@@ -19,6 +19,7 @@ export * from './current-auth.decorator';
 export * from './current-auth-admin.decorator';
 export * from './current-auth-company.decorator';
 export * from './current-auth-user.decorator';
+export * from './current-request-meta.decorator';
 export * from './current-request.decorator';
 export * from './use-permission.decorator';
-export * from './current-request-info.decorator';
+export * from './api-common.decorator';

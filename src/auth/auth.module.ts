@@ -5,6 +5,7 @@ import { TokenFactory } from 'src/auth/factories';
 import { JwtStrategy } from 'src/auth/strategies';
 import { ConfigService } from 'src/config';
 
+import { AuthController } from './auth.controller';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 
@@ -22,5 +23,6 @@ import { AuthService } from './auth.service';
   ],
   providers: [AuthService, TokenFactory, JwtStrategy, AuthResolver],
   exports: [PassportModule, JwtModule],
+  controllers: [AuthController],
 })
 export class AuthModule {}

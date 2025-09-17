@@ -26,6 +26,8 @@ export class AppService {
       .setTitle('Cats example')
       .setDescription('The cats API description')
       .setVersion('1.0')
+      .addBearerAuth()
+      .addExtension('x-a', {})
       .build();
     SwaggerModule.setup(path, app, SwaggerModule.createDocument(app, config));
   }

@@ -2,7 +2,7 @@ import * as path from 'node:path';
 import process from 'process';
 
 import { Injectable, Logger } from '@nestjs/common';
-import { PermissionInfo } from 'src/auth/dto';
+import { PermissionInfo } from 'src/auth/graphql';
 import { Target } from 'src/generated/graphql/prisma';
 import { Project, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
 import voca from 'voca';
@@ -93,7 +93,7 @@ export class ScanPermissionsScript {
 
     // 添加导入语句
     sourceFile.addImportDeclaration({
-      moduleSpecifier: 'src/auth/dto',
+      moduleSpecifier: 'src/auth/graphql',
       namedImports: ['PermissionInfo'],
     });
     sourceFile.addImportDeclaration({

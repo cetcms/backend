@@ -1,7 +1,7 @@
 import { Injectable, Logger, UnprocessableEntityException } from '@nestjs/common';
 import { isEmail } from 'class-validator';
-import { Login, LoginInput, LoginMeta } from 'src/auth/dto';
 import { TokenFactory } from 'src/auth/factories';
+import { Login, LoginInput, LoginMeta } from 'src/auth/graphql';
 import { DateHandler } from 'src/common/handlers';
 import { Admin } from 'src/generated/graphql/admin';
 import { Auth } from 'src/generated/graphql/auth';
@@ -66,10 +66,10 @@ export class AuthService {
       });
       // 创建认证记录
       const auth = await this.auth.createByTarget(target.id, input.companyId || null, {
-        fingerprint: meta.fingerprint,
+        fingerprint: meta.fingerprint || undefined,
+        target: input.target,
         location: undefined,
         device: undefined,
-        target: input.target,
         id: tokenId,
         expiredAt,
         token,
