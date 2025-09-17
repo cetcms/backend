@@ -47,6 +47,31 @@ generator zod {
   config   = "zod-generator-config.json"
 }
 
+generator dto {
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../src/generated/dto"
+  prismaClientImportPath          = ""
+  outputToNestJsResourceStructure = "false"
+  flatResourceStructure           = "false"
+  exportRelationModifierClasses   = "false"
+  reExport                        = "true"
+  generateFileTypes               = "all"
+  createDtoPrefix                 = "Create"
+  updateDtoPrefix                 = "Update"
+  dtoSuffix                       = "Dto"
+  entityPrefix                    = ""
+  entitySuffix                    = "Entity"
+  classValidation                 = "true"
+  fileNamingStyle                 = "kebab"
+  noDependencies                  = "false"
+  outputType                      = "class"
+  definiteAssignmentAssertion     = "false"
+  requiredResponseApiProperty     = "true"
+  prettier                        = "true"
+  wrapRelationsAsType             = "false"
+  showDefaultValues               = "true"
+}
+
 enum Status {
   Enabled
   Disabled
@@ -81,16 +106,23 @@ enum MediaVisibility {
 }
 
 model Auth {
+  /// @DtoReadOnly()
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   expiredAt DateTime @default(now()) @map("expired_at")
 
+  /// @DtoRelationIncludeId()
   adminId     String?  @map("admin_id")
+  /// @DtoEntityHidden()
   admin       Admin?   @relation(fields: [adminId], references: [id])
+  /// @DtoRelationIncludeId()
   userId      String?  @map("user_id")
+  /// @DtoEntityHidden()
   user        User?    @relation(fields: [userId], references: [id])
+  /// @DtoRelationIncludeId()
   companyId   String?  @map("company_id")
+  /// @DtoEntityHidden()
   company     Company? @relation(fields: [companyId], references: [id])
   /// @HideField()
   token       String
@@ -104,6 +136,7 @@ model Auth {
 }
 
 model Admin {
+  /// @DtoReadOnly()
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -115,24 +148,32 @@ model Admin {
   /// @Validator.IsEmail()
   /// @zod.email().min(5).trim().toLowerCase()
   email    String @unique @db.VarChar(100)
+  /// @DtoEntityHidden()
   password String
 
+  /// @DtoRelationIncludeId()
   roleId String    @map("role_id")
+  /// @DtoEntityHidden()
   role   AdminRole @relation(fields: [roleId], references: [id])
 
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   companies    AdminCompany[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   auths        Auth[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   logs         RequestLog[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   mediaFolders MediaFolder[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   mediaFiles   MediaFile[]
 
@@ -140,6 +181,7 @@ model Admin {
 }
 
 model AdminRole {
+  /// @DtoReadOnly()
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -154,18 +196,24 @@ model AdminRole {
   permissions String[]
 
   /// @zod.optional()
+  /// @DtoEntityHidden()
   admins Admin[]
 
   @@map("admin_roles")
 }
 
 model AdminCompany {
+  /// @DtoReadOnly()
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  /// @DtoRelationIncludeId()
   adminId   String  @map("admin_id")
+  /// @DtoEntityHidden()
   admin     Admin   @relation(fields: [adminId], references: [id])
+  /// @DtoRelationIncludeId()
   companyId String  @map("company_id")
+  /// @DtoEntityHidden()
   company   Company @relation(fields: [companyId], references: [id])
 
   permissions String[]
@@ -175,6 +223,7 @@ model AdminCompany {
 }
 
 model User {
+  /// @DtoReadOnly()
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -186,21 +235,27 @@ model User {
   /// @zod.email().min(5).trim()
   /// @Validator.IsEmail()
   email    String @unique @db.VarChar(100)
+  /// @DtoEntityHidden()
   password String
 
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   companies    CompanyUser[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   auths        Auth[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   logs         RequestLog[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   mediaFolders MediaFolder[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   mediaFiles   MediaFile[]
 
@@ -208,6 +263,7 @@ model User {
 }
 
 model Company {
+  /// @DtoReadOnly()
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -223,24 +279,31 @@ model Company {
   description String?
 
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
   auths        Auth[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
   admins       AdminCompany[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
   roles        CompanyRole[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
   users        CompanyUser[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
   logs         RequestLog[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
   mediaFolders MediaFolder[]
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
   mediaFiles   MediaFile[]
 
@@ -248,6 +311,7 @@ model Company {
 }
 
 model CompanyRole {
+  /// @DtoReadOnly()
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -261,10 +325,13 @@ model CompanyRole {
   code        String   @db.VarChar(100)
   permissions String[]
 
+  /// @DtoRelationIncludeId()
   companyId String?  @map("company_id")
+  /// @DtoEntityHidden()
   company   Company? @relation(fields: [companyId], references: [id])
 
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
   users CompanyUser[]
 
@@ -273,16 +340,23 @@ model CompanyRole {
 }
 
 model CompanyUser {
+  /// @DtoReadOnly()
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   status Status @default(Enabled)
 
+  /// @DtoRelationIncludeId()
   companyId String      @map("company_id")
+  /// @DtoEntityHidden()
   company   Company     @relation(fields: [companyId], references: [id])
+  /// @DtoRelationIncludeId()
   userId    String      @map("user_id")
+  /// @DtoEntityHidden()
   user      User        @relation(fields: [userId], references: [id])
+  /// @DtoRelationIncludeId()
   roleId    String      @map("role_id")
+  /// @DtoEntityHidden()
   role      CompanyRole @relation(fields: [roleId], references: [id])
 
   @@id([companyId, userId], name: "companyUserIdx")
@@ -301,6 +375,7 @@ enum RequestMethod {
 }
 
 model RequestLog {
+  /// @DtoReadOnly()
   id        String    @id @default(cuid())
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
@@ -309,8 +384,9 @@ model RequestLog {
   afterAt   DateTime? @map("after_at")
   duration  BigInt    @default(0)
 
-  route  String?
-  method RequestMethod?
+  route   String?
+  method  RequestMethod?
+  message String?
 
   headers  Json?
   body     Json?
@@ -328,11 +404,17 @@ model RequestLog {
 
   target Target?
 
+  /// @DtoRelationIncludeId()
   userId    String?  @map("user_id")
+  /// @DtoEntityHidden()
   user      User?    @relation(fields: [userId], references: [id])
+  /// @DtoRelationIncludeId()
   adminId   String?  @map("admin_id")
+  /// @DtoEntityHidden()
   admin     Admin?   @relation(fields: [adminId], references: [id])
+  /// @DtoRelationIncludeId()
   companyId String?  @map("company_id")
+  /// @DtoEntityHidden()
   company   Company? @relation(fields: [companyId], references: [id])
 
   @@index([subject, action], name: "requestResourceIdx")
@@ -340,6 +422,7 @@ model RequestLog {
 }
 
 model MediaFolder {
+  /// @DtoReadOnly()
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -354,20 +437,30 @@ model MediaFolder {
   level       Int     @default(0) // 文件夹层级深度
 
   // 父子关系支持目录结构
+  /// @DtoRelationIncludeId()
   parentId String?       @map("parent_id")
+  /// @DtoEntityHidden()
   parent   MediaFolder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  /// @DtoEntityHidden()
   children MediaFolder[] @relation("FolderHierarchy")
 
   // 多层级资源隔离
+  /// @DtoRelationIncludeId()
   companyId String?  @map("company_id")
+  /// @DtoEntityHidden()
   company   Company? @relation(fields: [companyId], references: [id])
 
   // 所有者信息
   ownerId   String? @map("owner_id")
+  /// @DtoEntityHidden()
   ownerType Target  @map("owner_type") // Admin 或 User
+  /// @DtoRelationIncludeId()
   adminId   String? @map("admin_id")
+  /// @DtoEntityHidden()
   admin     Admin?  @relation(fields: [adminId], references: [id])
+  /// @DtoRelationIncludeId()
   userId    String? @map("user_id")
+  /// @DtoEntityHidden()
   user      User?   @relation(fields: [userId], references: [id])
 
   // 权限控制
@@ -375,6 +468,7 @@ model MediaFolder {
 
   // 关联的媒体资源
   /// @zod.optional()
+  /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   files MediaFile[]
 
@@ -385,6 +479,7 @@ model MediaFolder {
 }
 
 model MediaFile {
+  /// @DtoReadOnly()
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
@@ -410,19 +505,28 @@ model MediaFile {
   description String?
 
   // 文件夹关联
+  /// @DtoRelationIncludeId()
   folderId String?      @map("folder_id")
+  /// @DtoEntityHidden()
   folder   MediaFolder? @relation(fields: [folderId], references: [id])
 
   // 多层级资源隔离
+  /// @DtoRelationIncludeId()
   companyId String?  @map("company_id")
+  /// @DtoEntityHidden()
   company   Company? @relation(fields: [companyId], references: [id])
 
   // 所有者信息
   ownerId   String  @map("owner_id")
+  /// @DtoEntityHidden()
   ownerType Target  @map("owner_type") // Admin 或 User
+  /// @DtoRelationIncludeId()
   adminId   String? @map("admin_id")
+  /// @DtoEntityHidden()
   admin     Admin?  @relation(fields: [adminId], references: [id])
+  /// @DtoRelationIncludeId()
   userId    String? @map("user_id")
+  /// @DtoEntityHidden()
   user      User?   @relation(fields: [userId], references: [id])
 
   // 权限控制
