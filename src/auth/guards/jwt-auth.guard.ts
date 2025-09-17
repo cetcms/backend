@@ -1,7 +1,7 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { IS_PUBLIC_ACCESS_KEY, REQUIRE_COMPANY_KEY, RequireCompany, RequireCompanyMetadata } from 'src/auth/decorators';
+import { IS_PUBLIC_ACCESS_KEY, REQUIRE_COMPANY_KEY, RequireCompanyMetadata } from 'src/auth/decorators';
 import { ContextHandler, RequestHandler } from 'src/common/handlers';
 import { Admin } from 'src/generated/graphql/admin';
 import { Auth } from 'src/generated/graphql/auth';
