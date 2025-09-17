@@ -1,11 +1,89 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CurrentAuthAdmin, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
+import { IPaginated, Paginated } from 'src/common/dto';
+import {
+  Admin,
+  Target,
+  CreateOneAdminArgs,
+  FindManyAdminArgs,
+  FindUniqueAdminArgs,
+  UpdateOneAdminArgs,
+  AdminUpdateInput,
+} from 'src/generated/graphql';
 
 import { AdminService } from './admin.service';
 
+const PaginatedAdmin = Paginated(Admin);
+
+/**
+ * 管理员模块
+ * @module Admin
+ */
 @Resolver()
 @UseGuards(JwtAuthGuard)
 export class AdminResolver {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(private readonly service: AdminService) {}
+
+  /**
+   * 查询当前管理员信息
+   * @param admin
+   */
+  @UsePermission([Target.Admin])
+  @Query(() => Admin)
+  findSelfAdmin(@CurrentAuthAdmin() admin: Admin): Admin {
+    return admin;
+  }
+
+  /**
+   * 查询单个管理员
+   * @param args
+   */
+  @UsePermission([Target.Admin])
+  @Query(() => Admin)
+  findOneAdmin(@Args() args: FindUniqueAdminArgs): Promise<Admin> {
+    return this.service.findOneByUnique(args);
+  }
+
+  /**
+   * 分页查询管理员
+   * @param args
+   */
+  @UsePermission([Target.Admin])
+  @Query(() => PaginatedAdmin)
+  paginateAdmins(@Args() args: FindManyAdminArgs): Promise<IPaginated<Admin>> {
+    return this.service.paginate(args);
+  }
+
+  /**
+   * 新增管理员
+   * @param args
+   */
+  @UsePermission([Target.Admin])
+  @Mutation(() => Admin)
+  createOneAdmin(@Args() args: CreateOneAdminArgs): Promise<Admin> {
+    return this.service.createOne(args);
+  }
+
+  /**
+   * 修改当前管理员信息
+   * @param admin
+   * @param data
+   */
+  @UsePermission([Target.Admin])
+  @Mutation(() => Admin)
+  updateSelfAdmin(@CurrentAuthAdmin() admin: Admin, @Args('data') data: AdminUpdateInput) {
+    return this.service.updateOne({ where: { id: admin.id }, data });
+  }
+
+  /**
+   * 修改管理员
+   * @param args
+   */
+  @UsePermission([Target.Admin])
+  @Mutation(() => Admin)
+  updateOneAdmin(@Args() args: UpdateOneAdminArgs): Promise<Admin> {
+    return this.service.updateOne(args);
+  }
 }
