@@ -57,6 +57,16 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
+## Performance test
+```bash
+autocannon http://localhost:3000/api \
+  -c 10 \
+  -d 5 \
+  -H "X-Fingerprint: test-fingerprint" \
+  -H "Accept-Language: zh-CN,zh;q=0.9" \
+  -H "Authorization: Basic eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwMTk5NTFhNC02NGI2LTcyNDgtOTA1MC05MmY1NzY1ZDg2YjIiLCJhdWQiOiJBZG1pbiIsInN1YiI6ImNtZmZtZzJncTAwMDFoNzlmMDZ6NjhxMmEiLCJpYXQiOjE3NTgwMTEzNTIsImV4cCI6MTc1ODYxNjE1Mn0.rWscKF58MdWGPGJFlRGaKZcBb4qyDL7W9rsm9eHrkuQ"
+```
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
