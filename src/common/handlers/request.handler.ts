@@ -1,6 +1,8 @@
+import { ForbiddenException } from '@nestjs/common';
 import { Request } from 'express';
 import { getClientIp } from 'get-client-ip';
 import { RequestHeaders } from 'src/auth/interfaces';
+import { AppConfig } from 'src/config';
 import { Auth, RequestMethod } from 'src/generated/graphql';
 
 /**
@@ -72,7 +74,7 @@ export function RequestHandler(req: Request) {
      * @returns 客户端请求的语言，如果未设置则默认返回'en'
      */
     getLanguage() {
-      return req.header(RequestHeaders.Language) || 'en';
+      return req.header(RequestHeaders.Language.toLowerCase()) || 'en';
     },
 
     /**
@@ -80,7 +82,7 @@ export function RequestHandler(req: Request) {
      * @returns 用户代理字符串，如果不存在则返回null
      */
     getUserAgent() {
-      return req.header(RequestHeaders.UserAgent) || null;
+      return req.header(RequestHeaders.UserAgent.toLowerCase()) || null;
     },
 
     /**
@@ -88,7 +90,12 @@ export function RequestHandler(req: Request) {
      * @returns 设备指纹字符串，如果不存在则返回null
      */
     getFingerprint() {
-      return req.header(RequestHeaders.Fingerprint) || null;
+      // 获取设备指纹
+      const fingerprint = req.header(RequestHeaders.Fingerprint.toLowerCase());
+      if (AppConfig.auth.enableFingerprint && !fingerprint) {
+        throw new ForbiddenException(`${RequestHeaders.Fingerprint} must be present in the header`);
+      }
+      return fingerprint || null;
     },
 
     /**

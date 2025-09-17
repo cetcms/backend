@@ -9,6 +9,7 @@ import chalk from 'chalk';
 import { WinstonModule } from 'nest-winston';
 import { JsonStringify } from 'src/common';
 import winston from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 /**
  * Winston 配置
@@ -16,7 +17,7 @@ import winston from 'winston';
  */
 const { format, transports, createLogger } = winston;
 // 日志保存路径
-const savePath = `logs/${new Date().getFullYear()}-${new Date().getMonth() + 1}/${new Date().getDate()}-${new Date().getHours()}`;
+const savePath = `logs/${new Date().getFullYear()}-${new Date().getMonth() + 1}/${new Date().getDate()}}`;
 
 /**
  * 日志级别枚举
@@ -121,21 +122,45 @@ const instance = createLogger({
       ),
     }),
     // 请求日志文件传输
-    new transports.File({
+    new DailyRotateFile({
       filename: `${savePath}/requests.log`,
       level: logs.REQUEST,
       format: format.combine(format((info) => (info.level === logs.REQUEST ? info : false))()),
+      datePattern: 'HH',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '180d',
     }),
     // 错误日志文件传输
-    new transports.File({
+    new DailyRotateFile({
       filename: `${savePath}/errors.log`,
       level: logs.ERROR,
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '180d',
     }),
   ],
   // 异常处理传输
-  exceptionHandlers: [new transports.File({ filename: `${savePath}/exceptions.log` })],
+  exceptionHandlers: [
+    new DailyRotateFile({
+      filename: `${savePath}/exceptions.log`,
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '180d',
+    }),
+  ],
   // 拒绝处理传输
-  rejectionHandlers: [new transports.File({ filename: `${savePath}/rejections.log` })],
+  rejectionHandlers: [
+    new DailyRotateFile({
+      filename: `${savePath}/rejections.log`,
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '180d',
+    }),
+  ],
 });
 
 const handlerMessage = (message: any) => {

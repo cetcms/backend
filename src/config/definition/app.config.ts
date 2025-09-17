@@ -11,6 +11,9 @@ export const AppConfig = {
     defaultLang: process.env.DEFAULT_LOCALE_LANG || 'en',
     defaultNs: process.env.DEFAULT_LOCALE_NS || 'common',
   },
+  auth: {
+    enableFingerprint: process.env.ENABLE_FINGERPRINT === 'true',
+  },
   jwt: {
     secret: process.env.JWT_SECRET || 'ADMIN_SECRET_3325',
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
