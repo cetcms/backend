@@ -41,7 +41,6 @@ export class UserResolver {
    * @param args
    */
   @UsePermission()
-  @RequireCompany([Target.User])
   @Query(() => User)
   findOneUser(@Args() args: FindUniqueUserArgs): Promise<User> {
     return this.service.findOneByUnique(args);
@@ -62,8 +61,7 @@ export class UserResolver {
    * 新增用户
    * @param args
    */
-  @UsePermission()
-  @RequireCompany([Target.User])
+  @UsePermission([Target.Admin])
   @Mutation(() => User)
   createOneUser(@Args() args: CreateOneUserArgs): Promise<User> {
     return this.service.createOne(args);
@@ -84,8 +82,7 @@ export class UserResolver {
    * 修改用户
    * @param args
    */
-  @UsePermission()
-  @RequireCompany([Target.User])
+  @UsePermission([Target.Admin])
   @Mutation(() => User)
   updateOneUser(@Args() args: UpdateOneUserArgs): Promise<User> {
     return this.service.updateOne(args);

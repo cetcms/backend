@@ -17,7 +17,7 @@ jest.mock('chalk', () => {
       },
     }
   );
-  
+
   // 为 chalk 的各种颜色方法返回相同的行为
   return {
     default: mockChalk,

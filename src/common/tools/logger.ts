@@ -16,8 +16,6 @@ import DailyRotateFile from 'winston-daily-rotate-file';
  * 用于配置 Winston 日志记录器
  */
 const { format, transports, createLogger } = winston;
-// 日志保存路径
-const savePath = `logs/${new Date().getFullYear()}-${new Date().getMonth() + 1}/${new Date().getDate()}}`;
 
 /**
  * 日志级别枚举
@@ -123,18 +121,18 @@ const instance = createLogger({
     }),
     // 请求日志文件传输
     new DailyRotateFile({
-      filename: `${savePath}/requests.log`,
       level: logs.REQUEST,
       format: format.combine(format((info) => (info.level === logs.REQUEST ? info : false))()),
-      datePattern: 'HH',
+      filename: 'logs/requests/record.log',
+      datePattern: 'YYYY-MM-DD-HH',
       zippedArchive: true,
       maxSize: '20m',
       maxFiles: '180d',
     }),
     // 错误日志文件传输
     new DailyRotateFile({
-      filename: `${savePath}/errors.log`,
       level: logs.ERROR,
+      filename: 'logs/errors/record.log',
       datePattern: 'YYYY-MM-DD-HH',
       zippedArchive: true,
       maxSize: '20m',
@@ -144,7 +142,7 @@ const instance = createLogger({
   // 异常处理传输
   exceptionHandlers: [
     new DailyRotateFile({
-      filename: `${savePath}/exceptions.log`,
+      filename: 'logs/exceptions/record.log',
       datePattern: 'YYYY-MM-DD-HH',
       zippedArchive: true,
       maxSize: '20m',
@@ -154,7 +152,7 @@ const instance = createLogger({
   // 拒绝处理传输
   rejectionHandlers: [
     new DailyRotateFile({
-      filename: `${savePath}/rejections.log`,
+      filename: 'logs/rejections/record.log',
       datePattern: 'YYYY-MM-DD-HH',
       zippedArchive: true,
       maxSize: '20m',

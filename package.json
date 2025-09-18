@@ -27,7 +27,8 @@
     "generate": "pnpm dlx prisma generate",
     "prebuild": "pnpm generate",
     "prestart:dev": "pnpm generate",
-    "prestart:debug": "pnpm generate"
+    "prestart:debug": "pnpm generate",
+    "postgenerate": "pnpm script:scan-permissions"
   },
   "dependencies": {
     "@apollo/server": "^4.12.2",
