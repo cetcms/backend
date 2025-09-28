@@ -4,7 +4,7 @@ import { CurrentAuthCompany, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { Company, CompanyUser, Target } from 'src/generated/graphql';
 
-import { CompanyManagementService } from './company-management.service';
+import { CompanyManagementService } from '../services';
 
 /**
  * 企业管理综合解析器

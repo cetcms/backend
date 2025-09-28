@@ -84,7 +84,7 @@ export class CompanyManagementService {
    */
   async addUserToCompany(companyId: string, userId: string, roleCode: string = 'user') {
     // 验证企业是否存在
-    const company = await this.companyService.findOneById(companyId);
+    await this.companyService.findOneById(companyId);
 
     // 查找角色
     const role = await this.companyRole.findOneByUnique(roleCode, companyId);
@@ -206,10 +206,6 @@ export class CompanyManagementService {
 
     // 检查模块级通配符权限
     const [module] = permission.split(':');
-    if (permissions.includes(`${module}:*`)) {
-      return true;
-    }
-
-    return false;
+    return !!permissions.includes(`${module}:*`);
   }
 }

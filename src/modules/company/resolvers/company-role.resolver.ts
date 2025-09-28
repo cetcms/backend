@@ -13,7 +13,7 @@ import {
   UpdateOneCompanyRoleArgs,
 } from 'src/generated/graphql';
 
-import { CompanyRoleService } from './company-role.service';
+import { CompanyRoleService } from '../services';
 
 const PaginatedCompanyRole = Paginated(CompanyRole);
 

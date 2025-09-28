@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { CompanyManagementResolver } from './company-management.resolver';
-import { CompanyManagementService } from './company-management.service';
-import { CompanyResolver } from './company.resolver';
-import { CompanyService } from './company.service';
+import * as Resolvers from './resolvers';
+import * as Services from './services';
 
 @Module({
-  providers: [CompanyResolver, CompanyService, CompanyManagementService, CompanyManagementResolver],
-  exports: [CompanyService, CompanyManagementService],
+  providers: [...Object.values(Services), ...Object.values(Resolvers)],
+  exports: [...Object.values(Services)],
 })
 export class CompanyModule {}

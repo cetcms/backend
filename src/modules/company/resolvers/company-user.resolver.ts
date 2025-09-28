@@ -13,7 +13,7 @@ import {
   UpdateOneCompanyUserArgs,
 } from 'src/generated/graphql';
 
-import { CompanyUserService } from './company-user.service';
+import { CompanyUserService } from '../services';
 
 const PaginatedCompanyUser = Paginated(CompanyUser);
 

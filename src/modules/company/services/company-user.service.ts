@@ -46,11 +46,11 @@ export class CompanyUserService {
     throw new NotFoundException('企业用户关联不存在');
   }
 
-  async findManyByUserId(userId: string) {
+  findManyByUserId(userId: string) {
     return this.companyUser.findManyByUserId(userId);
   }
 
-  async findManyByCompanyId(companyId: string) {
+  findManyByCompanyId(companyId: string) {
     return this.companyUser.findManyByCompanyId(companyId);
   }
 }

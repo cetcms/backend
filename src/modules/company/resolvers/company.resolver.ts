@@ -13,7 +13,7 @@ import {
   CompanyUpdateInput,
 } from 'src/generated/graphql';
 
-import { CompanyService } from './company.service';
+import { CompanyService } from '../services';
 
 const PaginatedCompany = Paginated(Company);
 

@@ -46,7 +46,7 @@ export class CompanyRoleService {
     throw new NotFoundException('企业角色不存在');
   }
 
-  async findByCompanyId(companyId: string) {
+  findByCompanyId(companyId: string) {
     return this.companyRole.findByCompanyId(companyId);
   }
 
@@ -58,15 +58,15 @@ export class CompanyRoleService {
     throw new NotFoundException('企业角色不存在');
   }
 
-  async saveCommonRole(code: string, data: any) {
+  saveCommonRole(code: string, data: any) {
     return this.companyRole.saveCommonRole(code, data);
   }
 
-  async updateCommonRole(code: string, data: any) {
+  updateCommonRole(code: string, data: any) {
     return this.companyRole.updateCommonRole(code, data);
   }
 
-  async findCommonRole(code: string) {
+  findCommonRole(code: string) {
     return this.companyRole.findCommonRole(code);
   }
 }
