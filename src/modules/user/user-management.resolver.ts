@@ -2,12 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentAuthUser, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
-import {
-  User,
-  CompanyUser,
-  Target,
-  Status,
-} from 'src/generated/graphql';
+import { User, CompanyUser, Target, Status } from 'src/generated/graphql';
 
 import { UserManagementService } from './user-management.service';
 
@@ -28,10 +23,10 @@ export class UserManagementResolver {
    */
   @UsePermission([Target.Admin])
   @Mutation(() => User)
-  async createUserWithCompany(
+  createUserWithCompany(
     @Args('userData') userData: any,
     @Args('companyId', { nullable: true }) companyId?: string,
-    @Args('roleCode', { defaultValue: 'user' }) roleCode?: string,
+    @Args('roleCode', { defaultValue: 'user' }) roleCode?: string
   ) {
     return this.service.createUserWithCompany(userData, companyId, roleCode);
   }
@@ -47,7 +42,7 @@ export class UserManagementResolver {
   addUserToCompany(
     @Args('userId') userId: string,
     @Args('companyId') companyId: string,
-    @Args('roleCode', { defaultValue: 'user' }) roleCode: string,
+    @Args('roleCode', { defaultValue: 'user' }) roleCode: string
   ): Promise<CompanyUser> {
     return this.service.addUserToCompany(userId, companyId, roleCode);
   }
@@ -63,7 +58,7 @@ export class UserManagementResolver {
   updateUserRoleInCompany(
     @Args('userId') userId: string,
     @Args('companyId') companyId: string,
-    @Args('newRoleCode') newRoleCode: string,
+    @Args('newRoleCode') newRoleCode: string
   ): Promise<CompanyUser> {
     return this.service.updateUserRoleInCompany(userId, companyId, newRoleCode);
   }
@@ -75,10 +70,7 @@ export class UserManagementResolver {
    */
   @UsePermission([Target.Admin])
   @Mutation(() => Boolean)
-  async removeUserFromCompany(
-    @Args('userId') userId: string,
-    @Args('companyId') companyId: string,
-  ): Promise<boolean> {
+  async removeUserFromCompany(@Args('userId') userId: string, @Args('companyId') companyId: string): Promise<boolean> {
     await this.service.removeUserFromCompany(userId, companyId);
     return true;
   }
@@ -90,10 +82,7 @@ export class UserManagementResolver {
    */
   @UsePermission([Target.Admin])
   @Query(() => [String])
-  getUserPermissionsInCompany(
-    @Args('userId') userId: string,
-    @Args('companyId') companyId: string,
-  ): Promise<string[]> {
+  getUserPermissionsInCompany(@Args('userId') userId: string, @Args('companyId') companyId: string): Promise<string[]> {
     return this.service.getUserPermissionsInCompany(userId, companyId);
   }
 
@@ -108,7 +97,7 @@ export class UserManagementResolver {
   checkUserPermissionInCompany(
     @Args('userId') userId: string,
     @Args('companyId') companyId: string,
-    @Args('permission') permission: string,
+    @Args('permission') permission: string
   ): Promise<boolean> {
     return this.service.checkUserPermissionInCompany(userId, companyId, permission);
   }
@@ -144,7 +133,7 @@ export class UserManagementResolver {
   updateCurrentUserPassword(
     @CurrentAuthUser() user: User,
     @Args('oldPassword') oldPassword: string,
-    @Args('newPassword') newPassword: string,
+    @Args('newPassword') newPassword: string
   ): Promise<User> {
     return this.service.updateUserPassword(user.id, oldPassword, newPassword);
   }
@@ -156,10 +145,7 @@ export class UserManagementResolver {
    */
   @UsePermission([Target.Admin])
   @Mutation(() => User)
-  resetUserPassword(
-    @Args('userId') userId: string,
-    @Args('newPassword') newPassword: string,
-  ): Promise<User> {
+  resetUserPassword(@Args('userId') userId: string, @Args('newPassword') newPassword: string): Promise<User> {
     return this.service.resetUserPassword(userId, newPassword);
   }
 
@@ -170,10 +156,7 @@ export class UserManagementResolver {
    */
   @UsePermission([Target.Admin])
   @Mutation(() => User)
-  updateUserStatus(
-    @Args('userId') userId: string,
-    @Args('status') status: Status,
-  ): Promise<User> {
+  updateUserStatus(@Args('userId') userId: string, @Args('status') status: Status): Promise<User> {
     return this.service.updateUserStatus(userId, status);
   }
 
@@ -186,7 +169,7 @@ export class UserManagementResolver {
   @Mutation(() => String)
   async batchUpdateUserStatus(
     @Args('userIds', { type: () => [String] }) userIds: string[],
-    @Args('status') status: Status,
+    @Args('status') status: Status
   ): Promise<string> {
     const result = await this.service.batchUpdateUserStatus(userIds, status);
     return JSON.stringify(result);

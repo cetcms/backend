@@ -1,11 +1,12 @@
 import { Injectable, BadRequestException, NotFoundException, ConflictException } from '@nestjs/common';
-import { UserRepository, CompanyUserRepository, CompanyRoleRepository } from 'src/repositories';
-import { UserService } from './user.service';
 import { Status } from 'src/generated/graphql';
+import { UserRepository, CompanyUserRepository, CompanyRoleRepository } from 'src/repositories';
+
+import { UserService } from './user.service';
 
 /**
  * 用户管理综合服务
- * 
+ *
  * 提供用户、企业关联、角色分配的综合管理功能
  */
 @Injectable()
@@ -14,7 +15,7 @@ export class UserManagementService {
     private readonly userService: UserService,
     private readonly user: UserRepository,
     private readonly companyUser: CompanyUserRepository,
-    private readonly companyRole: CompanyRoleRepository,
+    private readonly companyRole: CompanyRoleRepository
   ) {}
 
   /**
@@ -60,7 +61,7 @@ export class UserManagementService {
   async addUserToCompany(userId: string, companyId: string, roleCode: string = 'user') {
     // 验证用户是否存在
     await this.userService.findOneById(userId);
-    
+
     // 查找角色
     const role = await this.companyRole.findOneByUnique(roleCode, companyId);
     if (!role) {
@@ -120,7 +121,7 @@ export class UserManagementService {
     }
 
     return this.companyUser.delete({
-      companyUserIdx: { userId, companyId }
+      companyUserIdx: { userId, companyId },
     });
   }
 
@@ -137,7 +138,7 @@ export class UserManagementService {
       companies: companyRelations,
       statistics: {
         totalCompanies: companyRelations.length,
-        activeCompanies: companyRelations.filter(c => c.status === Status.Enabled).length,
+        activeCompanies: companyRelations.filter((c) => c.status === Status.Enabled).length,
       },
     };
   }
@@ -165,7 +166,7 @@ export class UserManagementService {
    */
   async checkUserPermissionInCompany(userId: string, companyId: string, permission: string): Promise<boolean> {
     const permissions = await this.getUserPermissionsInCompany(userId, companyId);
-    
+
     // 检查是否有通配符权限
     if (permissions.includes('*')) {
       return true;
@@ -189,7 +190,7 @@ export class UserManagementService {
    * 获取用户所属的所有企业
    * @param userId 用户ID
    */
-  async getUserCompanies(userId: string) {
+  getUserCompanies(userId: string) {
     return this.companyUser.findManyByUserId(userId);
   }
 
@@ -242,12 +243,10 @@ export class UserManagementService {
    * @param status 状态
    */
   async batchUpdateUserStatus(userIds: string[], status: Status) {
-    const results = await Promise.allSettled(
-      userIds.map(userId => this.updateUserStatus(userId, status))
-    );
+    const results = await Promise.allSettled(userIds.map((userId) => this.updateUserStatus(userId, status)));
 
-    const successful = results.filter(r => r.status === 'fulfilled').length;
-    const failed = results.filter(r => r.status === 'rejected').length;
+    const successful = results.filter((r) => r.status === 'fulfilled').length;
+    const failed = results.filter((r) => r.status === 'rejected').length;
 
     return {
       successful,

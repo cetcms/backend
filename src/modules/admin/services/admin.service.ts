@@ -32,4 +32,20 @@ export class AdminService {
     const { where, data } = args;
     return this.admin.update(where, data);
   }
+
+  async findOneById(id: string) {
+    const admin = await this.admin.findOneById(id);
+    if (admin) {
+      return admin;
+    }
+    throw new NotFoundException('管理员不存在');
+  }
+
+  async findOneByEmail(email: string) {
+    const admin = await this.admin.findOneByEmail(email);
+    if (admin) {
+      return admin;
+    }
+    throw new NotFoundException('管理员不存在');
+  }
 }

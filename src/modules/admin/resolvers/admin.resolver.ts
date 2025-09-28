@@ -13,7 +13,7 @@ import {
   AdminUpdateInput,
 } from 'src/generated/graphql';
 
-import { AdminService } from './admin.service';
+import { AdminService } from '../services';
 
 const PaginatedAdmin = Paginated(Admin);
 
@@ -85,5 +85,25 @@ export class AdminResolver {
   @Mutation(() => Admin)
   updateOneAdmin(@Args() args: UpdateOneAdminArgs): Promise<Admin> {
     return this.service.updateOne(args);
+  }
+
+  /**
+   * 根据ID查询管理员
+   * @param id
+   */
+  @UsePermission([Target.Admin])
+  @Query(() => Admin)
+  findAdminById(@Args('id') id: string): Promise<Admin> {
+    return this.service.findOneById(id);
+  }
+
+  /**
+   * 根据邮箱查询管理员
+   * @param email
+   */
+  @UsePermission([Target.Admin])
+  @Query(() => Admin)
+  findAdminByEmail(@Args('email') email: string): Promise<Admin> {
+    return this.service.findOneByEmail(email);
   }
 }
