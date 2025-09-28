@@ -84,28 +84,6 @@ export class UserManagementResolver {
   }
 
   /**
-   * 获取用户的完整信息
-   * @param userId
-   */
-  @UsePermission([Target.Admin])
-  @Query(() => String)
-  async getUserFullInfo(@Args('userId') userId: string): Promise<string> {
-    const info = await this.service.getUserFullInfo(userId);
-    return JSON.stringify(info);
-  }
-
-  /**
-   * 获取当前用户的完整信息
-   * @param user
-   */
-  @UsePermission([Target.User])
-  @Query(() => String)
-  async getCurrentUserFullInfo(@CurrentAuthUser() user: User): Promise<string> {
-    const info = await this.service.getUserFullInfo(user.id);
-    return JSON.stringify(info);
-  }
-
-  /**
    * 获取用户在企业中的权限
    * @param userId
    * @param companyId
