@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { CompanyRoleCreateInput, FindManyCompanyRoleArgs, UpsertOneCompanyRoleArgs } from 'src/generated/graphql';
+import {
+  CompanyRoleCreateInput,
+  CompanyRoleUpdateInput,
+  FindManyCompanyRoleArgs,
+  UpsertOneCompanyRoleArgs,
+} from 'src/generated/graphql';
 
 import { CompanyRoleAbstract } from './company-role.abstract';
 
@@ -57,6 +62,13 @@ export class CompanyRoleRepository extends CompanyRoleAbstract {
       return this.update({ id: role.id }, data);
     } else {
       return this.create({ code, ...data });
+    }
+  }
+
+  async updateCommonRole(code: string, data: Omit<CompanyRoleUpdateInput, 'code' | 'company'>) {
+    const role = await this.findCommonRole(code);
+    if (role) {
+      return this.update({ id: role.id }, data);
     }
   }
 

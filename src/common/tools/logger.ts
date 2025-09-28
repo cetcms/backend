@@ -85,7 +85,7 @@ const custom = {
  */
 const instance = createLogger({
   levels: custom.levels,
-  level: process.env.NODE_ENV === 'production' ? logs.INFO : logs.LOG,
+  level: process.env.NODE_ENV === 'production' ? logs.INFO : logs.DEBUG,
   format: format.combine(format.timestamp(), format.errors({ stack: true }), format.json()),
   defaultMeta: {
     pid: process.pid,

@@ -11,15 +11,10 @@ async function bootstrap() {
     logger: LoggerService(),
   });
   const appService = app.get(AppService);
-  appService.registerGlobal(app);
-  appService.registerSwagger(app);
-  await appService.setup(app);
+  await appService.start(app);
 }
 bootstrap()
   .then(() => {
-    Logger.debug('Application is running on: http://localhost:3000');
-    Logger.debug('GraphQL is running on: http://localhost:3000/graphql');
-    Logger.debug('Swagger is running on: http://localhost:3000/docs');
-    Logger.info('Application is running on: http://localhost:3000');
+    Logger.debug('Application is started');
   })
   .catch(console.error);

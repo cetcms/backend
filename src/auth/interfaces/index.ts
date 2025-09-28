@@ -7,4 +7,3 @@
  */
 export * from './jwt-payload.interface';
 export * from './token-payload.interface';
-export * from './request-header.interface';

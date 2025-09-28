@@ -1,10 +1,10 @@
 import { registerAs } from '@nestjs/config';
 
 export const AppConfig = {
-  port: parseInt(process.env.PORT || '3325', 10) || 3325,
+  port: parseInt(process.env.PORT || '3000', 10) || 3000,
   host: process.env.HOST || '127.0.0.1',
   environment: process.env.NODE_ENV || 'development',
-  mediaBaseUrl: process.env.MEDIA_BASE_URL || 'http://localhost:3325/media',
+  mediaBaseUrl: process.env.MEDIA_BASE_URL || 'http://localhost:3000/media',
   defaultLocaleLang: process.env.DEFAULT_LOCALE_LANG || 'en',
   defaultLocaleNs: process.env.DEFAULT_LOCALE_NS || 'common',
   locale: {
