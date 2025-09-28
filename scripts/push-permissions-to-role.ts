@@ -1,10 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
 import { Command } from 'commander';
+import { DatabaseService } from 'src/database';
 import { Permissions } from 'src/generated/permissions';
 import { AdminRoleRepository, CompanyRoleRepository } from 'src/repositories';
-import { RepositoriesModule } from 'src/repositories/repositories.module';
-import {DatabaseService} from "src/database";
 
 const logger = new Logger('PushPermissionsToRole');
 
@@ -23,11 +21,11 @@ const main = async () => {
 
     const permissions = Permissions.map((p) => `${p.subject}:${p.action}`);
     if (options.type.toLowerCase() === 'admin') {
-      logger.log(`Pushing permissions to admin role ${options.role}`);
+      logger.log(`Pushing ${permissions.length} permissions to admin role ${options.role}`);
       await adminRoleRepo.update({ code: options.role.toUpperCase() }, { permissions });
     }
     if (options.type.toLowerCase() === 'company') {
-      logger.log(`Pushing permissions to company role ${options.role}`);
+      logger.log(`Pushing ${permissions.length} permissions to company role ${options.role}`);
       await companyRoleRepo.updateCommonRole(options.role.toUpperCase(), {
         permissions,
       });
