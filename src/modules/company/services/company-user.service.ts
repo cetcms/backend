@@ -37,20 +37,4 @@ export class CompanyUserService {
     const { where, data } = args;
     return this.companyUser.update(where, data);
   }
-
-  async findOneByUserAndCompany(userId: string, companyId: string) {
-    const companyUser = await this.companyUser.findOneByUnique(userId, companyId);
-    if (companyUser) {
-      return companyUser;
-    }
-    throw new NotFoundException('企业用户关联不存在');
-  }
-
-  findManyByUserId(userId: string) {
-    return this.companyUser.findManyByUserId(userId);
-  }
-
-  findManyByCompanyId(companyId: string) {
-    return this.companyUser.findManyByCompanyId(companyId);
-  }
 }

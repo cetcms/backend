@@ -32,36 +32,4 @@ export class UserService {
     const { where, data } = args;
     return this.user.update(where, data);
   }
-
-  async findOneById(id: string) {
-    const user = await this.user.findOneById(id);
-    if (user) {
-      return user;
-    }
-    throw new NotFoundException('用户不存在');
-  }
-
-  async findOneByEmail(email: string) {
-    const user = await this.user.findOneByEmail(email);
-    if (user) {
-      return user;
-    }
-    throw new NotFoundException('用户不存在');
-  }
-
-  async findByEmailAndCheckPassword(email: string, password: string) {
-    const user = await this.user.findByEmailAndCheckPassword(email, password);
-    if (user) {
-      return user;
-    }
-    throw new NotFoundException('用户不存在或密码错误');
-  }
-
-  async findByIdAndCheckPassword(id: string, password: string) {
-    const user = await this.user.findByIdAndCheckPassword(id, password);
-    if (user) {
-      return user;
-    }
-    throw new NotFoundException('用户不存在或密码错误');
-  }
 }

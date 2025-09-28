@@ -4,8 +4,8 @@ import { CurrentAuthCompany, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
-  Company,
   Target,
+  Company,
   CreateOneCompanyArgs,
   FindManyCompanyArgs,
   FindUniqueCompanyArgs,
@@ -85,35 +85,5 @@ export class CompanyResolver {
   @Mutation(() => Company)
   updateOneCompany(@Args() args: UpdateOneCompanyArgs): Promise<Company> {
     return this.service.updateOne(args);
-  }
-
-  /**
-   * 根据ID查询企业
-   * @param id
-   */
-  @UsePermission([Target.Admin])
-  @Query(() => Company)
-  findCompanyById(@Args('id') id: string): Promise<Company> {
-    return this.service.findOneById(id);
-  }
-
-  /**
-   * 根据名称查询企业
-   * @param name
-   */
-  @UsePermission([Target.Admin])
-  @Query(() => Company)
-  findCompanyByName(@Args('name') name: string): Promise<Company> {
-    return this.service.findOneByName(name);
-  }
-
-  /**
-   * 根据代码查询企业
-   * @param code
-   */
-  @UsePermission([Target.Admin])
-  @Query(() => Company)
-  findCompanyByCode(@Args('code') code: string): Promise<Company> {
-    return this.service.findOneByCode(code);
   }
 }

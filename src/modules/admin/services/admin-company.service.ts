@@ -38,22 +38,6 @@ export class AdminCompanyService {
     return this.adminCompany.update(where, data);
   }
 
-  async findOneByAdminAndCompany(adminId: string, companyId: string) {
-    const adminCompany = await this.adminCompany.findOneByUnique(adminId, companyId);
-    if (adminCompany) {
-      return adminCompany;
-    }
-    throw new NotFoundException('管理员企业关联不存在');
-  }
-
-  findManyByAdminId(adminId: string) {
-    return this.adminCompany.findManyByAdminId(adminId);
-  }
-
-  findManyByCompanyId(companyId: string) {
-    return this.adminCompany.findManyByCompanyId(companyId);
-  }
-
   deleteByUnique(adminId: string, companyId: string) {
     return this.adminCompany.deleteByUnique(adminId, companyId);
   }

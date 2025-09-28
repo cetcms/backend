@@ -1,12 +1,11 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CurrentAuthCompany, UsePermission } from 'src/auth/decorators';
+import { UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
-  CompanyUser,
-  Company,
   Target,
+  CompanyUser,
   CreateOneCompanyUserArgs,
   FindManyCompanyUserArgs,
   FindUniqueCompanyUserArgs,
@@ -64,49 +63,5 @@ export class CompanyUserResolver {
   @Mutation(() => CompanyUser)
   updateOneCompanyUser(@Args() args: UpdateOneCompanyUserArgs): Promise<CompanyUser> {
     return this.service.updateOne(args);
-  }
-
-  /**
-   * 根据用户ID和企业ID查询关联
-   * @param userId
-   * @param companyId
-   */
-  @UsePermission([Target.Admin, Target.User])
-  @Query(() => CompanyUser)
-  findCompanyUserByUserAndCompany(
-    @Args('userId') userId: string,
-    @Args('companyId') companyId: string
-  ): Promise<CompanyUser> {
-    return this.service.findOneByUserAndCompany(userId, companyId);
-  }
-
-  /**
-   * 根据用户ID查询企业关联列表
-   * @param userId
-   */
-  @UsePermission([Target.Admin, Target.User])
-  @Query(() => [CompanyUser])
-  findCompanyUsersByUserId(@Args('userId') userId: string): Promise<CompanyUser[]> {
-    return this.service.findManyByUserId(userId);
-  }
-
-  /**
-   * 根据当前企业查询用户关联列表
-   * @param company
-   */
-  @UsePermission([Target.Admin, Target.User])
-  @Query(() => [CompanyUser])
-  findCompanyUsersByCompany(@CurrentAuthCompany() company: Company): Promise<CompanyUser[]> {
-    return this.service.findManyByCompanyId(company.id);
-  }
-
-  /**
-   * 根据企业ID查询用户关联列表
-   * @param companyId
-   */
-  @UsePermission([Target.Admin])
-  @Query(() => [CompanyUser])
-  findCompanyUsersByCompanyId(@Args('companyId') companyId: string): Promise<CompanyUser[]> {
-    return this.service.findManyByCompanyId(companyId);
   }
 }

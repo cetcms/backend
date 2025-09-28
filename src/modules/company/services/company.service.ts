@@ -45,20 +45,4 @@ export class CompanyService {
     }
     throw new NotFoundException('企业不存在');
   }
-
-  async findOneByName(name: string) {
-    const company = await this.company.findOneByName(name);
-    if (company) {
-      return company;
-    }
-    throw new NotFoundException('企业不存在');
-  }
-
-  async findOneByCode(code: string) {
-    const company = await this.company.findOneByCode(code);
-    if (company) {
-      return company;
-    }
-    throw new NotFoundException('企业不存在');
-  }
 }

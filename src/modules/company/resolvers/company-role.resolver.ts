@@ -1,12 +1,11 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CurrentAuthCompany, UsePermission } from 'src/auth/decorators';
+import { UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
-  CompanyRole,
-  Company,
   Target,
+  CompanyRole,
   CreateOneCompanyRoleArgs,
   FindManyCompanyRoleArgs,
   FindUniqueCompanyRoleArgs,
@@ -64,55 +63,5 @@ export class CompanyRoleResolver {
   @Mutation(() => CompanyRole)
   updateOneCompanyRole(@Args() args: UpdateOneCompanyRoleArgs): Promise<CompanyRole> {
     return this.service.updateOne(args);
-  }
-
-  /**
-   * 根据ID查询企业角色
-   * @param id
-   */
-  @UsePermission([Target.Admin, Target.User])
-  @Query(() => CompanyRole)
-  findCompanyRoleById(@Args('id') id: string): Promise<CompanyRole> {
-    return this.service.findOneById(id);
-  }
-
-  /**
-   * 根据企业ID查询角色列表
-   * @param company
-   */
-  @UsePermission([Target.Admin, Target.User])
-  @Query(() => [CompanyRole])
-  findCompanyRolesByCompany(@CurrentAuthCompany() company: Company): Promise<CompanyRole[]> {
-    return this.service.findByCompanyId(company.id);
-  }
-
-  /**
-   * 根据企业ID查询角色列表
-   * @param companyId
-   */
-  @UsePermission([Target.Admin])
-  @Query(() => [CompanyRole])
-  findCompanyRolesByCompanyId(@Args('companyId') companyId: string): Promise<CompanyRole[]> {
-    return this.service.findByCompanyId(companyId);
-  }
-
-  /**
-   * 根据名称查询企业角色
-   * @param name
-   */
-  @UsePermission([Target.Admin, Target.User])
-  @Query(() => CompanyRole)
-  findCompanyRoleByName(@Args('name') name: string): Promise<CompanyRole> {
-    return this.service.findOneByName(name);
-  }
-
-  /**
-   * 查询通用角色
-   * @param code
-   */
-  @UsePermission([Target.Admin])
-  @Query(() => CompanyRole, { nullable: true })
-  findCommonCompanyRole(@Args('code') code: string): Promise<CompanyRole | null> {
-    return this.service.findCommonRole(code);
   }
 }

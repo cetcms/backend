@@ -37,36 +37,4 @@ export class CompanyRoleService {
     const { where, data } = args;
     return this.companyRole.update(where, data);
   }
-
-  async findOneById(id: string) {
-    const companyRole = await this.companyRole.findOneById(id);
-    if (companyRole) {
-      return companyRole;
-    }
-    throw new NotFoundException('企业角色不存在');
-  }
-
-  findByCompanyId(companyId: string) {
-    return this.companyRole.findByCompanyId(companyId);
-  }
-
-  async findOneByName(name: string) {
-    const companyRole = await this.companyRole.findOneByName(name);
-    if (companyRole) {
-      return companyRole;
-    }
-    throw new NotFoundException('企业角色不存在');
-  }
-
-  saveCommonRole(code: string, data: any) {
-    return this.companyRole.saveCommonRole(code, data);
-  }
-
-  updateCommonRole(code: string, data: any) {
-    return this.companyRole.updateCommonRole(code, data);
-  }
-
-  findCommonRole(code: string) {
-    return this.companyRole.findCommonRole(code);
-  }
 }
