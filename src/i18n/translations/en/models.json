@@ -16,10 +16,7 @@
     "fingerprint": "Fingerprint",
     "device": "Device",
     "location": "Location",
-    "target": "Target",
-    "admin": "admin",
-    "user": "user",
-    "company": "company"
+    "target": "Target"
   },
   "Admin": {
     "id": "ID",
@@ -37,13 +34,7 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    },
-    "role": "role",
-    "companies": "companies",
-    "auths": "auths",
-    "logs": "logs",
-    "mediaFolders": "mediaFolders",
-    "mediaFiles": "mediaFiles"
+    }
   },
   "AdminRole": {
     "id": "ID",
@@ -56,8 +47,7 @@
     "permissions": "Permissions",
     "_relations": {
       "admins": "Admin"
-    },
-    "admins": "admins"
+    }
   },
   "AdminCompany": {
     "createdAt": "Created At",
@@ -68,9 +58,7 @@
       "company": "Company"
     },
     "companyId": "Company ID",
-    "permissions": "Permissions",
-    "admin": "admin",
-    "company": "company"
+    "permissions": "Permissions"
   },
   "User": {
     "id": "ID",
@@ -86,19 +74,14 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    },
-    "companies": "companies",
-    "auths": "auths",
-    "logs": "logs",
-    "mediaFolders": "mediaFolders",
-    "mediaFiles": "mediaFiles"
+    }
   },
   "Company": {
     "id": "ID",
     "createdAt": "Created At",
     "updatedAt": "Updated At",
     "status": "Status",
-    "name": "Name",
+    "name": "Company Name",
     "alias": "Alias",
     "code": "Code",
     "description": "Description",
@@ -110,14 +93,7 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    },
-    "auths": "auths",
-    "admins": "admins",
-    "roles": "roles",
-    "users": "users",
-    "logs": "logs",
-    "mediaFolders": "mediaFolders",
-    "mediaFiles": "mediaFiles"
+    }
   },
   "CompanyRole": {
     "id": "ID",
@@ -132,9 +108,7 @@
     "_relations": {
       "company": "Company",
       "users": "CompanyUser"
-    },
-    "company": "company",
-    "users": "users"
+    }
   },
   "CompanyUser": {
     "createdAt": "Created At",
@@ -147,10 +121,7 @@
       "role": "CompanyRole"
     },
     "userId": "User ID",
-    "roleId": "Role ID",
-    "company": "company",
-    "user": "user",
-    "role": "role"
+    "roleId": "Role ID"
   },
   "RequestLog": {
     "id": "ID",
@@ -182,10 +153,7 @@
       "company": "Company"
     },
     "adminId": "Admin ID",
-    "companyId": "Company ID",
-    "user": "user",
-    "admin": "admin",
-    "company": "company"
+    "companyId": "Company ID"
   },
   "MediaFolder": {
     "id": "ID",
@@ -210,13 +178,7 @@
     "ownerType": "Owner Type",
     "adminId": "Admin ID",
     "userId": "User ID",
-    "visibility": "Visibility",
-    "parent": "parent",
-    "children": "children",
-    "company": "company",
-    "admin": "admin",
-    "user": "user",
-    "files": "files"
+    "visibility": "Visibility"
   },
   "MediaFile": {
     "id": "ID",
@@ -249,10 +211,6 @@
     "ownerType": "Owner Type",
     "adminId": "Admin ID",
     "userId": "User ID",
-    "visibility": "Visibility",
-    "folder": "folder",
-    "company": "company",
-    "admin": "admin",
-    "user": "user"
+    "visibility": "Visibility"
   }
 }

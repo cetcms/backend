@@ -16,10 +16,7 @@
     "fingerprint": "指纹",
     "device": "设备",
     "location": "位置",
-    "target": "目标",
-    "admin": "admin",
-    "user": "user",
-    "company": "company"
+    "target": "目标"
   },
   "Admin": {
     "id": "ID",
@@ -27,7 +24,7 @@
     "updatedAt": "更新时间",
     "status": "状态",
     "name": "姓名",
-    "email": "邮箱",
+    "email": "电子邮件",
     "password": "密码",
     "roleId": "角色ID",
     "_relations": {
@@ -37,13 +34,7 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    },
-    "role": "role",
-    "companies": "companies",
-    "auths": "auths",
-    "logs": "logs",
-    "mediaFolders": "mediaFolders",
-    "mediaFiles": "mediaFiles"
+    }
   },
   "AdminRole": {
     "id": "ID",
@@ -52,12 +43,11 @@
     "status": "状态",
     "name": "名称",
     "description": "描述",
-    "code": "编码",
+    "code": "代码",
     "permissions": "权限",
     "_relations": {
       "admins": "Admin"
-    },
-    "admins": "admins"
+    }
   },
   "AdminCompany": {
     "createdAt": "创建时间",
@@ -68,9 +58,7 @@
       "company": "Company"
     },
     "companyId": "公司ID",
-    "permissions": "权限",
-    "admin": "admin",
-    "company": "company"
+    "permissions": "权限"
   },
   "User": {
     "id": "ID",
@@ -78,7 +66,7 @@
     "updatedAt": "更新时间",
     "status": "状态",
     "name": "姓名",
-    "email": "邮箱",
+    "email": "电子邮件",
     "password": "密码",
     "_relations": {
       "companies": "CompanyUser",
@@ -86,12 +74,7 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    },
-    "companies": "companies",
-    "auths": "auths",
-    "logs": "logs",
-    "mediaFolders": "mediaFolders",
-    "mediaFiles": "mediaFiles"
+    }
   },
   "Company": {
     "id": "ID",
@@ -100,7 +83,7 @@
     "status": "状态",
     "name": "公司名称",
     "alias": "别名",
-    "code": "编码",
+    "code": "公司代码",
     "description": "描述",
     "_relations": {
       "auths": "Auth",
@@ -110,14 +93,7 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    },
-    "auths": "auths",
-    "admins": "admins",
-    "roles": "roles",
-    "users": "users",
-    "logs": "logs",
-    "mediaFolders": "mediaFolders",
-    "mediaFiles": "mediaFiles"
+    }
   },
   "CompanyRole": {
     "id": "ID",
@@ -126,15 +102,13 @@
     "status": "状态",
     "name": "名称",
     "description": "描述",
-    "code": "编码",
+    "code": "代码",
     "permissions": "权限",
     "companyId": "公司ID",
     "_relations": {
       "company": "Company",
       "users": "CompanyUser"
-    },
-    "company": "company",
-    "users": "users"
+    }
   },
   "CompanyUser": {
     "createdAt": "创建时间",
@@ -147,10 +121,7 @@
       "role": "CompanyRole"
     },
     "userId": "用户ID",
-    "roleId": "角色ID",
-    "company": "company",
-    "user": "user",
-    "role": "role"
+    "roleId": "角色ID"
   },
   "RequestLog": {
     "id": "ID",
@@ -159,19 +130,19 @@
     "recordAt": "记录时间",
     "beforeAt": "之前时间",
     "afterAt": "之后时间",
-    "duration": "耗时",
+    "duration": "时长",
     "route": "路由",
     "method": "方法",
     "message": "消息",
     "headers": "请求头",
     "body": "请求体",
     "params": "参数",
-    "query": "查询",
+    "query": "查询参数",
     "device": "设备",
     "location": "位置",
     "ip": "IP",
-    "subject": "主题",
-    "action": "动作",
+    "subject": "主体",
+    "action": "操作",
     "language": "语言",
     "fingerprint": "指纹",
     "target": "目标",
@@ -182,10 +153,7 @@
       "company": "Company"
     },
     "adminId": "管理员ID",
-    "companyId": "公司ID",
-    "user": "user",
-    "admin": "admin",
-    "company": "company"
+    "companyId": "公司ID"
   },
   "MediaFolder": {
     "id": "ID",
@@ -210,13 +178,7 @@
     "ownerType": "所有者类型",
     "adminId": "管理员ID",
     "userId": "用户ID",
-    "visibility": "可见性",
-    "parent": "parent",
-    "children": "children",
-    "company": "company",
-    "admin": "admin",
-    "user": "user",
-    "files": "files"
+    "visibility": "可见性"
   },
   "MediaFile": {
     "id": "ID",
@@ -226,8 +188,8 @@
     "store": "存储",
     "status": "状态",
     "mediaType": "媒体类型",
-    "mimeType": "MIME 类型",
-    "originName": "原始名称",
+    "mimeType": "MIME类型",
+    "originName": "原始文件名",
     "fileName": "文件名",
     "fileSize": "文件大小",
     "filePath": "文件路径",
@@ -249,10 +211,6 @@
     "ownerType": "所有者类型",
     "adminId": "管理员ID",
     "userId": "用户ID",
-    "visibility": "可见性",
-    "folder": "folder",
-    "company": "company",
-    "admin": "admin",
-    "user": "user"
+    "visibility": "可见性"
   }
 }

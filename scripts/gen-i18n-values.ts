@@ -33,16 +33,15 @@ export const main = async () => {
             translations[langFilePath] = {};
           }
         }
-        if (!get(translations[langFilePath], `${model.name}.${field.name}`)) {
-          const key = `${model.name}.${field.name}`;
-          translations[langFilePath] = set(translations[langFilePath], key, key);
-        }
         if (field.relationName) {
           translations[langFilePath] = set(
             translations[langFilePath],
             `${model.name}._relations.${field.name}`,
             field.type
           );
+        } else if (!get(translations[langFilePath], `${model.name}.${field.name}`)) {
+          const key = `${model.name}.${field.name}`;
+          translations[langFilePath] = set(translations[langFilePath], key, key);
         }
       }
     }
