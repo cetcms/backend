@@ -11,6 +11,7 @@ import voca from 'voca';
 
 @Injectable()
 export class I18nService implements OnModuleInit {
+  protected namespace: string;
   private readonly i18n = i18next;
   private readonly logger = new Logger(I18nService.name);
   private callbackLanguages = {
@@ -39,16 +40,25 @@ export class I18nService implements OnModuleInit {
         addPath: path.resolve('src', 'i18n', 'translations', '{{lng}}', '{{ns}}.missing.json'),
       },
     });
+
     this.logger.log(`Initialized with languages: ${languages.join(', ')}`);
   }
 
   private translationParams() {
     const { defaultLocaleLang } = this.config.getAppConfig();
-    const languages = fs.readdirSync(path.resolve(__dirname, 'translations'));
-    const namespaces = fs.readdirSync(path.resolve(__dirname, 'translations', defaultLocaleLang));
+    const transDir = path.resolve(__dirname, 'translations');
+    const langDir = path.resolve(transDir, defaultLocaleLang);
+    const languages = fs.readdirSync(transDir, { withFileTypes: true });
+    const namespaces = fs.readdirSync(langDir, { withFileTypes: true });
     const result = {
-      languages: languages.map((ln) => ln.split('.').shift()).filter((l) => !!l) as string[],
-      namespaces: namespaces.map((ns) => ns.split('.').shift()).filter((s) => !!s) as string[],
+      languages: languages
+        .filter((d) => d.isDirectory())
+        .map((d) => d.name.split('.').shift())
+        .filter((v) => !!v) as string[],
+      namespaces: namespaces
+        .filter((d) => d.isFile())
+        .map((d) => d.name.split('.').shift())
+        .filter((v) => !!v) as string[],
     };
     result.languages = [...new Set(result.languages)];
     result.namespaces = [...new Set(result.namespaces)];
@@ -90,7 +100,22 @@ export class I18nService implements OnModuleInit {
     return acceptLanguage.get(Array.isArray(language) ? language.join(',') : language) || defaultLocaleLang;
   }
 
-  t(key: string, options?: { lng?: string; ns?: string }) {
-    return this.i18n.t(key, options);
+  setNamespace(namespace: string) {
+    this.namespace = namespace;
+  }
+
+  all(ns?: string, lng?: string) {
+    const { defaultLocaleNs } = this.config.getAppConfig();
+    if (!lng) lng = this.currentLanguage();
+    if (!ns) ns = defaultLocaleNs;
+    return this.i18n.getResourceBundle(lng, ns);
+  }
+
+  t(key: string, defaultValue?: string, options?: { lng?: string; ns?: string }) {
+    return this.i18n.t(key, {
+      ns: this.namespace,
+      defaultValue,
+      ...options,
+    });
   }
 }
