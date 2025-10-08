@@ -16,7 +16,13 @@
     "fingerprint": "指紋",
     "device": "裝置",
     "location": "位置",
-    "target": "目標"
+    "target": "目標",
+    "_enums": {
+      "target": "Target"
+    },
+    "admin": "管理員",
+    "user": "用戶",
+    "company": "公司"
   },
   "Admin": {
     "id": "ID",
@@ -34,7 +40,16 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "role": "角色",
+    "companies": "公司",
+    "auths": "認證",
+    "logs": "日誌",
+    "mediaFolders": "媒體資料夾",
+    "mediaFiles": "媒體檔案"
   },
   "AdminRole": {
     "id": "ID",
@@ -47,7 +62,11 @@
     "permissions": "權限",
     "_relations": {
       "admins": "Admin"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "admins": "管理員"
   },
   "AdminCompany": {
     "createdAt": "建立時間",
@@ -58,7 +77,9 @@
       "company": "Company"
     },
     "companyId": "公司ID",
-    "permissions": "權限"
+    "permissions": "權限",
+    "admin": "管理員",
+    "company": "公司"
   },
   "User": {
     "id": "ID",
@@ -74,7 +95,15 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "companies": "User.companies",
+    "auths": "User.auths",
+    "logs": "User.logs",
+    "mediaFolders": "User.mediaFolders",
+    "mediaFiles": "User.mediaFiles"
   },
   "Company": {
     "id": "ID",
@@ -93,7 +122,17 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "auths": "認證",
+    "admins": "管理員",
+    "roles": "角色",
+    "users": "用戶",
+    "logs": "日誌",
+    "mediaFolders": "媒體資料夾",
+    "mediaFiles": "媒體檔案"
   },
   "CompanyRole": {
     "id": "ID",
@@ -108,7 +147,12 @@
     "_relations": {
       "company": "Company",
       "users": "CompanyUser"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "company": "公司",
+    "users": "用戶"
   },
   "CompanyUser": {
     "createdAt": "建立時間",
@@ -121,7 +165,13 @@
       "role": "CompanyRole"
     },
     "userId": "使用者ID",
-    "roleId": "角色ID"
+    "roleId": "角色ID",
+    "_enums": {
+      "status": "Status"
+    },
+    "company": "公司",
+    "user": "用戶",
+    "role": "角色"
   },
   "RequestLog": {
     "id": "ID",
@@ -153,7 +203,14 @@
       "company": "Company"
     },
     "adminId": "管理員ID",
-    "companyId": "公司ID"
+    "companyId": "公司ID",
+    "_enums": {
+      "method": "RequestMethod",
+      "target": "Target"
+    },
+    "user": "用戶",
+    "admin": "管理員",
+    "company": "公司"
   },
   "MediaFolder": {
     "id": "ID",
@@ -178,7 +235,18 @@
     "ownerType": "所有者類型",
     "adminId": "管理員ID",
     "userId": "使用者ID",
-    "visibility": "可見性"
+    "visibility": "可見性",
+    "_enums": {
+      "status": "Status",
+      "ownerType": "Target",
+      "visibility": "MediaVisibility"
+    },
+    "parent": "父級",
+    "children": "子級",
+    "company": "公司",
+    "admin": "管理員",
+    "user": "用戶",
+    "files": "檔案"
   },
   "MediaFile": {
     "id": "ID",
@@ -211,6 +279,57 @@
     "ownerType": "所有者類型",
     "adminId": "管理員ID",
     "userId": "使用者ID",
-    "visibility": "可見性"
+    "visibility": "可見性",
+    "_enums": {
+      "store": "MediaStore",
+      "status": "Status",
+      "mediaType": "MediaType",
+      "ownerType": "Target",
+      "visibility": "MediaVisibility"
+    },
+    "folder": "資料夾",
+    "company": "公司",
+    "admin": "管理員",
+    "user": "用戶"
+  },
+  "enum": {
+    "Target": {
+      "Admin": "管理員",
+      "User": "用戶"
+    },
+    "Status": {
+      "Enabled": "啟用",
+      "Disabled": "停用"
+    },
+    "RequestMethod": {
+      "GET": "GET",
+      "POST": "POST",
+      "PUT": "PUT",
+      "DELETE": "DELETE",
+      "PATCH": "PATCH",
+      "OPTIONS": "OPTIONS",
+      "HEAD": "HEAD",
+      "GRAPHQL": "GRAPHQL"
+    },
+    "MediaVisibility": {
+      "Public": "公開",
+      "Private": "私有",
+      "Shared": "共享"
+    },
+    "MediaStore": {
+      "Local": "本地",
+      "Qiniu": "七牛雲",
+      "Oss": "阿里雲 OSS",
+      "Cos": "騰訊雲 COS",
+      "S3": "AWS S3"
+    },
+    "MediaType": {
+      "Image": "圖片",
+      "Video": "視頻",
+      "Audio": "音頻",
+      "Document": "文檔",
+      "Archive": "歸檔文件",
+      "Other": "其他"
+    }
   }
 }

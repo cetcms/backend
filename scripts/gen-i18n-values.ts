@@ -9,6 +9,15 @@ export const main = async () => {
   const schema = fs.readFileSync(path.resolve(process.cwd(), 'prisma/schema.prisma'), 'utf-8');
   const dmmf = await getDMMF({ datamodel: schema });
   const { models } = dmmf.datamodel;
+  const enums: Array<{ name: string; values: readonly string[] }> =
+    dmmf.schema.enumTypes.model?.flatMap((v) => ({
+      name: v.name,
+      values: v.values,
+    })) || [];
+  const enumsMap: Record<string, string[]> = enums.reduce((res: any, v) => {
+    res[v.name] = v.values;
+    return res;
+  }, {});
 
   // 动态获取支持的语言
   const i18nDir = path.resolve(process.cwd(), 'src/i18n/translations');
@@ -20,8 +29,12 @@ export const main = async () => {
   const translations = {};
   for (const model of models) {
     for (const field of model.fields) {
+      const fieldType = field.type;
+      const fieldName = field.name;
+      const modelName = model.name;
+      const key = `${modelName}.${fieldName}`;
       if (field.relationName) {
-        relations = set(relations, `${model.name}.${field.name}`, field.type);
+        relations = set(relations, key, fieldType);
       }
       for (const lang of languages) {
         const langFilePath = path.resolve(process.cwd(), `src/i18n/translations/${lang}/models.json`);
@@ -33,15 +46,26 @@ export const main = async () => {
             translations[langFilePath] = {};
           }
         }
+        if (field.kind === 'enum') {
+          if (enumsMap[fieldType]) {
+            enumsMap[fieldType].forEach((enumValue) => {
+              const enumKey = `enum.${fieldType}.${enumValue}`;
+              if (!get(translations[langFilePath], enumKey)) {
+                translations[langFilePath] = set(translations[langFilePath], enumKey, enumValue);
+              }
+            });
+          }
+          translations[langFilePath] = set(translations[langFilePath], `${modelName}._enums.${fieldName}`, fieldType);
+        }
+        if (!get(translations[langFilePath], key)) {
+          translations[langFilePath] = set(translations[langFilePath], key, key);
+        }
         if (field.relationName) {
           translations[langFilePath] = set(
             translations[langFilePath],
-            `${model.name}._relations.${field.name}`,
-            field.type
+            `${modelName}._relations.${fieldName}`,
+            fieldType
           );
-        } else if (!get(translations[langFilePath], `${model.name}.${field.name}`)) {
-          const key = `${model.name}.${field.name}`;
-          translations[langFilePath] = set(translations[langFilePath], key, key);
         }
       }
     }

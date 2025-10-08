@@ -19,6 +19,7 @@ generator graphql {
   reExport           = "All"
   noAtomicOperations = "true"
   omitModelsCount    = "true"
+  purgeOutput        = "true"
 
   fields_Validator_from  = "class-validator"
   fields_Validator_input = "true"
@@ -28,6 +29,12 @@ generator graphql {
   decorate_1_name      = "HideField"
   decorate_1_from      = "@nestjs/graphql"
   decorate_1_arguments = "[]"
+
+  decorate_2_type      = "*WhereUniqueInput"
+  decorate_2_field     = "+(AND|OR|NOT|createdAt|updatedAt)"
+  decorate_2_name      = "HideField"
+  decorate_2_from      = "@nestjs/graphql"
+  decorate_2_arguments = "[]"
 
   decorate_4_type      = "!(*Create*|*Update*)"
   decorate_4_field     = "password"

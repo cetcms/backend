@@ -16,7 +16,13 @@
     "fingerprint": "Fingerprint",
     "device": "Device",
     "location": "Location",
-    "target": "Target"
+    "target": "Target",
+    "_enums": {
+      "target": "Target"
+    },
+    "admin": "Admin",
+    "user": "User",
+    "company": "Company"
   },
   "Admin": {
     "id": "ID",
@@ -34,7 +40,16 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "role": "Role",
+    "companies": "Companies",
+    "auths": "Auths",
+    "logs": "Logs",
+    "mediaFolders": "Media Folders",
+    "mediaFiles": "Media Files"
   },
   "AdminRole": {
     "id": "ID",
@@ -47,7 +62,11 @@
     "permissions": "Permissions",
     "_relations": {
       "admins": "Admin"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "admins": "Admins"
   },
   "AdminCompany": {
     "createdAt": "Created At",
@@ -58,7 +77,9 @@
       "company": "Company"
     },
     "companyId": "Company ID",
-    "permissions": "Permissions"
+    "permissions": "Permissions",
+    "admin": "Admin",
+    "company": "Company"
   },
   "User": {
     "id": "ID",
@@ -74,7 +95,15 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "companies": "User.companies",
+    "auths": "User.auths",
+    "logs": "User.logs",
+    "mediaFolders": "User.mediaFolders",
+    "mediaFiles": "User.mediaFiles"
   },
   "Company": {
     "id": "ID",
@@ -93,7 +122,17 @@
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "auths": "Auths",
+    "admins": "Admins",
+    "roles": "Roles",
+    "users": "Users",
+    "logs": "Logs",
+    "mediaFolders": "Media Folders",
+    "mediaFiles": "Media Files"
   },
   "CompanyRole": {
     "id": "ID",
@@ -108,7 +147,12 @@
     "_relations": {
       "company": "Company",
       "users": "CompanyUser"
-    }
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "company": "Company",
+    "users": "Users"
   },
   "CompanyUser": {
     "createdAt": "Created At",
@@ -121,7 +165,13 @@
       "role": "CompanyRole"
     },
     "userId": "User ID",
-    "roleId": "Role ID"
+    "roleId": "Role ID",
+    "_enums": {
+      "status": "Status"
+    },
+    "company": "Company",
+    "user": "User",
+    "role": "Role"
   },
   "RequestLog": {
     "id": "ID",
@@ -153,7 +203,14 @@
       "company": "Company"
     },
     "adminId": "Admin ID",
-    "companyId": "Company ID"
+    "companyId": "Company ID",
+    "_enums": {
+      "method": "RequestMethod",
+      "target": "Target"
+    },
+    "user": "User",
+    "admin": "Admin",
+    "company": "Company"
   },
   "MediaFolder": {
     "id": "ID",
@@ -178,7 +235,18 @@
     "ownerType": "Owner Type",
     "adminId": "Admin ID",
     "userId": "User ID",
-    "visibility": "Visibility"
+    "visibility": "Visibility",
+    "_enums": {
+      "status": "Status",
+      "ownerType": "Target",
+      "visibility": "MediaVisibility"
+    },
+    "parent": "Parent",
+    "children": "Children",
+    "company": "Company",
+    "admin": "Admin",
+    "user": "User",
+    "files": "Files"
   },
   "MediaFile": {
     "id": "ID",
@@ -211,6 +279,57 @@
     "ownerType": "Owner Type",
     "adminId": "Admin ID",
     "userId": "User ID",
-    "visibility": "Visibility"
+    "visibility": "Visibility",
+    "_enums": {
+      "store": "MediaStore",
+      "status": "Status",
+      "mediaType": "MediaType",
+      "ownerType": "Target",
+      "visibility": "MediaVisibility"
+    },
+    "folder": "Folder",
+    "company": "Company",
+    "admin": "Admin",
+    "user": "User"
+  },
+  "enum": {
+    "Target": {
+      "Admin": "Admin",
+      "User": "User"
+    },
+    "Status": {
+      "Enabled": "Enabled",
+      "Disabled": "Disabled"
+    },
+    "RequestMethod": {
+      "GET": "GET",
+      "POST": "POST",
+      "PUT": "PUT",
+      "DELETE": "DELETE",
+      "PATCH": "PATCH",
+      "OPTIONS": "OPTIONS",
+      "HEAD": "HEAD",
+      "GRAPHQL": "GRAPHQL"
+    },
+    "MediaVisibility": {
+      "Public": "Public",
+      "Private": "Private",
+      "Shared": "Shared"
+    },
+    "MediaStore": {
+      "Local": "Local",
+      "Qiniu": "Qiniu",
+      "Oss": "OSS",
+      "Cos": "COS",
+      "S3": "S3"
+    },
+    "MediaType": {
+      "Image": "Image",
+      "Video": "Video",
+      "Audio": "Audio",
+      "Document": "Document",
+      "Archive": "Archive",
+      "Other": "Other"
+    }
   }
 }

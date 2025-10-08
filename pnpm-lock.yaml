@@ -202,8 +202,8 @@ importers:
         specifier: ^21.2.0
         version: 21.2.0
       prisma-zod-generator:
-        specifier: 1.20.2
-        version: 1.20.2(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)(zod@4.1.8)
+        specifier: ^1.27.3
+        version: 1.27.3(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)(zod@4.1.8)
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -1289,6 +1289,18 @@ packages:
 
   '@prisma/client@6.16.1':
     resolution: {integrity: sha512-QaBCOY29lLAxEFFJgBPyW3WInCW52fJeQTmWx/h6YsP5u0bwuqP51aP0uhqFvhK9DaZPwvai/M4tSDYLVE9vRg==}
+    engines: {node: '>=18.18'}
+    peerDependencies:
+      prisma: '*'
+      typescript: '>=5.1.0'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+      typescript:
+        optional: true
+
+  '@prisma/client@6.16.3':
+    resolution: {integrity: sha512-JfNfAtXG+/lIopsvoZlZiH2k5yNx87mcTS4t9/S5oufM1nKdXYxOvpDC1XoTCFBa5cQh7uXnbMPsmZrwZY80xw==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
@@ -4049,8 +4061,8 @@ packages:
     resolution: {integrity: sha512-Mkb4brKW8NF3f7fq+H4ypdbbESxDnWdaszss2OIBxqutPV8N7DttdbKlmLnxo3Srk6fgW58nYQ4H5PJRKqKZxw==}
     hasBin: true
 
-  prisma-zod-generator@1.20.2:
-    resolution: {integrity: sha512-1eog/Xs6hgpn7YHaTjFlhJuOLvUxhCFk751xsFEKTp/ZcRVJU7OqMS4cxk1kRnMRmQyMVMV9DwzOJW/giLm7Ww==}
+  prisma-zod-generator@1.27.3:
+    resolution: {integrity: sha512-N6MWwIdOWGDZEMm4tou1RwRA0mzyZugEnv1ycnvWbifi1HFALn5z6SLUJE3Znz71BI9JmZMY8NfjlM83QFazEw==}
     hasBin: true
     peerDependencies:
       zod: '>=3.25.0 <5'
@@ -6150,6 +6162,11 @@ snapshots:
   '@pkgr/core@0.2.9': {}
 
   '@prisma/client@6.16.1(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)':
+    optionalDependencies:
+      prisma: 6.16.1(typescript@5.9.2)
+      typescript: 5.9.2
+
+  '@prisma/client@6.16.3(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)':
     optionalDependencies:
       prisma: 6.16.1(typescript@5.9.2)
       typescript: 5.9.2
@@ -9334,10 +9351,10 @@ snapshots:
       pupa: 2.1.1
       ts-morph: 16.0.0
 
-  prisma-zod-generator@1.20.2(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)(zod@4.1.8):
+  prisma-zod-generator@1.27.3(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)(zod@4.1.8):
     dependencies:
-      '@prisma/client': 6.16.1(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)
-      '@prisma/generator-helper': 6.16.1
+      '@prisma/client': 6.16.3(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)
+      '@prisma/generator-helper': 6.16.2
       '@prisma/internals': 6.16.2(typescript@5.9.2)
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
