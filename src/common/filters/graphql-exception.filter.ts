@@ -17,27 +17,19 @@ export class GraphQLExceptionFilter implements ExceptionFilter {
 
     // Handle Prisma errors according to Prisma error reference
     if (exception.code && exception.code.startsWith('P')) {
-      switch (exception.code) {
-        case 'P2002': {
-          const modelName = exception.meta?.modelName;
-          const target = exception.meta?.target;
-          let field = '';
-
-          if (modelName && target) {
-            if (Array.isArray(target)) {
-              field = t(`models:${modelName}.${target.join('.')}`);
-            } else {
-              field = t(`models:${modelName}.${target}`);
-            }
-          }
-
-          response.path = Array.isArray(target) ? target.join('.') : target;
-          response.message = t('exception:prisma.P2002', { field });
-          break;
+      const options: { [key: string]: any } = {};
+      const { modelName, target } = exception.meta;
+      if (modelName && target) {
+        if (Array.isArray(target)) {
+          options.field = t(`models:${modelName}.${target.join('.')}`);
+        } else {
+          options.field = t(`models:${modelName}.${target}`);
         }
-        default:
-          response.message = t(`exception:prisma.${exception.code}`);
       }
+      if (target) {
+        response.path = Array.isArray(target) ? target.join('.') : target;
+      }
+      response.message = t(`exception:prisma.${exception.code}`, options);
     }
 
     throw new HttpException(JSON.stringify(response), exception.status);

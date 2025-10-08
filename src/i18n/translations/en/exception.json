@@ -16,7 +16,7 @@
     "P1017": "Server has closed the connection.",
     "P2000": "The provided value for the column is too long.",
     "P2001": "The record searched for does not exist.",
-    "P2002": "The entered **{{field}}** already exists in the database",
+    "P2002": "The entered {{field}} already exists in the database",
     "P2003": "Foreign key constraint failed.",
     "P2004": "A constraint failed on the database.",
     "P2005": "The value stored in the database is invalid for the field's type.",
