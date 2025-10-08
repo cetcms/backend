@@ -1,4 +1,5 @@
 {
+  "validation": "Field validation failed",
   "prisma": {
     "P1000": "Authentication failed against database server. Please make sure to provide valid database credentials.",
     "P1001": "Can't reach database server. Please make sure your database server is running.",

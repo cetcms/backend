@@ -8,6 +8,8 @@ import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import { ConfigService } from 'src/config/config.service';
 import voca from 'voca';
+import { z } from 'zod';
+import { en, zhCN, zhTW } from 'zod/locales';
 
 @Injectable()
 export class I18nService implements OnModuleInit {
@@ -17,6 +19,11 @@ export class I18nService implements OnModuleInit {
   private callbackLanguages = {
     zh: ['zh-hans', 'zh-sg', 'cn', 'chinese'],
     zhHant: ['zh-hant', 'zh-hk', 'zh-tw', 'zh-ms', 'tw', 'hk'],
+  };
+  private readonly zodLocaleMap = {
+    en: en(),
+    zh: zhCN(),
+    zhHant: zhTW(),
   };
 
   constructor(private readonly config: ConfigService) {}
@@ -82,9 +89,11 @@ export class I18nService implements OnModuleInit {
     return this.i18n.language;
   }
 
-  changeLanguage(lng: string) {
+  async changeLanguage(lng: string) {
     lng = this.parseLanguage(lng);
-    return this.i18n.changeLanguage(lng);
+    const changed = await this.i18n.changeLanguage(lng);
+    z.config(this.zodLocaleMap[this.i18n.language]);
+    return changed;
   }
 
   requestLanguage(req: Request) {
@@ -123,6 +132,7 @@ export class I18nService implements OnModuleInit {
       await i18n.changeLanguage(lng);
     }
     if (ns) i18n.setDefaultNamespace(ns);
+    z.config(this.zodLocaleMap[i18n.language]);
     return i18n;
   }
 }
