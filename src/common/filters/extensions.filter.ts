@@ -1,25 +1,19 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, ContextType } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { ArgumentsHost, Catch, ExceptionFilter, ContextType } from '@nestjs/common';
+import { I18nService } from 'src/i18n';
+
+import { GraphQLExceptionFilter } from './graphql-exception.filter';
+import { HttpExceptionFilter } from './http-exception.filter';
 
 @Catch()
 export class ExtensionsFilter implements ExceptionFilter {
-  catch(exception: HttpException, host: ArgumentsHost) {
+  constructor(private readonly i18n: I18nService) {}
+  catch(exception: any, host: ArgumentsHost) {
     const type = host.getType<ContextType | 'graphql'>();
     switch (type) {
-      case 'http': {
-        const ctx = host.switchToHttp();
-        const response = ctx.getResponse<Response>();
-        const request = ctx.getRequest<Request>();
-        const status = exception.getStatus();
-
-        response.status(status).json({
-          statusCode: status,
-          message: exception.message,
-          timestamp: new Date().toISOString(),
-          path: request.url,
-        });
-        break;
-      }
+      case 'http':
+        return new HttpExceptionFilter(this.i18n).catch(exception, host);
+      case 'graphql':
+        return new GraphQLExceptionFilter(this.i18n).catch(exception, host);
       default:
         throw exception;
     }

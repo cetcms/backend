@@ -1299,8 +1299,8 @@ packages:
       typescript:
         optional: true
 
-  '@prisma/client@6.16.3':
-    resolution: {integrity: sha512-JfNfAtXG+/lIopsvoZlZiH2k5yNx87mcTS4t9/S5oufM1nKdXYxOvpDC1XoTCFBa5cQh7uXnbMPsmZrwZY80xw==}
+  '@prisma/client@6.17.0':
+    resolution: {integrity: sha512-b42mTLOdLEZ6e/igu8CLdccAUX9AwHknQQ1+pHOftnzDP2QoyZyFvcANqSLs5ockimFKJnV7Ljf+qrhNYf6oAg==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
@@ -6166,7 +6166,7 @@ snapshots:
       prisma: 6.16.1(typescript@5.9.2)
       typescript: 5.9.2
 
-  '@prisma/client@6.16.3(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)':
+  '@prisma/client@6.17.0(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)':
     optionalDependencies:
       prisma: 6.16.1(typescript@5.9.2)
       typescript: 5.9.2
@@ -9353,7 +9353,7 @@ snapshots:
 
   prisma-zod-generator@1.27.3(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)(zod@4.1.8):
     dependencies:
-      '@prisma/client': 6.16.3(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)
+      '@prisma/client': 6.17.0(prisma@6.16.1(typescript@5.9.2))(typescript@5.9.2)
       '@prisma/generator-helper': 6.16.2
       '@prisma/internals': 6.16.2(typescript@5.9.2)
       ajv: 8.17.1

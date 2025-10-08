@@ -65,11 +65,7 @@ export class I18nService implements OnModuleInit {
     return result;
   }
 
-  currentLanguage() {
-    return this.i18n.language;
-  }
-
-  changeLanguage(lng: string) {
+  private parseLanguage(lng: string) {
     const key = Object.keys(this.callbackLanguages).find((key) => {
       const languages = this.callbackLanguages[key];
       if (Array.isArray(languages)) {
@@ -79,7 +75,16 @@ export class I18nService implements OnModuleInit {
       }
     });
     if (key) lng = voca.kebabCase(key);
-    return this.i18n.changeLanguage(lng.toLowerCase());
+    return lng.toLowerCase();
+  }
+
+  currentLanguage() {
+    return this.i18n.language;
+  }
+
+  changeLanguage(lng: string) {
+    lng = this.parseLanguage(lng);
+    return this.i18n.changeLanguage(lng);
   }
 
   requestLanguage(req: Request) {
@@ -100,10 +105,6 @@ export class I18nService implements OnModuleInit {
     return acceptLanguage.get(Array.isArray(language) ? language.join(',') : language) || defaultLocaleLang;
   }
 
-  setNamespace(namespace: string) {
-    this.namespace = namespace;
-  }
-
   all(ns?: string, lng?: string) {
     const { defaultLocaleNs } = this.config.getAppConfig();
     if (!lng) lng = this.currentLanguage();
@@ -111,11 +112,17 @@ export class I18nService implements OnModuleInit {
     return this.i18n.getResourceBundle(lng, ns);
   }
 
-  t(key: string, defaultValue?: string, options?: { lng?: string; ns?: string }) {
-    return this.i18n.t(key, {
-      ns: this.namespace,
-      defaultValue,
-      ...options,
-    });
+  getI18n() {
+    return this.i18n;
+  }
+
+  async useTranslation(ns?: string | string[], lng?: string) {
+    const i18n = this.getI18n();
+    if (lng) {
+      lng = this.parseLanguage(lng);
+      await i18n.changeLanguage(lng);
+    }
+    if (ns) i18n.setDefaultNamespace(ns);
+    return i18n;
   }
 }

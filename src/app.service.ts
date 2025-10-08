@@ -38,7 +38,7 @@ export class AppService {
 
     this.app.useStaticAssets(path.join(__dirname, '..', 'public'));
 
-    this.app.useGlobalFilters(new ExtensionsFilter());
+    this.app.useGlobalFilters(new ExtensionsFilter(i18n));
 
     this.app.useGlobalInterceptors(new LoggingInterceptor());
 
