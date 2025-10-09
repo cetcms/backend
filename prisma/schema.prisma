@@ -380,6 +380,7 @@ enum RequestMethod {
   OPTIONS
   HEAD
   GRAPHQL
+  GRAPHQL_WS
 }
 
 model RequestLog {

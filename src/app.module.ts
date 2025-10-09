@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AppResolver } from 'src/app.resolver';
 import { ConfigModule } from 'src/config';
 import { DatabaseModule } from 'src/database';
 import { RepositoriesModule } from 'src/repositories/repositories.module';
@@ -13,6 +14,6 @@ import { ModulesModule } from './modules/modules.module';
 @Module({
   imports: [CommonModule, AuthModule, DatabaseModule, I18nModule, RepositoriesModule, ModulesModule, ConfigModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppResolver],
 })
 export class AppModule {}

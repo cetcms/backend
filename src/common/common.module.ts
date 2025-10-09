@@ -15,6 +15,9 @@ import * as Services from './services';
       playground: true,
       autoSchemaFile: true,
       debug: true,
+      subscriptions: {
+        'graphql-ws': true,
+      },
     }),
   ],
 })

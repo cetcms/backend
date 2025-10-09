@@ -12,7 +12,7 @@ export class AppController {
   }
 
   @Get('health')
-  health() {
+  healthCheck() {
     return this.appService.health();
   }
 }

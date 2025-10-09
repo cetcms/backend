@@ -6,7 +6,12 @@ export class AppResolver {
   constructor(private appService: AppService) {}
 
   @Query(() => String)
-  health() {
+  helloWorld(): string {
+    return 'Hello World!';
+  }
+
+  @Query(() => String)
+  healthCheck() {
     return this.appService.health();
   }
 }

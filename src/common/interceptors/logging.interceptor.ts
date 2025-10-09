@@ -27,6 +27,11 @@ export class LoggingInterceptor implements NestInterceptor {
    * @returns 可观察对象，用于处理异步操作
    */
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    // 排除心跳检查方法的记录
+    if (context.getHandler().name === 'healthCheck') {
+      return next.handle();
+    }
+
     // 构建请求日志数据
     const data = this.buildData(context);
 
@@ -100,6 +105,11 @@ export class LoggingInterceptor implements NestInterceptor {
       afterAt: null, // 请求结束时间（初始为空）
       duration: 0n, // 请求处理耗时（初始为0）
     };
+
+    if (!request.res) {
+      data.method = 'GRAPHQL_WS';
+    }
+
     return data;
   }
 

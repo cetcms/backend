@@ -1,5 +1,5 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/edge';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { I18nService } from 'src/i18n';
 import { ZodError } from 'zod';
 
@@ -31,7 +31,7 @@ export class GraphQLExceptionFilter implements ExceptionFilter {
     }
 
     // Handle Prisma errors according to Prisma error reference
-    if (exception instanceof PrismaClientKnownRequestError) {
+    if (exception.name === PrismaClientKnownRequestError.name) {
       const options: { [key: string]: any } = {};
       const { modelName, target } = exception.meta || {};
       if (modelName && target) {

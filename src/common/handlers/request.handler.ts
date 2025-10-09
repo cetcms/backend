@@ -18,7 +18,7 @@ export function RequestHandler(req: Request) {
      * @returns 客户端IP地址，如果无法获取则返回null
      */
     getIp() {
-      return getClientIp(req) || null;
+      return req.res ? getClientIp(req) || null : null;
     },
 
     /**
@@ -74,7 +74,7 @@ export function RequestHandler(req: Request) {
      * @returns 客户端请求的语言，如果未设置则默认返回'en'
      */
     getLanguage() {
-      return req.header(RequestHeaders.Language.toLowerCase()) || 'en';
+      return req.header?.(RequestHeaders.Language.toLowerCase()) || 'en';
     },
 
     /**
@@ -82,7 +82,7 @@ export function RequestHandler(req: Request) {
      * @returns 用户代理字符串，如果不存在则返回null
      */
     getUserAgent() {
-      return req.header(RequestHeaders.UserAgent.toLowerCase()) || null;
+      return req.header?.(RequestHeaders.UserAgent.toLowerCase()) || null;
     },
 
     /**
@@ -91,7 +91,7 @@ export function RequestHandler(req: Request) {
      */
     getFingerprint() {
       // 获取设备指纹
-      const fingerprint = req.header(RequestHeaders.Fingerprint.toLowerCase());
+      const fingerprint = req.header?.(RequestHeaders.Fingerprint.toLowerCase());
       if (AppConfig.auth.enableFingerprint && !fingerprint) {
         throw new ForbiddenException(`${RequestHeaders.Fingerprint} must be present in the header`);
       }
