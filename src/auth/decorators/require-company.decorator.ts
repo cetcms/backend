@@ -38,7 +38,7 @@ import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
 import { CompanyGuard } from 'src/auth/guards';
 import { Target } from 'src/generated/graphql';
 
-export const REQUIRE_COMPANY_KEY = 'isPublicAccess';
+export const REQUIRE_COMPANY_KEY = 'requireCompany';
 export const RequireCompany = (targets: Target[] = []) => {
   return applyDecorators(SetMetadata(REQUIRE_COMPANY_KEY, targets), UseGuards(CompanyGuard));
 };
