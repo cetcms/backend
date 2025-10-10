@@ -151,7 +151,10 @@ export abstract class CompanyRoleAbstract {
    * @private
    */
   private parseCreateData(data: CompanyRoleCreateInput) {
-    return CompanyRoleCreateInputObjectZodSchema.parse(data) as unknown as Prisma.CompanyRoleCreateInput;
+    return CompanyRoleCreateInputObjectZodSchema.omit({
+      users: true,
+      admins: true,
+    }).parse(data) as unknown as Prisma.CompanyRoleCreateInput;
   }
 
   /**

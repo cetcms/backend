@@ -149,7 +149,13 @@ export abstract class UserAbstract {
    * @private
    */
   private parseCreateData(data: UserCreateInput) {
-    return UserCreateInputObjectZodSchema.parse(data) as unknown as Prisma.UserCreateInput;
+    return UserCreateInputObjectZodSchema.omit({
+      companies: true,
+      auths: true,
+      logs: true,
+      mediaFiles: true,
+      mediaFolders: true,
+    }).parse(data) as unknown as Prisma.UserCreateInput;
   }
 
   /**
@@ -162,7 +168,13 @@ export abstract class UserAbstract {
    * @private
    */
   private parseUpdateData(data: UserUpdateInput) {
-    return UserUpdateInputObjectZodSchema.parse(data) as unknown as Prisma.UserUpdateInput;
+    return UserUpdateInputObjectZodSchema.omit({
+      companies: true,
+      auths: true,
+      logs: true,
+      mediaFiles: true,
+      mediaFolders: true,
+    }).parse(data) as unknown as Prisma.UserUpdateInput;
   }
 
   /**

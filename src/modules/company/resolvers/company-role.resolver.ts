@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UsePermission } from 'src/auth/decorators';
+import { CurrentAuth, UsePermission } from 'src/auth/decorators';
+import { PermissionInfo } from 'src/auth/graphql';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
@@ -10,6 +11,7 @@ import {
   FindManyCompanyRoleArgs,
   FindUniqueCompanyRoleArgs,
   UpdateOneCompanyRoleArgs,
+  CompanyRoleWhereUniqueInput,
 } from 'src/generated/graphql';
 
 import { CompanyRoleService } from '../services';
@@ -17,8 +19,8 @@ import { CompanyRoleService } from '../services';
 const PaginatedCompanyRole = Paginated(CompanyRole);
 
 /**
- * 企业角色模块
- * @module CompanyRole
+ * 企业角色管理
+ * @group Company
  */
 @Resolver()
 @UseGuards(JwtAuthGuard)
@@ -63,5 +65,17 @@ export class CompanyRoleResolver {
   @Mutation(() => CompanyRole)
   updateOneCompanyRole(@Args() args: UpdateOneCompanyRoleArgs): Promise<CompanyRole> {
     return this.service.updateOne(args);
+  }
+
+  /**
+   * 获取企业角色权限列表
+   */
+  @UsePermission([Target.Admin, Target.User])
+  @Query(() => [PermissionInfo])
+  listCompanyRolePermission(
+    @CurrentAuth() auth: CurrentAuth,
+    @Args('where', { nullable: true }) where?: CompanyRoleWhereUniqueInput
+  ) {
+    return this.service.permissionInfo(auth, where);
   }
 }

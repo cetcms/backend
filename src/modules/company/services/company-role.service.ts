@@ -1,16 +1,25 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { CurrentAuth } from 'src/auth/decorators';
+import { PermissionInfo, PermissionItem } from 'src/auth/graphql';
 import { PaginationResult } from 'src/common/dto';
+import { SystemContract } from 'src/contracts';
 import {
+  CompanyRoleWhereUniqueInput,
   CreateOneCompanyRoleArgs,
   FindManyCompanyRoleArgs,
   FindUniqueCompanyRoleArgs,
+  Target,
   UpdateOneCompanyRoleArgs,
 } from 'src/generated/graphql';
-import { CompanyRoleRepository } from 'src/repositories';
+import { Permissions } from 'src/generated/permissions';
+import { AdminRoleRepository, CompanyRoleRepository } from 'src/repositories';
 
 @Injectable()
 export class CompanyRoleService {
-  constructor(private readonly companyRole: CompanyRoleRepository) {}
+  constructor(
+    private readonly companyRole: CompanyRoleRepository,
+    private readonly adminRole: AdminRoleRepository
+  ) {}
 
   async findOneByUnique(args: FindUniqueCompanyRoleArgs) {
     const { where } = args;
@@ -36,5 +45,75 @@ export class CompanyRoleService {
   updateOne(args: UpdateOneCompanyRoleArgs) {
     const { where, data } = args;
     return this.companyRole.update(where, data);
+  }
+
+  async permissionInfo(auth: CurrentAuth, where?: CompanyRoleWhereUniqueInput) {
+    const items: PermissionItem[] = [];
+    const allowSelect: string[] = [];
+    const allowUnselect: string[] = [];
+    const currentPermissions = auth.permissions || [];
+    const currentAdminRole = auth.adminRole;
+    const currentCompanyRole = auth.companyRole;
+
+    if (!currentAdminRole || !currentCompanyRole) {
+      throw new ForbiddenException();
+    }
+
+    const isEdit = Boolean(Object.values(where || {}).length);
+    const editRole = isEdit ? await this.findOneByUnique({ where: where as FindUniqueCompanyRoleArgs['where'] }) : null;
+
+    Permissions.forEach((p) => {
+      const allow = !p.targets.length || p.targets.includes(Target.User);
+      const resource = `${p.subject}:${p.action}`;
+      const isSelfResource = currentPermissions.includes(resource);
+      const isEditResource = Boolean(editRole && editRole.permissions?.includes(resource));
+      p.targets = [];
+      // 过滤掉不允许的项
+      if (!allow) return;
+      // 角色可操作的项
+      if (
+        currentAdminRole?.code === SystemContract.RootAdminRole ||
+        currentCompanyRole?.code === SystemContract.RootCompanyRole
+      ) {
+        // 根管理员或根企业角色允许对所有权限的操作
+        items.push(p);
+        // 修改本角色
+        if (currentCompanyRole.code === editRole?.code) {
+          allowSelect.push(resource);
+        }
+        // 添加角色或修改角色（根管理员可以操作所有权限）
+        if (!editRole || currentAdminRole?.code === SystemContract.RootAdminRole) {
+          allowSelect.push(resource);
+          allowUnselect.push(resource);
+        }
+      } else if (isSelfResource || isEditResource) {
+        // 非根角色只允许已有权限的操作
+        items.push(p);
+        // 修改其他角色
+        if (
+          editRole &&
+          isSelfResource &&
+          currentCompanyRole.id !== editRole.id &&
+          editRole.code !== SystemContract.RootCompanyRole
+        ) {
+          allowSelect.push(resource);
+          allowUnselect.push(resource);
+        }
+
+        // 添加角色
+        if (!editRole) {
+          allowSelect.push(resource);
+          allowUnselect.push(resource);
+        }
+      }
+    });
+
+    const result: PermissionInfo = {
+      items,
+      allowSelect,
+      allowUnselect,
+    };
+
+    return result;
   }
 }

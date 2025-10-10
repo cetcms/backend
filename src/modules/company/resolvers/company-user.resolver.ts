@@ -17,8 +17,8 @@ import { CompanyUserService } from '../services';
 const PaginatedCompanyUser = Paginated(CompanyUser);
 
 /**
- * 企业用户关联模块
- * @module CompanyUser
+ * 企业用户管理
+ * @group Company
  */
 @Resolver()
 @UseGuards(JwtAuthGuard)

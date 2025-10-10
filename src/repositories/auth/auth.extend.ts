@@ -8,7 +8,7 @@ export class AuthExtend {
   constructor(private readonly admin: AuthRepository) {}
 
   @ResolveField(() => [String])
-  permissions(@CurrentAuth() auth: Auth & { permissions: string[] }) {
+  permissions(@CurrentAuth() auth: CurrentAuth) {
     return auth.permissions;
   }
 }

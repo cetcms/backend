@@ -18,8 +18,8 @@ import { UserService } from './user.service';
 const PaginatedUser = Paginated(User);
 
 /**
- * 用户模块
- * @module User
+ * 用户管理
+ * @group User
  */
 @Resolver()
 @UseGuards(JwtAuthGuard)

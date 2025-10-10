@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UsePermission } from 'src/auth/decorators';
+import { CurrentAuth, UsePermission } from 'src/auth/decorators';
+import { PermissionInfo } from 'src/auth/graphql';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
@@ -10,6 +11,7 @@ import {
   FindManyAdminRoleArgs,
   FindUniqueAdminRoleArgs,
   UpdateOneAdminRoleArgs,
+  AdminRoleWhereUniqueInput,
 } from 'src/generated/graphql';
 
 import { AdminRoleService } from '../services';
@@ -17,8 +19,8 @@ import { AdminRoleService } from '../services';
 const PaginatedAdminRole = Paginated(AdminRole);
 
 /**
- * 管理员角色模块
- * @module AdminRole
+ * 管理员角色管理
+ * @group Admin
  */
 @Resolver()
 @UseGuards(JwtAuthGuard)
@@ -63,5 +65,17 @@ export class AdminRoleResolver {
   @Mutation(() => AdminRole)
   updateOneAdminRole(@Args() args: UpdateOneAdminRoleArgs): Promise<AdminRole> {
     return this.service.updateOne(args);
+  }
+
+  /**
+   * 获取企业角色权限列表
+   */
+  @UsePermission([Target.Admin])
+  @Query(() => PermissionInfo)
+  listAdminRolePermission(
+    @CurrentAuth() auth: CurrentAuth,
+    @Args('where', { nullable: true }) where?: AdminRoleWhereUniqueInput
+  ) {
+    return this.service.permissionInfo(auth, where);
   }
 }

@@ -18,8 +18,8 @@ import { AdminService } from '../services';
 const PaginatedAdmin = Paginated(Admin);
 
 /**
- * 管理员模块
- * @module Admin
+ * 管理员管理
+ * @group Admin
  */
 @Resolver()
 @UseGuards(JwtAuthGuard)

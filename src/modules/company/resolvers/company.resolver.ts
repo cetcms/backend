@@ -18,8 +18,8 @@ import { CompanyService } from '../services';
 const PaginatedCompany = Paginated(Company);
 
 /**
- * 企业模块
- * @module Company
+ * 企业管理
+ * @group Company
  */
 @Resolver()
 @UseGuards(JwtAuthGuard)
