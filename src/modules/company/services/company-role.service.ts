@@ -55,7 +55,7 @@ export class CompanyRoleService {
     const currentAdminRole = auth.adminRole;
     const currentCompanyRole = auth.companyRole;
 
-    if (!currentAdminRole || !currentCompanyRole) {
+    if (!currentAdminRole && !currentCompanyRole) {
       throw new ForbiddenException();
     }
 
@@ -78,7 +78,7 @@ export class CompanyRoleService {
         // 根管理员或根企业角色允许对所有权限的操作
         items.push(p);
         // 修改本角色
-        if (currentCompanyRole.code === editRole?.code) {
+        if (currentCompanyRole && currentCompanyRole.code === editRole?.code) {
           allowSelect.push(resource);
         }
         // 添加角色或修改角色（根管理员可以操作所有权限）
@@ -92,6 +92,7 @@ export class CompanyRoleService {
         // 修改其他角色
         if (
           editRole &&
+          currentCompanyRole &&
           isSelfResource &&
           currentCompanyRole.id !== editRole.id &&
           editRole.code !== SystemContract.RootCompanyRole

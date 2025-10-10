@@ -1,7 +1,9 @@
+import { readFileSync, existsSync, writeFileSync, readdirSync } from 'fs';
 import * as path from 'node:path';
 import process from 'process';
 
 import { Logger } from '@nestjs/common';
+import { get, set } from 'radash';
 import { PermissionItem } from 'src/auth/graphql';
 import { Target } from 'src/generated/graphql/prisma';
 import { Project, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
@@ -138,7 +140,82 @@ const main = async () => {
 
   logger.log(`权限信息已写入到: ${outputPath}`);
   logger.log(`共扫描到 ${permissions.length} 个权限定义`);
+
+  // 生成权限的国际化文件
+  generatePermissionI18n(permissions);
+
   logger.log('Permissions scan complete');
+};
+
+/**
+ * 生成权限相关的国际化文件
+ * @param permissions 权限列表
+ */
+const generatePermissionI18n = (permissions: PermissionItem[]) => {
+  // 动态获取支持的语言
+  const i18nDir = path.resolve(process.cwd(), 'src/i18n/translations');
+  const languages = readdirSync(i18nDir, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
+
+  // 初始化翻译对象
+  const translations: Record<string, any> = {};
+
+  // 为每种语言处理权限翻译
+  for (const lang of languages) {
+    const permissionFilePath = path.resolve(process.cwd(), `src/i18n/translations/${lang}/permissions.json`);
+
+    // 读取现有的翻译文件或创建空对象
+    if (!translations[permissionFilePath]) {
+      if (existsSync(permissionFilePath)) {
+        const fileContent = readFileSync(permissionFilePath, 'utf-8') || '{}';
+        translations[permissionFilePath] = JSON.parse(fileContent);
+      } else {
+        translations[permissionFilePath] = {};
+      }
+    }
+
+    for (const permission of permissions) {
+      const groupKey = `group.${permission.group}`;
+      const subjectKey = `subject.${permission.subject}`;
+      const actionKey = `action.${permission.subject}.${permission.action}`;
+
+      if (!get(translations[permissionFilePath], groupKey)) {
+        translations[permissionFilePath] = set(translations[permissionFilePath], groupKey, permission.group);
+      }
+      if (!get(translations[permissionFilePath], subjectKey)) {
+        translations[permissionFilePath] = set(
+          translations[permissionFilePath],
+          subjectKey,
+          permission.subjectLabel || permission.subject
+        );
+      }
+      if (!get(translations[permissionFilePath], actionKey)) {
+        translations[permissionFilePath] = set(
+          translations[permissionFilePath],
+          actionKey,
+          permission.actionLabel || permission.action
+        );
+      }
+
+      if (lang === 'zh') {
+        translations[permissionFilePath] = set(
+          translations[permissionFilePath],
+          subjectKey,
+          permission.subjectLabel || permission.subject
+        );
+        translations[permissionFilePath] = set(
+          translations[permissionFilePath],
+          actionKey,
+          permission.actionLabel || permission.action
+        );
+      }
+    }
+
+    // 写入文件
+    writeFileSync(permissionFilePath, JSON.stringify(translations[permissionFilePath], null, 2));
+    logger.log(`权限国际化文件已生成: ${permissionFilePath}`);
+  }
 };
 
 main()

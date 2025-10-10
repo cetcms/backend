@@ -74,12 +74,15 @@
     "adminId": "管理員ID",
     "_relations": {
       "admin": "Admin",
-      "company": "Company"
+      "company": "Company",
+      "role": "CompanyRole"
     },
     "companyId": "公司ID",
     "permissions": "權限",
     "admin": "管理員",
-    "company": "公司"
+    "company": "公司",
+    "roleId": "AdminCompany.roleId",
+    "role": "AdminCompany.role"
   },
   "User": {
     "id": "ID",
@@ -146,13 +149,15 @@
     "companyId": "公司ID",
     "_relations": {
       "company": "Company",
-      "users": "CompanyUser"
+      "users": "CompanyUser",
+      "admins": "AdminCompany"
     },
     "_enums": {
       "status": "Status"
     },
     "company": "公司",
-    "users": "用戶"
+    "users": "用戶",
+    "admins": "CompanyRole.admins"
   },
   "CompanyUser": {
     "createdAt": "建立時間",
@@ -309,7 +314,8 @@
       "PATCH": "PATCH",
       "OPTIONS": "OPTIONS",
       "HEAD": "HEAD",
-      "GRAPHQL": "GRAPHQL"
+      "GRAPHQL": "GRAPHQL",
+      "GRAPHQL_WS": "GRAPHQL_WS"
     },
     "MediaVisibility": {
       "Public": "公開",
@@ -331,5 +337,18 @@
       "Archive": "歸檔文件",
       "Other": "其他"
     }
+  },
+  "title": {
+    "Auth": "認證",
+    "Admin": "管理員",
+    "AdminRole": "管理員角色",
+    "AdminCompany": "公司管理員",
+    "User": "用戶",
+    "Company": "公司",
+    "CompanyRole": "公司角色",
+    "CompanyUser": "公司用戶",
+    "RequestLog": "請求日誌",
+    "MediaFolder": "媒體資料夾",
+    "MediaFile": "媒體檔案"
   }
 }

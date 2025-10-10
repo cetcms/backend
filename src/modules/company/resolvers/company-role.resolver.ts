@@ -71,7 +71,7 @@ export class CompanyRoleResolver {
    * 获取企业角色权限列表
    */
   @UsePermission([Target.Admin, Target.User])
-  @Query(() => [PermissionInfo])
+  @Query(() => PermissionInfo)
   listCompanyRolePermission(
     @CurrentAuth() auth: CurrentAuth,
     @Args('where', { nullable: true }) where?: CompanyRoleWhereUniqueInput

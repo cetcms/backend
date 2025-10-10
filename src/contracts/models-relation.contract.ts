@@ -18,6 +18,7 @@ export const ModelsRelation = {
   AdminCompany: {
     admin: 'Admin',
     company: 'Company',
+    role: 'CompanyRole',
   },
   User: {
     companies: 'CompanyUser',
@@ -38,6 +39,7 @@ export const ModelsRelation = {
   CompanyRole: {
     company: 'Company',
     users: 'CompanyUser',
+    admins: 'AdminCompany',
   },
   CompanyUser: {
     company: 'Company',

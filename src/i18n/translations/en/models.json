@@ -74,12 +74,15 @@
     "adminId": "Admin ID",
     "_relations": {
       "admin": "Admin",
-      "company": "Company"
+      "company": "Company",
+      "role": "CompanyRole"
     },
     "companyId": "Company ID",
     "permissions": "Permissions",
     "admin": "Admin",
-    "company": "Company"
+    "company": "Company",
+    "roleId": "AdminCompany.roleId",
+    "role": "AdminCompany.role"
   },
   "User": {
     "id": "ID",
@@ -146,13 +149,15 @@
     "companyId": "Company ID",
     "_relations": {
       "company": "Company",
-      "users": "CompanyUser"
+      "users": "CompanyUser",
+      "admins": "AdminCompany"
     },
     "_enums": {
       "status": "Status"
     },
     "company": "Company",
-    "users": "Users"
+    "users": "Users",
+    "admins": "CompanyRole.admins"
   },
   "CompanyUser": {
     "createdAt": "Created At",
@@ -309,7 +314,8 @@
       "PATCH": "PATCH",
       "OPTIONS": "OPTIONS",
       "HEAD": "HEAD",
-      "GRAPHQL": "GRAPHQL"
+      "GRAPHQL": "GRAPHQL",
+      "GRAPHQL_WS": "GRAPHQL_WS"
     },
     "MediaVisibility": {
       "Public": "Public",
@@ -331,5 +337,18 @@
       "Archive": "Archive",
       "Other": "Other"
     }
+  },
+  "title": {
+    "Auth": "Authentication",
+    "Admin": "Administrator",
+    "AdminRole": "Admin Role",
+    "AdminCompany": "Company Admin",
+    "User": "User",
+    "Company": "Company",
+    "CompanyRole": "Company Role",
+    "CompanyUser": "Company User",
+    "RequestLog": "Request Log",
+    "MediaFolder": "Media Folder",
+    "MediaFile": "Media File"
   }
 }

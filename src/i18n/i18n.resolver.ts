@@ -10,7 +10,7 @@ export class I18nResolver {
 
   @Query(() => GraphQLJSONObject)
   translations(@Args('scope', { type: () => String }) scope: string) {
-    const namespaces = ['models'];
+    const namespaces = ['models', 'permissions'];
     if (!namespaces.includes(scope)) {
       throw new ForbiddenException(`Invalid scope: ${scope}`);
     }

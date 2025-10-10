@@ -74,12 +74,15 @@
     "adminId": "管理员ID",
     "_relations": {
       "admin": "Admin",
-      "company": "Company"
+      "company": "Company",
+      "role": "CompanyRole"
     },
     "companyId": "公司ID",
     "permissions": "权限",
     "admin": "管理员",
-    "company": "公司"
+    "company": "公司",
+    "roleId": "AdminCompany.roleId",
+    "role": "AdminCompany.role"
   },
   "User": {
     "id": "ID",
@@ -146,13 +149,15 @@
     "companyId": "公司ID",
     "_relations": {
       "company": "Company",
-      "users": "CompanyUser"
+      "users": "CompanyUser",
+      "admins": "AdminCompany"
     },
     "_enums": {
       "status": "Status"
     },
     "company": "公司",
-    "users": "用户"
+    "users": "用户",
+    "admins": "CompanyRole.admins"
   },
   "CompanyUser": {
     "createdAt": "创建时间",
@@ -309,7 +314,8 @@
       "PATCH": "PATCH",
       "OPTIONS": "OPTIONS",
       "HEAD": "HEAD",
-      "GRAPHQL": "GRAPHQL"
+      "GRAPHQL": "GRAPHQL",
+      "GRAPHQL_WS": "GRAPHQL_WS"
     },
     "MediaVisibility": {
       "Public": "公开",
@@ -331,5 +337,18 @@
       "Archive": "归档文件",
       "Other": "其他"
     }
+  },
+  "title": {
+    "Auth": "认证",
+    "Admin": "管理员",
+    "AdminRole": "管理员角色",
+    "AdminCompany": "公司管理员",
+    "User": "用户",
+    "Company": "公司",
+    "CompanyRole": "公司角色",
+    "CompanyUser": "公司用户",
+    "RequestLog": "请求日志",
+    "MediaFolder": "媒体文件夹",
+    "MediaFile": "媒体文件"
   }
 }

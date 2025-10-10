@@ -1,0 +1,71 @@
+{
+  "group": {
+    "User": "用户",
+    "Admin": "管理员",
+    "Company": "公司"
+  },
+  "subject": {
+    "UserResolver": "用户管理",
+    "AdminCompanyResolver": "管理员企业管理",
+    "AdminRoleResolver": "管理员角色管理",
+    "AdminResolver": "管理员管理",
+    "CompanyRoleResolver": "企业角色管理",
+    "CompanyUserResolver": "企业用户管理",
+    "CompanyResolver": "企业管理"
+  },
+  "action": {
+    "UserResolver": {
+      "findSelfUser": "查询当前用户信息",
+      "findOneUser": "查询单个用户",
+      "paginateUsers": "分页查询用户",
+      "createOneUser": "新增用户",
+      "updateSelfUser": "修改当前用户信息",
+      "updateOneUser": "修改用户"
+    },
+    "AdminCompanyResolver": {
+      "findOneAdminCompany": "查询单个管理员企业关联",
+      "paginateAdminCompanies": "分页查询管理员企业关联",
+      "createOneAdminCompany": "新增管理员企业关联",
+      "updateOneAdminCompany": "修改管理员企业关联",
+      "deleteAdminCompany": "删除管理员企业关联"
+    },
+    "AdminRoleResolver": {
+      "findOneAdminRole": "查询单个管理员角色",
+      "paginateAdminRoles": "分页查询管理员角色",
+      "createOneAdminRole": "新增管理员角色",
+      "updateOneAdminRole": "修改管理员角色",
+      "listAdminRolePermission": "获取企业角色权限列表"
+    },
+    "AdminResolver": {
+      "findSelfAdmin": "查询当前管理员信息",
+      "findOneAdmin": "查询单个管理员",
+      "paginateAdmins": "分页查询管理员",
+      "createOneAdmin": "新增管理员",
+      "updateSelfAdmin": "修改当前管理员信息",
+      "updateOneAdmin": "修改管理员",
+      "findAdminById": "根据ID查询管理员",
+      "findAdminByEmail": "根据邮箱查询管理员"
+    },
+    "CompanyRoleResolver": {
+      "findOneCompanyRole": "查询单个企业角色",
+      "paginateCompanyRoles": "分页查询企业角色",
+      "createOneCompanyRole": "新增企业角色",
+      "updateOneCompanyRole": "修改企业角色",
+      "listCompanyRolePermission": "获取企业角色权限列表"
+    },
+    "CompanyUserResolver": {
+      "findOneCompanyUser": "查询单个企业用户关联",
+      "paginateCompanyUsers": "分页查询企业用户关联",
+      "createOneCompanyUser": "新增企业用户关联",
+      "updateOneCompanyUser": "修改企业用户关联"
+    },
+    "CompanyResolver": {
+      "findSelfCompany": "查询当前企业信息",
+      "findOneCompany": "查询单个企业",
+      "paginateCompanies": "分页查询企业",
+      "createOneCompany": "新增企业",
+      "updateSelfCompany": "修改当前企业信息",
+      "updateOneCompany": "修改企业"
+    }
+  }
+}
