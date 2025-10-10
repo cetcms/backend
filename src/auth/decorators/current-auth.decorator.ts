@@ -20,7 +20,7 @@
  * 使用示例：
  * - GraphQL Resolver：
  *   @Query(() => String)
- *   hello(@CurrentAuth() auth: Auth) {
+ *   hello(@CurrentAuth() auth: CurrentAuth) {
  *     return `Hello ${auth.target}`;
  *   }
  *
@@ -30,7 +30,16 @@
  */
 import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { ContextHandler } from 'src/common/handlers';
+import { AdminRole, CompanyRole } from 'src/generated/graphql';
 import { Auth } from 'src/generated/graphql/auth';
+
+export interface CurrentAuth extends Auth {
+  permissions?: Array<string>;
+  companyRole?: CompanyRole;
+  adminRole?: AdminRole;
+  companyRolePermissions?: Array<string>;
+  adminRolePermissions?: Array<string>;
+}
 
 export const CurrentAuth = createParamDecorator((data: any, ctx: ExecutionContext) => {
   const request = ContextHandler(ctx).getRequest();

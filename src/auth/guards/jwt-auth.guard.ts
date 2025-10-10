@@ -1,11 +1,9 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { IS_PUBLIC_ACCESS_KEY } from 'src/auth/decorators';
+import { CurrentAuth, IS_PUBLIC_ACCESS_KEY } from 'src/auth/decorators';
 import { ContextHandler, RequestHandler } from 'src/common/handlers';
-import { Admin } from 'src/generated/graphql/admin';
-import { Auth } from 'src/generated/graphql/auth';
-import { User } from 'src/generated/graphql/user';
+import { Admin, User } from 'src/generated/graphql';
 
 /**
  * JWT 认证守卫
@@ -90,7 +88,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * 返回值说明：
    * - any - 认证结果 [user, auth]
    */
-  handleRequest(error: Error, user: Admin | User, auth: Auth, context: ExecutionContext): any {
+  handleRequest(error: Error, user: Admin | User, auth: CurrentAuth, context: ExecutionContext): any {
     if (!auth || !user) {
       throw new UnauthorizedException({
         message: error?.message || 'Invalid token',

@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { CurrentAuth } from 'src/auth/decorators';
 import { ConfigService } from 'src/config';
 import { Auth } from 'src/generated/graphql/auth';
 import { Target } from 'src/generated/graphql/prisma';
@@ -74,7 +75,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * - payload: JwtPayload - JWT 载荷
    *
    * 返回值说明：
-   * - Promise<[Admin | User, Auth & { permissions: string[] }]> - 用户对象和认证信息
+   * - Promise<[Admin | User, CurrentAuth> - 用户对象和认证信息
    */
   async validate(payload: JwtPayload) {
     const options = this.factory.serialize(payload);
@@ -96,12 +97,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         code: 'TOKEN_INVALID',
       });
     }
-    const permissions = await this.authPermissions(auth);
+    const rolePermissions = await this.rolePermissions(auth);
+    const currentAuth: CurrentAuth = { ...auth, ...rolePermissions };
     if (options?.target === Target.Admin && auth && auth.admin) {
-      return [auth.admin, { ...auth, permissions }];
+      return [auth.admin, currentAuth];
     }
     if (options?.target === Target.User && auth && auth.user) {
-      return [auth.user, { ...auth, permissions }];
+      return [auth.user, currentAuth];
     }
     throw new UnauthorizedException({
       message: 'Invalid token',
@@ -110,7 +112,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   /**
-   * 构建用户权限列表
+   * 构建角色权限列表
    *
    * 功能描述：
    * - 根据用户类型和关联信息构建权限列表
@@ -129,21 +131,36 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * 返回值说明：
    * - Promise<string[]> - 权限列表
    */
-  private async authPermissions(auth: Auth) {
+  private async rolePermissions(auth: Auth) {
+    const result: Omit<CurrentAuth, keyof Auth> = {
+      adminRole: undefined,
+      companyRole: undefined,
+      permissions: [],
+      adminRolePermissions: [],
+      companyRolePermissions: [],
+    };
     if (auth.admin) {
-      const permissions = auth.admin?.role?.permissions || [];
+      result.adminRole = auth.admin?.role;
+      result.adminRolePermissions = auth.admin.role?.permissions || [];
+      result.permissions = [...result.adminRolePermissions];
       if (auth.company) {
-        const adminCompany = await this.adminCompany.findOneByUnique(auth.admin.id, auth.company.id);
-        return [...permissions, ...(adminCompany?.permissions || [])];
+        const adminCompany = await this.adminCompany
+          .setInclude({ role: true })
+          .findOneByUnique(auth.admin.id, auth.company.id);
+        result.companyRole = adminCompany?.role;
+        result.companyRolePermissions = adminCompany?.role?.permissions || [];
+        result.permissions = [...result.adminRolePermissions, ...result.companyRolePermissions];
       }
-      return permissions;
+      return result;
     }
     if (auth.user && auth.company) {
       const companyUser = await this.companyUser
         .setInclude({ role: true })
         .findOneByUnique(auth.user.id, auth.company.id);
-      return companyUser?.role?.permissions || [];
+      result.companyRole = companyUser?.role;
+      result.companyRolePermissions = companyUser?.role?.permissions || [];
+      result.permissions = [...result.companyRolePermissions];
     }
-    return [];
+    return result;
   }
 }

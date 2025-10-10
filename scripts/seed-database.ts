@@ -89,7 +89,7 @@ const main = async () => {
     {
       admin: { connect: { id: admin.id } },
       company: { connect: { id: company.id } },
-      permissions: [],
+      role: { connect: { id: companyRole.id } },
     }
   );
   console.log('Admin company saved:', adminCompany);

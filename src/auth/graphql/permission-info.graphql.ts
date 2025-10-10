@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Target } from 'src/generated/graphql/prisma';
 
 @ObjectType()
-export class PermissionInfo {
+export class PermissionItem {
   @Field(() => String)
   subject: string;
 
@@ -10,7 +10,7 @@ export class PermissionInfo {
   subjectLabel: string;
 
   @Field(() => String)
-  module: string;
+  group: string;
 
   @Field(() => String)
   action: string;
@@ -20,4 +20,16 @@ export class PermissionInfo {
 
   @Field(() => [Target])
   targets: Array<Target>;
+}
+
+@ObjectType()
+export class PermissionInfo {
+  @Field(() => [PermissionItem])
+  items: Array<PermissionItem>;
+
+  @Field(() => [String])
+  allowSelect: Array<string>;
+
+  @Field(() => [String])
+  allowUnselect: Array<string>;
 }

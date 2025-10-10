@@ -17,10 +17,9 @@
  */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { REQUIRE_COMPANY_KEY } from 'src/auth/decorators';
+import { CurrentAuth, REQUIRE_COMPANY_KEY } from 'src/auth/decorators';
 import { ContextHandler } from 'src/common/handlers';
-import { Auth } from 'src/generated/graphql/auth';
-import { Target } from 'src/generated/graphql/prisma';
+import { Target } from 'src/generated/graphql';
 
 @Injectable()
 export class CompanyGuard implements CanActivate {
@@ -68,7 +67,7 @@ export class CompanyGuard implements CanActivate {
     ]);
 
     const request = ContextHandler(context).getRequest();
-    const auth = <Auth>request.authInfo;
+    const auth = <CurrentAuth>request.authInfo;
 
     // 检查是否必须登录公司才允许访问
     if (targets && targets.includes(auth.target as Target) && !auth.companyId) {

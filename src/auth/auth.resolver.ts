@@ -21,26 +21,26 @@ export class AuthResolver {
   }
 
   @Query(() => Login)
-  refresh(@CurrentAuth() auth: Auth, @CurrentRequestMeta() meta: CurrentRequestMeta) {
+  refresh(@CurrentAuth() auth: CurrentAuth, @CurrentRequestMeta() meta: CurrentRequestMeta) {
     return this.service.refresh(auth, meta);
   }
 
   @UseGuards(JwtAuthGuard)
   @Query(() => Boolean)
-  logout(@CurrentAuth() auth: Auth) {
+  logout(@CurrentAuth() auth: CurrentAuth) {
     return this.service.logout(auth);
   }
 
   @UseGuards(JwtAuthGuard)
   @Query(() => Auth)
-  authInfo(@CurrentAuth() auth: Auth) {
+  authInfo(@CurrentAuth() auth: CurrentAuth) {
     return auth;
   }
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Login)
   switchAuthCompany(
-    @CurrentAuth() auth: Auth,
+    @CurrentAuth() auth: CurrentAuth,
     @CurrentRequestMeta() meta: CurrentRequestMeta,
     @Args('companyId') companyId: string
   ) {
@@ -49,7 +49,7 @@ export class AuthResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => [Company], { nullable: true })
-  listAuthCompanies(@CurrentAuth() auth: Auth, @Args('name', { nullable: true }) name?: string) {
+  listAuthCompanies(@CurrentAuth() auth: CurrentAuth, @Args('name', { nullable: true }) name?: string) {
     return this.service.listCompanies(auth, name);
   }
 }

@@ -224,7 +224,8 @@ model AdminCompany {
   /// @DtoEntityHidden()
   company   Company @relation(fields: [companyId], references: [id])
 
-  permissions String[]
+  roleId String      @map("company_role_id")
+  role   CompanyRole @relation(fields: [roleId], references: [id])
 
   @@id([adminId, companyId], name: "adminCompanyIdx")
   @@map("admin_companies")
@@ -341,7 +342,11 @@ model CompanyRole {
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
-  users CompanyUser[]
+  users  CompanyUser[]
+  /// @zod.optional()
+  /// @DtoEntityHidden()
+  /// @HideField({ match: '+(*Create*|*Update*)' })
+  admins AdminCompany[]
 
   @@unique([companyId, code], name: "companyRoleIdx")
   @@map("company_roles")

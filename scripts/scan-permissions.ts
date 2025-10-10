@@ -2,7 +2,7 @@ import * as path from 'node:path';
 import process from 'process';
 
 import { Logger } from '@nestjs/common';
-import { PermissionInfo } from 'src/auth/graphql';
+import { PermissionItem } from 'src/auth/graphql';
 import { Target } from 'src/generated/graphql/prisma';
 import { Project, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
 import voca from 'voca';
@@ -18,7 +18,7 @@ const main = async () => {
   // 添加源文件
   project.addSourceFilesAtPaths('src/**/*.ts');
 
-  const permissions: PermissionInfo[] = [];
+  const permissions: PermissionItem[] = [];
   const contextRecords: Record<string, boolean> = {};
 
   // 遍历所有源文件
@@ -30,9 +30,9 @@ const main = async () => {
       const classDocs = classDeclaration.getJsDocs();
       // 获取类注释
       const classComment = classDocs.map((doc) => doc.getCommentText()).join('\n') || 'unknown';
-      // 获取 @module 标识信息
-      const classModuleTag = classDocs.flatMap((doc) => doc.getTags()).find((tag) => tag.getTagName() === 'module');
-      const classModule = voca.trim(classModuleTag ? classModuleTag.getCommentText() : 'unknown').toLowerCase();
+      // 获取 @group 标识信息
+      const classGroupTag = classDocs.flatMap((doc) => doc.getTags()).find((tag) => tag.getTagName() === 'group');
+      const classGroup = voca.capitalize(voca.trim(classGroupTag ? classGroupTag.getCommentText() : 'unknown'));
 
       // 遍历类中的所有方法
       classDeclaration.getMethods().forEach((method) => {
@@ -64,7 +64,7 @@ const main = async () => {
           permissions.push({
             subject: className || 'Unknown',
             subjectLabel: classComment,
-            module: classModule,
+            group: classGroup,
             action: method.getName(),
             actionLabel: methodComment,
             targets: attrs,
@@ -91,7 +91,7 @@ const main = async () => {
   // 添加导入语句
   sourceFile.addImportDeclaration({
     moduleSpecifier: 'src/auth/graphql',
-    namedImports: ['PermissionInfo'],
+    namedImports: ['PermissionItem'],
   });
   sourceFile.addImportDeclaration({
     moduleSpecifier: 'src/generated/graphql',
@@ -105,14 +105,14 @@ const main = async () => {
     declarations: [
       {
         name: 'Permissions',
-        type: 'PermissionInfo[]',
+        type: 'PermissionItem[]',
         initializer: (writer) => {
           writer.write('[').newLine();
           permissions.forEach((p, idx) => {
             writer.write('  {').newLine();
             writer.write(`    subject: ${JSON.stringify(p.subject)},`).newLine();
             writer.write(`    subjectLabel: ${JSON.stringify(p.subjectLabel)},`).newLine();
-            writer.write(`    module: ${JSON.stringify(p.module)},`).newLine();
+            writer.write(`    group: ${JSON.stringify(p.group)},`).newLine();
             writer.write(`    action: ${JSON.stringify(p.action)},`).newLine();
             writer.write(`    actionLabel: ${JSON.stringify(p.actionLabel)},`).newLine();
             writer.write('    targets: [');
