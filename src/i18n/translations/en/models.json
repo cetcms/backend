@@ -397,7 +397,7 @@
     "id": "ID",
     "createdAt": "Created At",
     "updatedAt": "Updated At",
-    "sentedAt": "Sent At",
+    "sentAt": "Sent At",
     "title": "Title",
     "content": "Content",
     "_enums": {
