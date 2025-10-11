@@ -357,9 +357,22 @@
     },
     "NotificationType": {
       "Public": "Public",
-      "Private": "Private"
+      "Private": "Private",
+      "Alert": "Alert",
+      "Confirm": "Confirm",
+      "Message": "Message",
+      "Prompt": "Prompt"
     },
     "NotificationRecipier": {
+      "User": "User",
+      "Company": "Company",
+      "Admin": "Admin"
+    },
+    "NotificationPrivacy": {
+      "Public": "Public",
+      "Private": "Private"
+    },
+    "NotificationReceiver": {
       "User": "User",
       "Company": "Company",
       "Admin": "Admin"
@@ -389,8 +402,9 @@
     "content": "Content",
     "_enums": {
       "status": "Status",
-      "sender": "Sender Type",
-      "type": "Notification Type"
+      "sender": "NotificationSender",
+      "type": "NotificationType",
+      "privacy": "NotificationPrivacy"
     },
     "status": "Status",
     "priority": "Priority",
@@ -404,13 +418,15 @@
       "admin": "Admin",
       "user": "User",
       "company": "Company",
-      "recipients": "Recipients"
+      "recipients": "NotificationRecipient"
     },
     "userId": "User ID",
     "user": "User",
     "companyId": "Company ID",
     "company": "Company",
-    "recipients": "Recipients"
+    "recipients": "Recipients",
+    "options": "Notification.options",
+    "privacy": "Notification.privacy"
   },
   "NotificationRecipient": {
     "id": "ID",
@@ -424,7 +440,8 @@
     "deleted": "Deleted",
     "recipierId": "Recipient ID",
     "_enums": {
-      "recipier": "Recipient Type"
+      "recipier": "Recipient Type",
+      "receiver": "NotificationReceiver"
     },
     "recipier": "Recipient",
     "adminId": "Admin ID",
@@ -440,6 +457,12 @@
     "companyId": "Company ID",
     "company": "Company",
     "notificationId": "Notification ID",
-    "notification": "Notification"
+    "notification": "Notification",
+    "readAt": "NotificationRecipient.readAt",
+    "isRead": "NotificationRecipient.isRead",
+    "isArchived": "NotificationRecipient.isArchived",
+    "isDeleted": "NotificationRecipient.isDeleted",
+    "receiverId": "NotificationRecipient.receiverId",
+    "receiver": "NotificationRecipient.receiver"
   }
 }

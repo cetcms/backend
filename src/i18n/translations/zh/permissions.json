@@ -13,8 +13,8 @@
     "CompanyRoleResolver": "企业角色管理",
     "CompanyUserResolver": "企业用户管理",
     "CompanyResolver": "企业管理",
-    "NotificationRecipientResolver": "通知接收管理",
-    "NotificationResolver": "通知管理"
+    "NotificationRecipientResolver": "消息通知接收",
+    "NotificationResolver": "消息通知管理"
   },
   "action": {
     "UserResolver": {
@@ -71,10 +71,10 @@
       "updateOneCompany": "修改企业"
     },
     "NotificationRecipientResolver": {
-      "paginateNotificationRecipes": "分页查询通知接收信息"
+      "paginateNotificationRecipes": "分页查询消息接收信息"
     },
     "NotificationResolver": {
-      "paginateNotifications": "分页查询通知"
+      "paginateNotifications": "分页查询消息通知"
     }
   }
 }

@@ -357,12 +357,25 @@
     },
     "NotificationType": {
       "Public": "公開",
-      "Private": "私有"
+      "Private": "私有",
+      "Alert": "Alert",
+      "Confirm": "Confirm",
+      "Message": "Message",
+      "Prompt": "Prompt"
     },
     "NotificationRecipier": {
       "User": "用戶",
       "Company": "公司",
       "Admin": "管理員"
+    },
+    "NotificationPrivacy": {
+      "Public": "Public",
+      "Private": "Private"
+    },
+    "NotificationReceiver": {
+      "User": "User",
+      "Company": "Company",
+      "Admin": "Admin"
     }
   },
   "title": {
@@ -388,9 +401,10 @@
     "title": "標題",
     "content": "內容",
     "_enums": {
-      "status": "狀態",
-      "sender": "傳送者類型",
-      "type": "通知類型"
+      "status": "Status",
+      "sender": "NotificationSender",
+      "type": "NotificationType",
+      "privacy": "NotificationPrivacy"
     },
     "status": "狀態",
     "priority": "優先級",
@@ -401,16 +415,18 @@
     "adminId": "管理員ID",
     "admin": "管理員",
     "_relations": {
-      "admin": "管理員",
-      "user": "用戶",
-      "company": "公司",
-      "recipients": "接收者"
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company",
+      "recipients": "NotificationRecipient"
     },
     "userId": "用戶ID",
     "user": "用戶",
     "companyId": "公司ID",
     "company": "公司",
-    "recipients": "接收者"
+    "recipients": "接收者",
+    "options": "Notification.options",
+    "privacy": "Notification.privacy"
   },
   "NotificationRecipient": {
     "id": "ID",
@@ -424,22 +440,29 @@
     "deleted": "已刪除",
     "recipierId": "接收者ID",
     "_enums": {
-      "recipier": "接收者類型"
+      "recipier": "接收者類型",
+      "receiver": "NotificationReceiver"
     },
     "recipier": "接收者",
     "adminId": "管理員ID",
     "admin": "管理員",
     "_relations": {
-      "admin": "管理員",
-      "user": "用戶",
-      "company": "公司",
-      "notification": "通知"
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company",
+      "notification": "Notification"
     },
     "userId": "用戶ID",
     "user": "用戶",
     "companyId": "公司ID",
     "company": "公司",
     "notificationId": "通知ID",
-    "notification": "通知"
+    "notification": "通知",
+    "readAt": "NotificationRecipient.readAt",
+    "isRead": "NotificationRecipient.isRead",
+    "isArchived": "NotificationRecipient.isArchived",
+    "isDeleted": "NotificationRecipient.isDeleted",
+    "receiverId": "NotificationRecipient.receiverId",
+    "receiver": "NotificationRecipient.receiver"
   }
 }
