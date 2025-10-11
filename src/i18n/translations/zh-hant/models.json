@@ -85,8 +85,8 @@
     "permissions": "權限",
     "admin": "管理員",
     "company": "公司",
-    "roleId": "AdminCompany.roleId",
-    "role": "AdminCompany.role"
+    "roleId": "角色ID",
+    "role": "角色"
   },
   "User": {
     "id": "ID",
@@ -356,17 +356,10 @@
       "Admin": "管理員"
     },
     "NotificationType": {
-      "Public": "公開",
-      "Private": "私有",
       "Alert": "Alert",
       "Confirm": "Confirm",
       "Message": "Message",
       "Prompt": "Prompt"
-    },
-    "NotificationRecipier": {
-      "User": "用戶",
-      "Company": "公司",
-      "Admin": "管理員"
     },
     "NotificationPrivacy": {
       "Public": "Public",
@@ -397,7 +390,7 @@
     "id": "ID",
     "createdAt": "建立時間",
     "updatedAt": "更新時間",
-    "sentedAt": "傳送時間",
+    "sentAt": "傳送時間",
     "title": "標題",
     "content": "內容",
     "_enums": {
@@ -425,25 +418,20 @@
     "companyId": "公司ID",
     "company": "公司",
     "recipients": "接收者",
-    "options": "Notification.options",
-    "privacy": "Notification.privacy"
+    "options": "選項",
+    "privacy": "隱私"
   },
   "NotificationRecipient": {
     "id": "ID",
     "createdAt": "建立時間",
     "updatedAt": "更新時間",
-    "readedAt": "閱讀時間",
     "deletedAt": "刪除時間",
     "archivedAt": "歸檔時間",
-    "readed": "已讀",
     "archived": "已歸檔",
     "deleted": "已刪除",
-    "recipierId": "接收者ID",
     "_enums": {
-      "recipier": "接收者類型",
       "receiver": "NotificationReceiver"
     },
-    "recipier": "接收者",
     "adminId": "管理員ID",
     "admin": "管理員",
     "_relations": {
@@ -458,11 +446,11 @@
     "company": "公司",
     "notificationId": "通知ID",
     "notification": "通知",
-    "readAt": "NotificationRecipient.readAt",
-    "isRead": "NotificationRecipient.isRead",
-    "isArchived": "NotificationRecipient.isArchived",
-    "isDeleted": "NotificationRecipient.isDeleted",
-    "receiverId": "NotificationRecipient.receiverId",
-    "receiver": "NotificationRecipient.receiver"
+    "readAt": "閱讀時間",
+    "isRead": "是否已讀",
+    "isArchived": "是否已封存",
+    "isDeleted": "是否已刪除",
+    "receiverId": "接收者ID",
+    "receiver": "接收者"
   }
 }

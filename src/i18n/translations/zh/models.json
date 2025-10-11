@@ -85,8 +85,8 @@
     "permissions": "权限",
     "admin": "管理员",
     "company": "公司",
-    "roleId": "AdminCompany.roleId",
-    "role": "AdminCompany.role"
+    "roleId": "角色ID",
+    "role": "角色"
   },
   "User": {
     "id": "ID",
@@ -397,7 +397,7 @@
     "id": "ID",
     "createdAt": "创建时间",
     "updatedAt": "更新时间",
-    "sentedAt": "发送时间",
+    "sentAt": "发送时间",
     "title": "标题",
     "content": "内容",
     "_enums": {
@@ -425,25 +425,20 @@
     "companyId": "公司ID",
     "company": "公司",
     "recipients": "接收者",
-    "options": "Notification.options",
-    "privacy": "Notification.privacy"
+    "options": "选项",
+    "privacy": "隐私"
   },
   "NotificationRecipient": {
     "id": "ID",
     "createdAt": "创建时间",
     "updatedAt": "更新时间",
-    "readedAt": "阅读时间",
     "deletedAt": "删除时间",
     "archivedAt": "归档时间",
-    "readed": "已读",
     "archived": "已归档",
     "deleted": "已删除",
-    "recipierId": "接收者ID",
     "_enums": {
-      "recipier": "接收者类型",
       "receiver": "NotificationReceiver"
     },
-    "recipier": "接收者",
     "adminId": "管理员ID",
     "admin": "管理员",
     "_relations": {
@@ -458,11 +453,11 @@
     "company": "公司",
     "notificationId": "通知ID",
     "notification": "通知",
-    "readAt": "NotificationRecipient.readAt",
-    "isRead": "NotificationRecipient.isRead",
-    "isArchived": "NotificationRecipient.isArchived",
-    "isDeleted": "NotificationRecipient.isDeleted",
-    "receiverId": "NotificationRecipient.receiverId",
-    "receiver": "NotificationRecipient.receiver"
+    "readAt": "阅读时间",
+    "isRead": "是否已读",
+    "isArchived": "是否已归档",
+    "isDeleted": "是否已删除",
+    "receiverId": "接收者ID",
+    "receiver": "接收者"
   }
 }

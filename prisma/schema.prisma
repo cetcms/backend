@@ -412,7 +412,7 @@ model Notification {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  sentedAt  DateTime @default(now()) @map("sented_at")
+  sentAt    DateTime @default(now()) @map("sent_at")
 
   // 通知基本信息
   title    String  @db.VarChar(200)

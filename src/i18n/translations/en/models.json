@@ -85,8 +85,8 @@
     "permissions": "Permissions",
     "admin": "Admin",
     "company": "Company",
-    "roleId": "AdminCompany.roleId",
-    "role": "AdminCompany.role"
+    "roleId": "Role ID",
+    "role": "Role"
   },
   "User": {
     "id": "ID",
@@ -425,8 +425,8 @@
     "companyId": "Company ID",
     "company": "Company",
     "recipients": "Recipients",
-    "options": "Notification.options",
-    "privacy": "Notification.privacy"
+    "options": "Options",
+    "privacy": "Privacy"
   },
   "NotificationRecipient": {
     "id": "ID",
@@ -458,11 +458,11 @@
     "company": "Company",
     "notificationId": "Notification ID",
     "notification": "Notification",
-    "readAt": "NotificationRecipient.readAt",
-    "isRead": "NotificationRecipient.isRead",
-    "isArchived": "NotificationRecipient.isArchived",
-    "isDeleted": "NotificationRecipient.isDeleted",
-    "receiverId": "NotificationRecipient.receiverId",
-    "receiver": "NotificationRecipient.receiver"
+    "readAt": "Read At",
+    "isRead": "Is Read",
+    "isArchived": "Is Archived",
+    "isDeleted": "Is Deleted",
+    "receiverId": "Receiver ID",
+    "receiver": "Receiver"
   }
 }
