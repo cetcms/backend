@@ -25,11 +25,12 @@
     "db:seed": "tsx scripts/seed-database.ts",
     "script:scan-permissions": "tsx scripts/scan-permissions.ts",
     "script:push-permissions-to-role": "tsx scripts/push-permissions-to-role.ts",
+    "script:gen-models-i18n": "tsx scripts/gen-models-i18n.ts",
     "generate": "prisma generate",
     "prebuild": "pnpm generate",
     "predev": "pnpm generate",
     "predebug": "pnpm generate",
-    "postgenerate": "pnpm script:scan-permissions"
+    "postgenerate": "pnpm script:scan-permissions & pnpm script:gen-models-i18n"
   },
   "dependencies": {
     "@apollo/server": "^4.12.2",

@@ -2,7 +2,8 @@
   "group": {
     "User": "用户",
     "Admin": "管理员",
-    "Company": "公司"
+    "Company": "公司",
+    "Notification": "通知"
   },
   "subject": {
     "UserResolver": "用户管理",
@@ -11,7 +12,9 @@
     "AdminResolver": "管理员管理",
     "CompanyRoleResolver": "企业角色管理",
     "CompanyUserResolver": "企业用户管理",
-    "CompanyResolver": "企业管理"
+    "CompanyResolver": "企业管理",
+    "NotificationRecipientResolver": "通知接收管理",
+    "NotificationResolver": "通知管理"
   },
   "action": {
     "UserResolver": {
@@ -66,6 +69,12 @@
       "createOneCompany": "新增企业",
       "updateSelfCompany": "修改当前企业信息",
       "updateOneCompany": "修改企业"
+    },
+    "NotificationRecipientResolver": {
+      "paginateNotificationRecipes": "分页查询通知接收信息"
+    },
+    "NotificationResolver": {
+      "paginateNotifications": "分页查询通知"
     }
   }
 }

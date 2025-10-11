@@ -2,7 +2,8 @@
   "group": {
     "User": "User",
     "Admin": "Admin",
-    "Company": "Company"
+    "Company": "Company",
+    "Notification": "Notification"
   },
   "subject": {
     "UserResolver": "User Management",
@@ -11,7 +12,9 @@
     "AdminResolver": "Admin Management",
     "CompanyRoleResolver": "Company Role Management",
     "CompanyUserResolver": "Company User Management",
-    "CompanyResolver": "Company Management"
+    "CompanyResolver": "Company Management",
+    "NotificationRecipientResolver": "Notification Recipient Management",
+    "NotificationResolver": "Notification Management"
   },
   "action": {
     "UserResolver": {
@@ -66,6 +69,12 @@
       "createOneCompany": "Create Company",
       "updateSelfCompany": "Update Current Company Info",
       "updateOneCompany": "Update Company"
+    },
+    "NotificationRecipientResolver": {
+      "paginateNotificationRecipes": "Paginate Notification Recipients"
+    },
+    "NotificationResolver": {
+      "paginateNotifications": "Paginate Notifications"
     }
   }
 }

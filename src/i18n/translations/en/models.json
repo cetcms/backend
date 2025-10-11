@@ -39,7 +39,9 @@
       "auths": "Auth",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
-      "mediaFiles": "MediaFile"
+      "mediaFiles": "MediaFile",
+      "notifications": "Notification",
+      "notificationRecipients": "NotificationRecipient"
     },
     "_enums": {
       "status": "Status"
@@ -49,7 +51,9 @@
     "auths": "Auths",
     "logs": "Logs",
     "mediaFolders": "Media Folders",
-    "mediaFiles": "Media Files"
+    "mediaFiles": "Media Files",
+    "notifications": "Notifications",
+    "notificationRecipients": "Notification Recipients"
   },
   "AdminRole": {
     "id": "ID",
@@ -97,16 +101,20 @@
       "auths": "Auth",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
-      "mediaFiles": "MediaFile"
+      "mediaFiles": "MediaFile",
+      "notifications": "Notification",
+      "notificationRecipients": "NotificationRecipient"
     },
     "_enums": {
       "status": "Status"
     },
-    "companies": "User.companies",
-    "auths": "User.auths",
-    "logs": "User.logs",
-    "mediaFolders": "User.mediaFolders",
-    "mediaFiles": "User.mediaFiles"
+    "companies": "Companies",
+    "auths": "Authentications",
+    "logs": "Logs",
+    "mediaFolders": "Media Folders",
+    "mediaFiles": "Media Files",
+    "notifications": "Notifications",
+    "notificationRecipients": "Notification Recipients"
   },
   "Company": {
     "id": "ID",
@@ -124,7 +132,9 @@
       "users": "CompanyUser",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
-      "mediaFiles": "MediaFile"
+      "mediaFiles": "MediaFile",
+      "notifications": "Notification",
+      "notificationRecipients": "NotificationRecipient"
     },
     "_enums": {
       "status": "Status"
@@ -135,7 +145,9 @@
     "users": "Users",
     "logs": "Logs",
     "mediaFolders": "Media Folders",
-    "mediaFiles": "Media Files"
+    "mediaFiles": "Media Files",
+    "notifications": "Notifications",
+    "notificationRecipients": "Notification Recipients"
   },
   "CompanyRole": {
     "id": "ID",
@@ -157,7 +169,7 @@
     },
     "company": "Company",
     "users": "Users",
-    "admins": "CompanyRole.admins"
+    "admins": "Administrators"
   },
   "CompanyUser": {
     "createdAt": "Created At",
@@ -336,6 +348,21 @@
       "Document": "Document",
       "Archive": "Archive",
       "Other": "Other"
+    },
+    "NotificationSender": {
+      "User": "User",
+      "Company": "Company",
+      "System": "System",
+      "Admin": "Admin"
+    },
+    "NotificationType": {
+      "Public": "Public",
+      "Private": "Private"
+    },
+    "NotificationRecipier": {
+      "User": "User",
+      "Company": "Company",
+      "Admin": "Admin"
     }
   },
   "title": {
@@ -349,6 +376,70 @@
     "CompanyUser": "Company User",
     "RequestLog": "Request Log",
     "MediaFolder": "Media Folder",
-    "MediaFile": "Media File"
+    "MediaFile": "Media File",
+    "Notification": "Notification",
+    "NotificationRecipient": "Notification Recipient"
+  },
+  "Notification": {
+    "id": "ID",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "sentedAt": "Sent At",
+    "title": "Title",
+    "content": "Content",
+    "_enums": {
+      "status": "Status",
+      "sender": "Sender Type",
+      "type": "Notification Type"
+    },
+    "status": "Status",
+    "priority": "Priority",
+    "category": "Category",
+    "senderId": "Sender ID",
+    "sender": "Sender",
+    "type": "Type",
+    "adminId": "Admin ID",
+    "admin": "Admin",
+    "_relations": {
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company",
+      "recipients": "Recipients"
+    },
+    "userId": "User ID",
+    "user": "User",
+    "companyId": "Company ID",
+    "company": "Company",
+    "recipients": "Recipients"
+  },
+  "NotificationRecipient": {
+    "id": "ID",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "readedAt": "Read At",
+    "deletedAt": "Deleted At",
+    "archivedAt": "Archived At",
+    "readed": "Read",
+    "archived": "Archived",
+    "deleted": "Deleted",
+    "recipierId": "Recipient ID",
+    "_enums": {
+      "recipier": "Recipient Type"
+    },
+    "recipier": "Recipient",
+    "adminId": "Admin ID",
+    "admin": "Admin",
+    "_relations": {
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company",
+      "notification": "Notification"
+    },
+    "userId": "User ID",
+    "user": "User",
+    "companyId": "Company ID",
+    "company": "Company",
+    "notificationId": "Notification ID",
+    "notification": "Notification"
   }
 }
