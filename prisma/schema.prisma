@@ -167,23 +167,25 @@ model Admin {
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  companies    AdminCompany[]
+  companies              AdminCompany[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  auths        Auth[]
+  auths                  Auth[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  logs         RequestLog[]
+  logs                   RequestLog[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  mediaFolders MediaFolder[]
+  mediaFolders           MediaFolder[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  mediaFiles   MediaFile[]
+  mediaFiles             MediaFile[]
+  notifications          Notification[]
+  notificationRecipients NotificationRecipient[]
 
   @@map("admins")
 }
@@ -250,23 +252,25 @@ model User {
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  companies    CompanyUser[]
+  companies              CompanyUser[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  auths        Auth[]
+  auths                  Auth[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  logs         RequestLog[]
+  logs                   RequestLog[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  mediaFolders MediaFolder[]
+  mediaFolders           MediaFolder[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  mediaFiles   MediaFile[]
+  mediaFiles             MediaFile[]
+  notifications          Notification[]
+  notificationRecipients NotificationRecipient[]
 
   @@map("users")
 }
@@ -290,31 +294,33 @@ model Company {
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField()
-  auths        Auth[]
+  auths                  Auth[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField()
-  admins       AdminCompany[]
+  admins                 AdminCompany[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField()
-  roles        CompanyRole[]
+  roles                  CompanyRole[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField()
-  users        CompanyUser[]
+  users                  CompanyUser[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField()
-  logs         RequestLog[]
+  logs                   RequestLog[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField()
-  mediaFolders MediaFolder[]
+  mediaFolders           MediaFolder[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField()
-  mediaFiles   MediaFile[]
+  mediaFiles             MediaFile[]
+  notifications          Notification[]
+  notificationRecipients NotificationRecipient[]
 
   @@map("companies")
 }
@@ -374,6 +380,102 @@ model CompanyUser {
 
   @@id([companyId, userId], name: "companyUserIdx")
   @@map("company_users")
+}
+
+enum NotificationSender {
+  User
+  Company
+  System
+  Admin
+}
+
+enum NotificationRecipier {
+  User
+  Company
+  Admin
+}
+
+enum NotificationType {
+  Public
+  Private
+}
+
+model Notification {
+  /// @DtoReadOnly()
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  sentedAt  DateTime @default(now()) @map("sented_at")
+
+  // 通知基本信息
+  title    String  @db.VarChar(200)
+  content  String
+  status   Status  @default(Enabled)
+  priority Int     @default(0) // 优先级，0: 普通, 1: 重要, 2: 紧急
+  category String? @db.VarChar(50) // 通知分类
+
+  // 发送者信息
+  senderId  String             @map("sender_id") @db.VarChar(50)
+  sender    NotificationSender @default(System) // Admin, User, Company 或 System
+  type      NotificationType   @default(Private)
+  /// @DtoRelationIncludeId()
+  adminId   String?            @map("admin_id")
+  /// @DtoEntityHidden()
+  admin     Admin?             @relation(fields: [adminId], references: [id])
+  /// @DtoRelationIncludeId()
+  userId    String?            @map("user_id")
+  /// @DtoEntityHidden()
+  user      User?              @relation(fields: [userId], references: [id])
+  /// @DtoRelationIncludeId()
+  companyId String?            @map("company_id")
+  /// @DtoEntityHidden()
+  company   Company?           @relation(fields: [companyId], references: [id])
+
+  // 接收者信息 (支持多对多)
+  /// @DtoEntityHidden()
+  /// @HideField()
+  recipients NotificationRecipient[]
+
+  @@map("notifications")
+}
+
+model NotificationRecipient {
+  /// @DtoReadOnly()
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  readedAt   DateTime? @map("readed_at") // 已读时间
+  deletedAt  DateTime? @map("deleted_at")
+  archivedAt DateTime? @map("archived_at")
+  readed     Boolean   @default(false) // 是否已读
+  archived   Boolean   @default(false) // 是否归档
+  deleted    Boolean   @default(false) // 是否删除
+
+  // 接收者信息
+  recipierId String               @map("recipier_id") @db.VarChar(50)
+  /// @DtoEntityHidden()
+  recipier   NotificationRecipier @map("recipier") // Admin, User, Company
+  /// @DtoRelationIncludeId()
+  adminId    String?              @map("admin_id")
+  /// @DtoEntityHidden()
+  admin      Admin?               @relation(fields: [adminId], references: [id])
+  /// @DtoRelationIncludeId()
+  userId     String?              @map("user_id")
+  /// @DtoEntityHidden()
+  user       User?                @relation(fields: [userId], references: [id])
+  /// @DtoRelationIncludeId()
+  companyId  String?              @map("company_id")
+  /// @DtoEntityHidden()
+  company    Company?             @relation(fields: [companyId], references: [id])
+
+  // 关联的通知
+  /// @DtoRelationIncludeId()
+  notificationId String       @map("notification_id")
+  /// @DtoEntityHidden()
+  notification   Notification @relation(fields: [notificationId], references: [id])
+
+  @@unique([notificationId, recipierId, recipier], name: "notificationRecipientIdx")
+  @@map("notification_recipients")
 }
 
 enum RequestMethod {
