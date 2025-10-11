@@ -7,6 +7,8 @@ export * from './company-role/company-role.repository';
 export * from './company-user/company-user.repository';
 export * from './media-file/media-file.repository';
 export * from './media-folder/media-folder.repository';
+export * from './notification/notification.repository';
+export * from './notification-recipient/notification-recipient.repository';
 export * from './request-log/request-log.repository';
 export * from './user/user.repository';
 export * from './auth/auth.repository';
