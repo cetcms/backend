@@ -21,6 +21,7 @@ export class AppService {
 
   async start(app: NestExpressApplication) {
     const config = this.configService.getAppConfig();
+    const { maxFileSize } = this.configService.getStorageConfig();
 
     const i18n = app.get(I18nService);
 
@@ -31,7 +32,7 @@ export class AppService {
     this.app.use(
       graphqlUploadExpress({
         overrideSendResponse: false,
-        maxFileSize: 100 * 1024 * 1024, // 100 MB
+        maxFileSize,
         maxFiles: 5,
       })
     );

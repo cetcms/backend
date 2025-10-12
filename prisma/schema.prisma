@@ -604,10 +604,9 @@ model MediaFolder {
 
 model MediaFile {
   /// @DtoReadOnly()
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  uploadedAt DateTime @default(now()) @map("uploaded_at")
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   status Status     @default(Enabled)
   store  MediaStore @default(Local)
@@ -649,7 +648,7 @@ model MediaFile {
   company   Company? @relation(fields: [companyId], references: [id])
 
   // 权限控制
-  visibility MediaVisibility @default(Private)
+  visibility MediaVisibility @default(Public)
 
   @@unique([adminId, folderId, fileName], name: "adminFileIdx")
   @@unique([userId, folderId, fileName], name: "userFileIdx")

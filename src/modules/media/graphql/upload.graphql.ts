@@ -7,7 +7,7 @@ export class UploadFileArgs {
   file: Promise<FileUpload>;
 
   @Field(() => String)
-  storePath: string;
+  folderPath: string;
 
   @Field(() => String, { nullable: true })
   name?: string;

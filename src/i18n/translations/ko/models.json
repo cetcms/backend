@@ -313,7 +313,9 @@
     "admin": "관리자",
     "user": "사용자",
     "fileExtension": "MediaFile.fileExtension",
-    "owner": "MediaFile.owner"
+    "owner": "MediaFile.owner",
+    "uploadFailed": "MediaFile.uploadFailed",
+    "extension": "MediaFile.extension"
   },
   "enum": {
     "Target": {
