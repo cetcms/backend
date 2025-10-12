@@ -52,6 +52,124 @@ export class MediaFolderRepository extends MediaFolderAbstract {
   }
 
   /**
+   * 规范化路径：去除空白、合并多余斜杠、确保以斜杠开头，去除末尾斜杠
+   * @param path
+   */
+  normalizePath(path: string) {
+    const trimmed = path.trim();
+    if (!trimmed) return '';
+    let normalized = trimmed;
+    // 将反斜杠替换为正斜杠
+    normalized = normalized.replace(/\\/g, '/');
+    // 合并重复正斜杠
+    normalized = normalized.replace(/\/+?/g, '/');
+    // 确保前导斜杠
+    if (!normalized.startsWith('/')) normalized = `/${normalized}`;
+    // 去除末尾斜杠（但保留根路径"/")
+    if (normalized.length > 1 && normalized.endsWith('/')) normalized = normalized.slice(0, -1);
+    return normalized;
+  }
+
+  /**
+   * 创建媒体文件夹
+   * @param owner
+   * @param ownerId
+   * @param path
+   */
+  async createByPath(owner: Owner, ownerId: string, path: string) {
+    if (!owner || !ownerId) {
+      throw new Error('Invalid owner');
+    }
+    if (!path) {
+      throw new Error('Invalid path');
+    }
+
+    const fullPath = this.normalizePath(path);
+    if (!fullPath || fullPath === '/') {
+      throw new Error('Invalid path');
+    }
+
+    // 如果最终文件夹已存在，直接返回
+    const existing = await this.findOneByPath(owner, ownerId, fullPath);
+    if (existing) return existing;
+
+    const segments = fullPath.split('/').filter(Boolean);
+    let parentFolder: Awaited<ReturnType<typeof this.findOneByPath>> | null = null;
+    let currentFolder = null as Awaited<ReturnType<typeof this.save>> | null;
+
+    for (let i = 0; i < segments.length; i++) {
+      const name = segments[i];
+      const depth = i + 1;
+      const currPath = `/${segments.slice(0, i + 1).join('/')}`;
+
+      // 尝试查找当前层级文件夹是否存在
+      const found = await this.findOneByPath(owner, ownerId, currPath);
+      if (found) {
+        parentFolder = found;
+        currentFolder = found as any;
+        continue;
+      }
+
+      // 构建创建数据
+      const data: UpsertOneMediaFolderArgs['create'] = {
+        name,
+        path: currPath,
+        depth,
+        owner,
+        ...(parentFolder ? { parent: { connect: { id: parentFolder.id } } } : {}),
+      };
+
+      // 连接所有者实体
+      let where: UpsertOneMediaFolderArgs['where'];
+      switch (owner) {
+        case Owner.Admin:
+          data.admin = { connect: { id: ownerId } };
+          // 移除其他所有者关系字段以避免冲突
+          delete (data as any).user;
+          delete (data as any).company;
+          where = {
+            adminFolderPathIdx: {
+              adminId: ownerId,
+              path: currPath,
+            },
+          };
+          break;
+        case Owner.User:
+          data.user = { connect: { id: ownerId } };
+          delete (data as any).admin;
+          delete (data as any).company;
+          where = {
+            userFolderPathIdx: {
+              userId: ownerId,
+              path: currPath,
+            },
+          };
+          break;
+        case Owner.Company:
+          data.company = { connect: { id: ownerId } };
+          // company 可以同时关联 admin 或 user，但此处创建文件夹仅绑定 company
+          delete (data as any).admin;
+          delete (data as any).user;
+          where = {
+            companyFolderPathIdx: {
+              companyId: ownerId,
+              path: currPath,
+            },
+          };
+          break;
+        default:
+          throw new Error('Invalid owner type');
+      }
+
+      // 创建或更新（若并发情况下已创建）
+      currentFolder = await this.save(where, data);
+      parentFolder = currentFolder as any;
+    }
+
+    return currentFolder;
+  }
+
+  /**
    * 根据ID查找媒体文件夹
    *
    * @param id - 媒体文件夹ID
