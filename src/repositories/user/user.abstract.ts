@@ -16,6 +16,7 @@ import {
   FindUniqueUserArgs,
   UpdateOneUserArgs,
   UpsertOneUserArgs,
+  Owner,
 } from 'src/generated/graphql';
 import {
   UserCreateInputObjectZodSchema,
@@ -159,7 +160,7 @@ export abstract class UserAbstract {
       notificationRecipients: true,
     }).parse(data) as unknown as Prisma.UserCreateInput;
     result.mediaFolders = {
-      create: { name: 'root', path: '/' },
+      create: { name: 'root', path: '/', owner: Owner.Company },
     };
     return result;
   }

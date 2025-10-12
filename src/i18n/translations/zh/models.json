@@ -256,14 +256,17 @@
     "_enums": {
       "status": "Status",
       "ownerType": "Target",
-      "visibility": "MediaVisibility"
+      "visibility": "MediaVisibility",
+      "owner": "Owner"
     },
     "parent": "父级",
     "children": "子级",
     "company": "公司",
     "admin": "管理员",
     "user": "用户",
-    "files": "文件"
+    "files": "文件",
+    "depth": "深度",
+    "owner": "MediaFolder.owner"
   },
   "MediaFile": {
     "id": "ID",
@@ -302,12 +305,15 @@
       "status": "Status",
       "mediaType": "MediaType",
       "ownerType": "Target",
-      "visibility": "MediaVisibility"
+      "visibility": "MediaVisibility",
+      "owner": "Owner"
     },
     "folder": "文件夹",
     "company": "公司",
     "admin": "管理员",
-    "user": "用户"
+    "user": "用户",
+    "fileExtension": "MediaFile.fileExtension",
+    "owner": "MediaFile.owner"
   },
   "enum": {
     "Target": {
@@ -369,6 +375,11 @@
       "User": "用户",
       "Company": "企业",
       "Admin": "管理员"
+    },
+    "Owner": {
+      "User": "User",
+      "Admin": "Admin",
+      "Company": "Company"
     }
   },
   "title": {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { FindManyMediaFolderArgs, UpsertOneMediaFolderArgs } from 'src/generated/graphql';
+import { FindManyMediaFolderArgs, UpsertOneMediaFolderArgs, Owner } from 'src/generated/graphql';
 
 import { MediaFolderAbstract } from './media-folder.abstract';
 
@@ -68,19 +68,37 @@ export class MediaFolderRepository extends MediaFolderAbstract {
   }
 
   /**
-   * 根据名称查找媒体文件夹
-   *
-   * @param name - 文件夹名称
-   * @returns 查询到的媒体文件夹信息
+   * 根据路径查找媒体文件夹
+   * @param owner
+   * @param ownerId
+   * @param path
    */
-  findOneByName(name: string) {
-    return this.findFirst({
-      where: {
-        name: {
-          equals: name,
-        },
-      },
-    });
+  findOneByPath(owner: Owner, ownerId: string, path: string) {
+    switch (owner) {
+      case Owner.Admin:
+        return this.findUnique({
+          adminFolderPathIdx: {
+            adminId: ownerId,
+            path: path,
+          },
+        });
+      case Owner.Company:
+        return this.findUnique({
+          companyFolderPathIdx: {
+            companyId: ownerId,
+            path: path,
+          },
+        });
+      case Owner.User:
+        return this.findUnique({
+          userFolderPathIdx: {
+            userId: ownerId,
+            path: path,
+          },
+        });
+      default:
+        throw new Error('Invalid owner type');
+    }
   }
 
   /**

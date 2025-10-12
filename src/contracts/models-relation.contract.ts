@@ -72,15 +72,15 @@ export const ModelsRelation = {
   MediaFolder: {
     parent: 'MediaFolder',
     children: 'MediaFolder',
-    company: 'Company',
     admin: 'Admin',
     user: 'User',
+    company: 'Company',
     files: 'MediaFile',
   },
   MediaFile: {
     folder: 'MediaFolder',
-    company: 'Company',
     admin: 'Admin',
     user: 'User',
+    company: 'Company',
   },
 } as const;

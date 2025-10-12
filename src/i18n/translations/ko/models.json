@@ -256,14 +256,17 @@
     "_enums": {
       "status": "Status",
       "ownerType": "Target",
-      "visibility": "MediaVisibility"
+      "visibility": "MediaVisibility",
+      "owner": "Owner"
     },
     "parent": "부모",
     "children": "자식",
     "company": "회사",
     "admin": "관리자",
     "user": "사용자",
-    "files": "파일"
+    "files": "파일",
+    "depth": "MediaFolder.depth",
+    "owner": "MediaFolder.owner"
   },
   "MediaFile": {
     "id": "ID",
@@ -302,12 +305,15 @@
       "status": "Status",
       "mediaType": "MediaType",
       "ownerType": "Target",
-      "visibility": "MediaVisibility"
+      "visibility": "MediaVisibility",
+      "owner": "Owner"
     },
     "folder": "폴더",
     "company": "회사",
     "admin": "관리자",
-    "user": "사용자"
+    "user": "사용자",
+    "fileExtension": "MediaFile.fileExtension",
+    "owner": "MediaFile.owner"
   },
   "enum": {
     "Target": {
@@ -369,6 +375,11 @@
       "User": "사용자",
       "Company": "기업",
       "Admin": "관리자"
+    },
+    "Owner": {
+      "User": "User",
+      "Admin": "Admin",
+      "Company": "Company"
     }
   },
   "title": {

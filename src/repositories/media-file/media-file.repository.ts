@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { FindManyMediaFileArgs, UpsertOneMediaFileArgs } from 'src/generated/graphql';
+import { FindManyMediaFileArgs, Owner, UpsertOneMediaFileArgs } from 'src/generated/graphql';
 
 import { MediaFileAbstract } from './media-file.abstract';
 
@@ -52,6 +52,72 @@ export class MediaFileRepository extends MediaFileAbstract {
   }
 
   /**
+   * 在指定文件信息到媒体文件夹
+   * @param owner
+   * @param ownerId
+   * @param folderId
+   * @param input
+   */
+  saveToFolder(
+    owner: Owner,
+    ownerId: string,
+    folderId: string,
+    input: Omit<UpsertOneMediaFileArgs['create'], 'folder' | 'owner' | 'company'>
+  ) {
+    const data: UpsertOneMediaFileArgs['create'] = {
+      ...input,
+      folder: { connect: { id: folderId } },
+      owner,
+    };
+    switch (owner) {
+      case Owner.Admin:
+        data.admin = { connect: { id: ownerId } };
+        delete data.user;
+        delete data.company;
+        return this.save(
+          {
+            adminFileIdx: {
+              folderId,
+              adminId: ownerId,
+              fileName: data.fileName,
+            },
+          },
+          data
+        );
+      case Owner.User:
+        data.user = { connect: { id: ownerId } };
+        delete data.admin;
+        delete data.company;
+        return this.save(
+          {
+            userFileIdx: {
+              folderId,
+              userId: ownerId,
+              fileName: data.fileName,
+            },
+          },
+          data
+        );
+      case Owner.Company:
+        data.company = { connect: { id: ownerId } };
+        if (data.user) delete data.admin;
+        if (data.admin) delete data.user;
+        return this.save(
+          {
+            companyFileIdx: {
+              folderId,
+              companyId: ownerId,
+              fileName: data.fileName,
+            },
+          },
+          data
+        );
+      default:
+        throw new Error('Invalid owner');
+    }
+  }
+
+  /**
    * 根据ID查找媒体文件
    *
    * @param id - 媒体文件ID
@@ -62,22 +128,6 @@ export class MediaFileRepository extends MediaFileAbstract {
       where: {
         id: {
           equals: id,
-        },
-      },
-    });
-  }
-
-  /**
-   * 根据文件名查找媒体文件
-   *
-   * @param filename - 文件名
-   * @returns 查询到的媒体文件信息
-   */
-  findOneByFilename(filename: string) {
-    return this.findFirst({
-      where: {
-        fileName: {
-          equals: filename,
         },
       },
     });

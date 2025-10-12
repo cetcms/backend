@@ -14,6 +14,7 @@ import {
   FindFirstAdminArgs,
   FindManyAdminArgs,
   FindUniqueAdminArgs,
+  Owner,
   UpdateOneAdminArgs,
   UpsertOneAdminArgs,
 } from 'src/generated/graphql';
@@ -159,7 +160,7 @@ export abstract class AdminAbstract {
       notificationRecipients: true,
     }).parse(data) as unknown as Prisma.AdminCreateInput;
     result.mediaFolders = {
-      create: { name: 'root', path: '/' },
+      create: { name: 'root', path: '/', owner: Owner.Admin },
     };
     return result;
   }

@@ -14,6 +14,7 @@ import {
   FindFirstCompanyArgs,
   FindManyCompanyArgs,
   FindUniqueCompanyArgs,
+  Owner,
   UpdateOneCompanyArgs,
   UpsertOneCompanyArgs,
 } from 'src/generated/graphql';
@@ -161,7 +162,7 @@ export abstract class CompanyAbstract {
       notificationRecipients: true,
     }).parse(data) as unknown as Prisma.CompanyCreateInput;
     result.mediaFolders = {
-      create: { name: 'root', path: '/' },
+      create: { name: 'root', path: '/', owner: Owner.Company },
     };
     return result;
   }

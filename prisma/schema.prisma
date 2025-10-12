@@ -90,6 +90,37 @@ enum Target {
   User
 }
 
+enum Owner {
+  User
+  Admin
+  Company
+}
+
+enum NotificationSender {
+  User
+  Company
+  System
+  Admin
+}
+
+enum NotificationReceiver {
+  User
+  Company
+  Admin
+}
+
+enum NotificationPrivacy {
+  Public
+  Private
+}
+
+enum NotificationType {
+  Alert
+  Confirm
+  Message
+  Prompt
+}
+
 enum MediaStore {
   Local
   Qiniu
@@ -382,31 +413,6 @@ model CompanyUser {
   @@map("company_users")
 }
 
-enum NotificationSender {
-  User
-  Company
-  System
-  Admin
-}
-
-enum NotificationReceiver {
-  User
-  Company
-  Admin
-}
-
-enum NotificationPrivacy {
-  Public
-  Private
-}
-
-enum NotificationType {
-  Alert
-  Confirm
-  Message
-  Prompt
-}
-
 model Notification {
   /// @DtoReadOnly()
   id        String   @id @default(cuid())
@@ -481,7 +487,7 @@ model NotificationRecipient {
   /// @DtoEntityHidden()
   notification   Notification @relation(fields: [notificationId], references: [id])
 
-  @@unique([notificationId, receiverId, receiver], name: "notificationRecipientIdx")
+  @@unique([notificationId, receiverId, receiver], name: "receiverIdx")
   @@map("notification_recipients")
 }
 
@@ -567,6 +573,7 @@ model MediaFolder {
   /// @DtoEntityHidden()
   children MediaFolder[] @relation("FolderHierarchy")
 
+  owner     Owner
   /// @DtoRelationIncludeId()
   adminId   String?  @map("admin_id")
   /// @DtoEntityHidden()
@@ -586,6 +593,12 @@ model MediaFolder {
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   files MediaFile[]
 
+  @@unique([userId, path], name: "userFolderPathIdx")
+  @@unique([adminId, path], name: "adminFolderPathIdx")
+  @@unique([companyId, path], name: "companyFolderPathIdx")
+  @@unique([userId, name, depth], name: "userFolderNameIdx")
+  @@unique([adminId, name, depth], name: "adminFolderNameIdx")
+  @@unique([companyId, name, depth], name: "companyFolderNameIdx")
   @@map("media_folders")
 }
 
@@ -596,17 +609,15 @@ model MediaFile {
   updatedAt  DateTime @updatedAt @map("updated_at")
   uploadedAt DateTime @default(now()) @map("uploaded_at")
 
-  store  MediaStore @default(Local)
   status Status     @default(Enabled)
+  store  MediaStore @default(Local)
 
   // 文件基本信息
-  mediaType  MediaType @map("media_type")
-  mimeType   String    @map("mime_type")
-  originName String    @map("origin_name")
-  fileName   String    @map("file_name")
-  fileSize   BigInt    @map("file_size") // 文件大小（字节）
-  filePath   String    @default("/") @map("file_path") // 文件存储路径
-  fileHash   String    @map("file_hash") // 文件哈希值用于去重
+  mediaType MediaType @map("media_type")
+  mimeType  String    @map("mime_type")
+  fileName  String    @map("file_name")
+  fileHash  String    @map("file_hash") // 文件哈希值
+  fileSize  BigInt    @map("file_size") // 文件大小（字节）
 
   // 文件元数据
   width       Int?
@@ -614,13 +625,15 @@ model MediaFile {
   duration    Int? // 音视频时长（秒）
   metadata    Json? // 其他元数据信息
   description String?
+  extension   String  @map("extension")
 
   // 文件夹关联
   /// @DtoRelationIncludeId()
-  folderId String?      @map("folder_id")
+  folderId String      @map("folder_id")
   /// @DtoEntityHidden()
-  folder   MediaFolder? @relation(fields: [folderId], references: [id])
+  folder   MediaFolder @relation(fields: [folderId], references: [id])
 
+  owner     Owner
   // 多层级资源隔离
   /// @DtoRelationIncludeId()
   adminId   String?  @map("admin_id")
@@ -638,5 +651,8 @@ model MediaFile {
   // 权限控制
   visibility MediaVisibility @default(Private)
 
+  @@unique([adminId, folderId, fileName], name: "adminFileIdx")
+  @@unique([userId, folderId, fileName], name: "userFileIdx")
+  @@unique([companyId, folderId, fileName], name: "companyFileIdx")
   @@map("media_files")
 }
