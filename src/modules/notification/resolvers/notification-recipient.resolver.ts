@@ -3,7 +3,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 import { UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
-import { Target, NotificationRecipient, FindManyNotificationRecipientArgs } from 'src/generated/graphql';
+import { NotificationRecipient, FindManyNotificationRecipientArgs } from 'src/generated/graphql';
 
 import { NotificationRecipientService } from '../services';
 
