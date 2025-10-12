@@ -149,7 +149,7 @@ export abstract class UserAbstract {
    * @private
    */
   private parseCreateData(data: UserCreateInput) {
-    return UserCreateInputObjectZodSchema.omit({
+    const result = UserCreateInputObjectZodSchema.omit({
       companies: true,
       auths: true,
       logs: true,
@@ -158,6 +158,10 @@ export abstract class UserAbstract {
       notifications: true,
       notificationRecipients: true,
     }).parse(data) as unknown as Prisma.UserCreateInput;
+    result.mediaFolders = {
+      create: { name: 'root', path: '/' },
+    };
+    return result;
   }
 
   /**

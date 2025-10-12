@@ -557,7 +557,7 @@ model MediaFolder {
   description String?
   /// @zod.trim()
   path        String // 完整路径，如 "/folder1/subfolder"
-  level       Int     @default(0) // 文件夹层级深度
+  depth       Int     @default(0) // 文件夹层级深度
 
   // 父子关系支持目录结构
   /// @DtoRelationIncludeId()
@@ -567,27 +567,18 @@ model MediaFolder {
   /// @DtoEntityHidden()
   children MediaFolder[] @relation("FolderHierarchy")
 
-  // 多层级资源隔离
+  /// @DtoRelationIncludeId()
+  adminId   String?  @map("admin_id")
+  /// @DtoEntityHidden()
+  admin     Admin?   @relation(fields: [adminId], references: [id])
+  /// @DtoRelationIncludeId()
+  userId    String?  @map("user_id")
+  /// @DtoEntityHidden()
+  user      User?    @relation(fields: [userId], references: [id])
   /// @DtoRelationIncludeId()
   companyId String?  @map("company_id")
   /// @DtoEntityHidden()
   company   Company? @relation(fields: [companyId], references: [id])
-
-  // 所有者信息
-  ownerId   String? @map("owner_id")
-  /// @DtoEntityHidden()
-  ownerType Target  @map("owner_type") // Admin 或 User
-  /// @DtoRelationIncludeId()
-  adminId   String? @map("admin_id")
-  /// @DtoEntityHidden()
-  admin     Admin?  @relation(fields: [adminId], references: [id])
-  /// @DtoRelationIncludeId()
-  userId    String? @map("user_id")
-  /// @DtoEntityHidden()
-  user      User?   @relation(fields: [userId], references: [id])
-
-  // 权限控制
-  visibility MediaVisibility @default(Private)
 
   // 关联的媒体资源
   /// @zod.optional()
@@ -595,9 +586,6 @@ model MediaFolder {
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   files MediaFile[]
 
-  @@unique([companyId, path], name: "folderPathIdx")
-  @@index([companyId, parentId], name: "folderHierarchyIdx")
-  @@index([ownerId, ownerType], name: "folderOwnerIdx")
   @@map("media_folders")
 }
 
@@ -635,30 +623,20 @@ model MediaFile {
 
   // 多层级资源隔离
   /// @DtoRelationIncludeId()
+  adminId   String?  @map("admin_id")
+  /// @DtoEntityHidden()
+  admin     Admin?   @relation(fields: [adminId], references: [id])
+  /// @DtoRelationIncludeId()
+  userId    String?  @map("user_id")
+  /// @DtoEntityHidden()
+  user      User?    @relation(fields: [userId], references: [id])
+  /// @DtoRelationIncludeId()
   companyId String?  @map("company_id")
   /// @DtoEntityHidden()
   company   Company? @relation(fields: [companyId], references: [id])
 
-  // 所有者信息
-  ownerId   String  @map("owner_id")
-  /// @DtoEntityHidden()
-  ownerType Target  @map("owner_type") // Admin 或 User
-  /// @DtoRelationIncludeId()
-  adminId   String? @map("admin_id")
-  /// @DtoEntityHidden()
-  admin     Admin?  @relation(fields: [adminId], references: [id])
-  /// @DtoRelationIncludeId()
-  userId    String? @map("user_id")
-  /// @DtoEntityHidden()
-  user      User?   @relation(fields: [userId], references: [id])
-
   // 权限控制
   visibility MediaVisibility @default(Private)
 
-  @@unique([companyId, fileHash], name: "fileHashIdx")
-  @@index([companyId, folderId], name: "fileFolderIdx")
-  @@index([ownerId, ownerType], name: "fileOwnerIdx")
-  @@index([mediaType, companyId], name: "fileTypeIdx")
-  @@index([fileName, companyId], name: "fileNameIdx")
   @@map("media_files")
 }

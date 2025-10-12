@@ -149,7 +149,7 @@ export abstract class AdminAbstract {
    * @private
    */
   private parseCreateData(data: AdminCreateInput) {
-    return AdminCreateInputObjectZodSchema.omit({
+    const result = AdminCreateInputObjectZodSchema.omit({
       auths: true,
       companies: true,
       logs: true,
@@ -158,6 +158,10 @@ export abstract class AdminAbstract {
       notifications: true,
       notificationRecipients: true,
     }).parse(data) as unknown as Prisma.AdminCreateInput;
+    result.mediaFolders = {
+      create: { name: 'root', path: '/' },
+    };
+    return result;
   }
 
   /**
