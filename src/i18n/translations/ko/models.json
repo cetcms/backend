@@ -1,0 +1,457 @@
+{
+  "Auth": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "expiredAt": "만료 시간",
+    "adminId": "관리자 ID",
+    "_relations": {
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company"
+    },
+    "userId": "사용자 ID",
+    "companyId": "회사 ID",
+    "token": "토큰",
+    "fingerprint": "지문",
+    "device": "장치",
+    "location": "위치",
+    "target": "대상",
+    "_enums": {
+      "target": "Target"
+    },
+    "admin": "관리자",
+    "user": "사용자",
+    "company": "회사"
+  },
+  "Admin": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "status": "상태",
+    "name": "이름",
+    "email": "이메일",
+    "password": "비밀번호",
+    "roleId": "역할 ID",
+    "_relations": {
+      "role": "AdminRole",
+      "companies": "AdminCompany",
+      "auths": "Auth",
+      "logs": "RequestLog",
+      "mediaFolders": "MediaFolder",
+      "mediaFiles": "MediaFile",
+      "notifications": "Notification",
+      "notificationRecipients": "NotificationRecipient"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "role": "역할",
+    "companies": "회사",
+    "auths": "인증",
+    "logs": "로그",
+    "mediaFolders": "미디어 폴더",
+    "mediaFiles": "미디어 파일",
+    "notifications": "알림",
+    "notificationRecipients": "알림 수신자"
+  },
+  "AdminRole": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "status": "상태",
+    "name": "이름",
+    "description": "설명",
+    "code": "코드",
+    "permissions": "권한",
+    "_relations": {
+      "admins": "Admin"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "admins": "관리자"
+  },
+  "AdminCompany": {
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "adminId": "관리자 ID",
+    "_relations": {
+      "admin": "Admin",
+      "company": "Company",
+      "role": "CompanyRole"
+    },
+    "companyId": "회사 ID",
+    "permissions": "권한",
+    "admin": "관리자",
+    "company": "회사",
+    "roleId": "역할 ID",
+    "role": "역할"
+  },
+  "User": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "status": "상태",
+    "name": "이름",
+    "email": "이메일",
+    "password": "비밀번호",
+    "_relations": {
+      "companies": "CompanyUser",
+      "auths": "Auth",
+      "logs": "RequestLog",
+      "mediaFolders": "MediaFolder",
+      "mediaFiles": "MediaFile",
+      "notifications": "Notification",
+      "notificationRecipients": "NotificationRecipient"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "companies": "회사",
+    "auths": "인증",
+    "logs": "로그",
+    "mediaFolders": "미디어 폴더",
+    "mediaFiles": "미디어 파일",
+    "notifications": "알림",
+    "notificationRecipients": "알림 수신자"
+  },
+  "Company": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "status": "상태",
+    "name": "회사명",
+    "alias": "별칭",
+    "code": "회사 코드",
+    "description": "설명",
+    "_relations": {
+      "auths": "Auth",
+      "admins": "AdminCompany",
+      "roles": "CompanyRole",
+      "users": "CompanyUser",
+      "logs": "RequestLog",
+      "mediaFolders": "MediaFolder",
+      "mediaFiles": "MediaFile",
+      "notifications": "Notification",
+      "notificationRecipients": "NotificationRecipient"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "auths": "인증",
+    "admins": "관리자",
+    "roles": "역할",
+    "users": "사용자",
+    "logs": "로그",
+    "mediaFolders": "미디어 폴더",
+    "mediaFiles": "미디어 파일",
+    "notifications": "알림",
+    "notificationRecipients": "알림 수신자"
+  },
+  "CompanyRole": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "status": "상태",
+    "name": "이름",
+    "description": "설명",
+    "code": "코드",
+    "permissions": "권한",
+    "companyId": "회사 ID",
+    "_relations": {
+      "company": "Company",
+      "users": "CompanyUser",
+      "admins": "AdminCompany"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "company": "회사",
+    "users": "사용자",
+    "admins": "관리자"
+  },
+  "CompanyUser": {
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "status": "상태",
+    "companyId": "회사 ID",
+    "_relations": {
+      "company": "Company",
+      "user": "User",
+      "role": "CompanyRole"
+    },
+    "userId": "사용자 ID",
+    "roleId": "역할 ID",
+    "_enums": {
+      "status": "Status"
+    },
+    "company": "회사",
+    "user": "사용자",
+    "role": "역할"
+  },
+  "RequestLog": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "recordAt": "기록 시간",
+    "beforeAt": "이전 시간",
+    "afterAt": "이후 시간",
+    "duration": "지속 시간",
+    "route": "라우트",
+    "method": "메서드",
+    "message": "메시지",
+    "headers": "요청 헤더",
+    "body": "요청 본문",
+    "params": "파라미터",
+    "query": "쿼리 파라미터",
+    "device": "장치",
+    "location": "위치",
+    "ip": "IP",
+    "subject": "주체",
+    "action": "작업",
+    "language": "언어",
+    "fingerprint": "지문",
+    "target": "대상",
+    "userId": "사용자 ID",
+    "_relations": {
+      "user": "User",
+      "admin": "Admin",
+      "company": "Company"
+    },
+    "adminId": "관리자 ID",
+    "companyId": "회사 ID",
+    "_enums": {
+      "method": "RequestMethod",
+      "target": "Target"
+    },
+    "user": "사용자",
+    "admin": "관리자",
+    "company": "회사"
+  },
+  "MediaFolder": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "status": "상태",
+    "name": "이름",
+    "description": "설명",
+    "path": "경로",
+    "level": "레벨",
+    "parentId": "부모 ID",
+    "_relations": {
+      "parent": "MediaFolder",
+      "children": "MediaFolder",
+      "company": "Company",
+      "admin": "Admin",
+      "user": "User",
+      "files": "MediaFile"
+    },
+    "companyId": "회사 ID",
+    "ownerId": "소유자 ID",
+    "ownerType": "소유자 유형",
+    "adminId": "관리자 ID",
+    "userId": "사용자 ID",
+    "visibility": "가시성",
+    "_enums": {
+      "status": "Status",
+      "ownerType": "Target",
+      "visibility": "MediaVisibility"
+    },
+    "parent": "부모",
+    "children": "자식",
+    "company": "회사",
+    "admin": "관리자",
+    "user": "사용자",
+    "files": "파일"
+  },
+  "MediaFile": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "uploadedAt": "업로드 시간",
+    "store": "저장소",
+    "status": "상태",
+    "mediaType": "미디어 유형",
+    "mimeType": "MIME 유형",
+    "originName": "원본 파일명",
+    "fileName": "파일명",
+    "fileSize": "파일 크기",
+    "filePath": "파일 경로",
+    "fileHash": "파일 해시",
+    "width": "너비",
+    "height": "높이",
+    "duration": "지속 시간",
+    "metadata": "메타데이터",
+    "description": "설명",
+    "folderId": "폴더 ID",
+    "_relations": {
+      "folder": "MediaFolder",
+      "company": "Company",
+      "admin": "Admin",
+      "user": "User"
+    },
+    "companyId": "회사 ID",
+    "ownerId": "소유자 ID",
+    "ownerType": "소유자 유형",
+    "adminId": "관리자 ID",
+    "userId": "사용자 ID",
+    "visibility": "가시성",
+    "_enums": {
+      "store": "MediaStore",
+      "status": "Status",
+      "mediaType": "MediaType",
+      "ownerType": "Target",
+      "visibility": "MediaVisibility"
+    },
+    "folder": "폴더",
+    "company": "회사",
+    "admin": "관리자",
+    "user": "사용자"
+  },
+  "enum": {
+    "Target": {
+      "Admin": "관리자",
+      "User": "사용자"
+    },
+    "Status": {
+      "Enabled": "활성화",
+      "Disabled": "비활성화"
+    },
+    "RequestMethod": {
+      "GET": "GET",
+      "POST": "POST",
+      "PUT": "PUT",
+      "DELETE": "DELETE",
+      "PATCH": "PATCH",
+      "OPTIONS": "OPTIONS",
+      "HEAD": "HEAD",
+      "GRAPHQL": "GRAPHQL",
+      "GRAPHQL_WS": "GRAPHQL_WS"
+    },
+    "MediaVisibility": {
+      "Public": "공개",
+      "Private": "비공개",
+      "Shared": "공유"
+    },
+    "MediaStore": {
+      "Local": "로컬",
+      "Qiniu": "七牛云",
+      "Oss": "阿里云 OSS",
+      "Cos": "腾讯云 COS",
+      "S3": "AWS S3"
+    },
+    "MediaType": {
+      "Image": "이미지",
+      "Video": "비디오",
+      "Audio": "오디오",
+      "Document": "문서",
+      "Archive": "아카이브 파일",
+      "Other": "기타"
+    },
+    "NotificationSender": {
+      "User": "사용자",
+      "Company": "회사",
+      "System": "시스템",
+      "Admin": "관리자"
+    },
+    "NotificationType": {
+      "Alert": "경고",
+      "Confirm": "메시지 확인",
+      "Message": "메시지 알림",
+      "Prompt": "프롬프트 메시지"
+    },
+    "NotificationPrivacy": {
+      "Public": "공개",
+      "Private": "비공개"
+    },
+    "NotificationReceiver": {
+      "User": "사용자",
+      "Company": "기업",
+      "Admin": "관리자"
+    }
+  },
+  "title": {
+    "Auth": "인증",
+    "Admin": "관리자",
+    "AdminRole": "관리자 역할",
+    "AdminCompany": "회사 관리자",
+    "User": "사용자",
+    "Company": "회사",
+    "CompanyRole": "회사 역할",
+    "CompanyUser": "회사 사용자",
+    "RequestLog": "요청 로그",
+    "MediaFolder": "미디어 폴더",
+    "MediaFile": "미디어 파일",
+    "Notification": "알림",
+    "NotificationRecipient": "알림 수신자"
+  },
+  "Notification": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "sentAt": "전송 시간",
+    "title": "제목",
+    "content": "내용",
+    "_enums": {
+      "status": "Status",
+      "sender": "NotificationSender",
+      "type": "NotificationType",
+      "privacy": "NotificationPrivacy"
+    },
+    "status": "상태",
+    "priority": "우선순위",
+    "category": "분류",
+    "senderId": "발신자 ID",
+    "sender": "발신자",
+    "type": "유형",
+    "adminId": "관리자 ID",
+    "admin": "관리자",
+    "_relations": {
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company",
+      "recipients": "NotificationRecipient"
+    },
+    "userId": "사용자 ID",
+    "user": "사용자",
+    "companyId": "회사 ID",
+    "company": "회사",
+    "recipients": "수신자",
+    "options": "옵션",
+    "privacy": "프라이버시",
+    "receiver": "Notification.receiver"
+  },
+  "NotificationRecipient": {
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "deletedAt": "삭제 시간",
+    "archivedAt": "아카이브 시간",
+    "archived": "아카이브됨",
+    "deleted": "삭제됨",
+    "_enums": {
+      "receiver": "NotificationReceiver"
+    },
+    "adminId": "관리자 ID",
+    "admin": "관리자",
+    "_relations": {
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company",
+      "notification": "Notification"
+    },
+    "userId": "사용자 ID",
+    "user": "사용자",
+    "companyId": "회사 ID",
+    "company": "회사",
+    "notificationId": "알림 ID",
+    "notification": "알림",
+    "readAt": "읽은 시간",
+    "isRead": "읽었는지 여부",
+    "isArchived": "아카이브 여부",
+    "isDeleted": "삭제 여부",
+    "receiverId": "수신자 ID",
+    "receiver": "수신자"
+  }
+}

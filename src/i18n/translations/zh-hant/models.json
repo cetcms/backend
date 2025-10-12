@@ -419,7 +419,8 @@
     "company": "公司",
     "recipients": "接收者",
     "options": "選項",
-    "privacy": "隱私"
+    "privacy": "隱私",
+    "receiver": "Notification.receiver"
   },
   "NotificationRecipient": {
     "id": "ID",

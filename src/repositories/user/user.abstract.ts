@@ -155,6 +155,8 @@ export abstract class UserAbstract {
       logs: true,
       mediaFiles: true,
       mediaFolders: true,
+      notifications: true,
+      notificationRecipients: true,
     }).parse(data) as unknown as Prisma.UserCreateInput;
   }
 
@@ -174,6 +176,8 @@ export abstract class UserAbstract {
       logs: true,
       mediaFiles: true,
       mediaFolders: true,
+      notifications: true,
+      notificationRecipients: true,
     }).parse(data) as unknown as Prisma.UserUpdateInput;
   }
 
@@ -187,12 +191,12 @@ export abstract class UserAbstract {
    * @private
    */
   private parseOrderBy(orderBy: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]) {
-    if (Array.isArray(orderBy)) {
-      return z
-        .array(UserOrderByWithRelationInputObjectZodSchema)
-        .parse(orderBy) as unknown as Prisma.UserOrderByWithRelationInput[];
+    if (!Array.isArray(orderBy)) {
+      orderBy = [orderBy];
     }
-    return UserOrderByWithRelationInputObjectZodSchema.parse(orderBy) as unknown as Prisma.UserOrderByWithRelationInput;
+    return z
+      .array(UserOrderByWithRelationInputObjectZodSchema)
+      .parse(orderBy) as unknown as Prisma.UserOrderByWithRelationInput[];
   }
 
   /**

@@ -155,6 +155,8 @@ export abstract class AdminAbstract {
       logs: true,
       mediaFiles: true,
       mediaFolders: true,
+      notifications: true,
+      notificationRecipients: true,
     }).parse(data) as unknown as Prisma.AdminCreateInput;
   }
 
@@ -174,6 +176,8 @@ export abstract class AdminAbstract {
       logs: true,
       mediaFiles: true,
       mediaFolders: true,
+      notifications: true,
+      notificationRecipients: true,
     }).parse(data) as unknown as Prisma.AdminUpdateInput;
   }
 

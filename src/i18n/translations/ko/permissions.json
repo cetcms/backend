@@ -1,0 +1,81 @@
+{
+  "group": {
+    "User": "사용자",
+    "Admin": "관리자",
+    "Company": "회사",
+    "Notification": "알림"
+  },
+  "subject": {
+    "UserResolver": "사용자 관리",
+    "AdminCompanyResolver": "관리자 기업 관리",
+    "AdminRoleResolver": "관리자 역할 관리",
+    "AdminResolver": "관리자 관리",
+    "CompanyRoleResolver": "기업 역할 관리",
+    "CompanyUserResolver": "기업 사용자 관리",
+    "CompanyResolver": "기업 관리",
+    "NotificationRecipientResolver": "메시지 알림 수신",
+    "NotificationResolver": "메시지 알림 관리"
+  },
+  "action": {
+    "UserResolver": {
+      "findSelfUser": "현재 사용자 정보 조회",
+      "findOneUser": "단일 사용자 조회",
+      "paginateUsers": "사용자 페이징 조회",
+      "createOneUser": "사용자 추가",
+      "updateSelfUser": "현재 사용자 정보 수정",
+      "updateOneUser": "사용자 수정"
+    },
+    "AdminCompanyResolver": {
+      "findOneAdminCompany": "단일 관리자 기업 연관 조회",
+      "paginateAdminCompanies": "관리자 기업 연관 페이징 조회",
+      "createOneAdminCompany": "관리자 기업 연관 추가",
+      "updateOneAdminCompany": "관리자 기업 연관 수정",
+      "deleteAdminCompany": "관리자 기업 연관 삭제"
+    },
+    "AdminRoleResolver": {
+      "findOneAdminRole": "단일 관리자 역할 조회",
+      "paginateAdminRoles": "관리자 역할 페이징 조회",
+      "createOneAdminRole": "관리자 역할 추가",
+      "updateOneAdminRole": "관리자 역할 수정",
+      "listAdminRolePermission": "기업 역할 권한 목록 가져오기"
+    },
+    "AdminResolver": {
+      "findSelfAdmin": "현재 관리자 정보 조회",
+      "findOneAdmin": "단일 관리자 조회",
+      "paginateAdmins": "관리자 페이징 조회",
+      "createOneAdmin": "관리자 추가",
+      "updateSelfAdmin": "현재 관리자 정보 수정",
+      "updateOneAdmin": "관리자 수정",
+      "findAdminById": "ID로 관리자 조회",
+      "findAdminByEmail": "이메일로 관리자 조회"
+    },
+    "CompanyRoleResolver": {
+      "findOneCompanyRole": "단일 기업 역할 조회",
+      "paginateCompanyRoles": "기업 역할 페이징 조회",
+      "createOneCompanyRole": "기업 역할 추가",
+      "updateOneCompanyRole": "기업 역할 수정",
+      "listCompanyRolePermission": "기업 역할 권한 목록 가져오기"
+    },
+    "CompanyUserResolver": {
+      "findOneCompanyUser": "단일 기업 사용자 연관 조회",
+      "paginateCompanyUsers": "기업 사용자 연관 페이징 조회",
+      "createOneCompanyUser": "기업 사용자 연관 추가",
+      "updateOneCompanyUser": "기업 사용자 연관 수정"
+    },
+    "CompanyResolver": {
+      "findSelfCompany": "현재 기업 정보 조회",
+      "findOneCompany": "단일 기업 조회",
+      "paginateCompanies": "기업 페이징 조회",
+      "createOneCompany": "기업 추가",
+      "updateSelfCompany": "현재 기업 정보 수정",
+      "updateOneCompany": "기업 수정"
+    },
+    "NotificationRecipientResolver": {
+      "paginateNotificationRecipes": "메시지 수신 정보 페이징 조회"
+    },
+    "NotificationResolver": {
+      "paginateNotifications": "메시지 알림 페이징 조회",
+      "listSelfNotifications": "현재 사용자 메시지 알림 가져오기"
+    }
+  }
+}

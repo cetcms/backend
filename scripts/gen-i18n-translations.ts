@@ -4,6 +4,7 @@ import path from 'node:path';
 
 import { getDMMF } from '@prisma/internals';
 import { set, get } from 'radash';
+import voca from 'voca';
 
 export const main = async () => {
   const schema = fs.readFileSync(path.resolve(process.cwd(), 'prisma/schema.prisma'), 'utf-8');
@@ -79,6 +80,9 @@ export const main = async () => {
   for (const savePath in translations) {
     fs.writeFileSync(savePath, JSON.stringify(translations[savePath], null, 2));
   }
+  // 创建语言枚举文件
+  const languagesEnumContent = `export const enum I18nEnum {\n ${languages.map((lang) => ` ${voca.capitalize(voca.camelCase(lang))} = '${lang}',`).join('\n')}\n}`;
+  fs.writeFileSync(path.resolve(process.cwd(), 'src', 'i18n', 'i18n.enum.ts'), languagesEnumContent);
 };
 
 main().then(() => process.exit(0));

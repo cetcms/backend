@@ -356,17 +356,10 @@
       "Admin": "Admin"
     },
     "NotificationType": {
-      "Public": "Public",
-      "Private": "Private",
       "Alert": "Alert",
       "Confirm": "Confirm",
       "Message": "Message",
       "Prompt": "Prompt"
-    },
-    "NotificationRecipier": {
-      "User": "User",
-      "Company": "Company",
-      "Admin": "Admin"
     },
     "NotificationPrivacy": {
       "Public": "Public",
@@ -426,24 +419,20 @@
     "company": "Company",
     "recipients": "Recipients",
     "options": "Options",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "receiver": "Notification.receiver"
   },
   "NotificationRecipient": {
     "id": "ID",
     "createdAt": "Created At",
     "updatedAt": "Updated At",
-    "readedAt": "Read At",
     "deletedAt": "Deleted At",
     "archivedAt": "Archived At",
-    "readed": "Read",
     "archived": "Archived",
     "deleted": "Deleted",
-    "recipierId": "Recipient ID",
     "_enums": {
-      "recipier": "Recipient Type",
       "receiver": "NotificationReceiver"
     },
-    "recipier": "Recipient",
     "adminId": "Admin ID",
     "admin": "Admin",
     "_relations": {

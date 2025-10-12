@@ -74,7 +74,8 @@
       "paginateNotificationRecipes": "分頁查詢通知接收信息"
     },
     "NotificationResolver": {
-      "paginateNotifications": "分頁查詢通知"
+      "paginateNotifications": "分頁查詢通知",
+      "listSelfNotifications": "获取当前用户消息通知"
     }
   }
 }

@@ -1,5 +1,7 @@
 import { SystemContract } from 'src/contracts';
 import { DatabaseService } from 'src/database';
+import { NotificationPrivacy, NotificationReceiver, NotificationSender } from 'src/generated/graphql';
+import { I18nEnum } from 'src/i18n';
 import {
   AdminCompanyRepository,
   AdminRepository,
@@ -7,6 +9,7 @@ import {
   CompanyRepository,
   CompanyRoleRepository,
   CompanyUserRepository,
+  NotificationRepository,
   UserRepository,
 } from 'src/repositories';
 
@@ -110,6 +113,21 @@ const main = async () => {
     }
   );
   console.log('Company user saved:', companyUser);
+
+  const notificationRepo = new NotificationRepository(prisma);
+  const notification = await notificationRepo.create({
+    sender: NotificationSender.System,
+    privacy: NotificationPrivacy.Public,
+    receiver: [NotificationReceiver.Admin, NotificationReceiver.Company, NotificationReceiver.User],
+    content: {
+      [I18nEnum.En]: 'Welcome to use the system',
+      [I18nEnum.Zh]: '欢迎使用本系统',
+      [I18nEnum.ZhHant]: '歡迎使用本系統',
+      [I18nEnum.Ja]: 'システムを使用してください',
+      [I18nEnum.Ko]: '시스템을 사용하십시오',
+    },
+  });
+  console.log('Notification created:', notification);
 };
 
 main()

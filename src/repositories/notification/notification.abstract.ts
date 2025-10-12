@@ -151,7 +151,9 @@ export abstract class NotificationAbstract {
    * @private
    */
   private parseCreateData(data: NotificationCreateInput) {
-    return NotificationCreateInputObjectZodSchema.parse(data) as unknown as Prisma.NotificationCreateInput;
+    return NotificationCreateInputObjectZodSchema.omit({
+      recipients: true,
+    }).parse(data) as unknown as Prisma.NotificationCreateInput;
   }
 
   /**
@@ -164,7 +166,9 @@ export abstract class NotificationAbstract {
    * @private
    */
   private parseUpdateData(data: NotificationUpdateInput) {
-    return NotificationUpdateInputObjectZodSchema.parse(data) as unknown as Prisma.NotificationUpdateInput;
+    return NotificationUpdateInputObjectZodSchema.omit({
+      recipients: true,
+    }).parse(data) as unknown as Prisma.NotificationUpdateInput;
   }
 
   /**
@@ -177,14 +181,12 @@ export abstract class NotificationAbstract {
    * @private
    */
   private parseOrderBy(orderBy: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]) {
-    if (Array.isArray(orderBy)) {
-      return z
-        .array(NotificationOrderByWithRelationInputObjectZodSchema)
-        .parse(orderBy) as unknown as Prisma.NotificationOrderByWithRelationInput[];
+    if (!Array.isArray(orderBy)) {
+      orderBy = [orderBy];
     }
-    return NotificationOrderByWithRelationInputObjectZodSchema.parse(
-      orderBy
-    ) as unknown as Prisma.NotificationOrderByWithRelationInput;
+    return z
+      .array(NotificationOrderByWithRelationInputObjectZodSchema)
+      .parse(orderBy) as unknown as Prisma.NotificationOrderByWithRelationInput[];
   }
 
   /**

@@ -34,7 +34,9 @@ const main = async () => {
       const classComment = classDocs.map((doc) => doc.getCommentText()).join('\n') || 'unknown';
       // 获取 @group 标识信息
       const classGroupTag = classDocs.flatMap((doc) => doc.getTags()).find((tag) => tag.getTagName() === 'group');
-      const classGroup = voca.capitalize(voca.trim(classGroupTag ? classGroupTag.getCommentText() : 'unknown'));
+      const classGroup = voca.capitalize(
+        voca.camelCase(voca.trim(classGroupTag ? classGroupTag.getCommentText() : 'unknown'))
+      );
 
       // 遍历类中的所有方法
       classDeclaration.getMethods().forEach((method) => {

@@ -1,0 +1,81 @@
+{
+  "group": {
+    "User": "ユーザー",
+    "Admin": "管理者",
+    "Company": "会社",
+    "Notification": "通知"
+  },
+  "subject": {
+    "UserResolver": "ユーザー管理",
+    "AdminCompanyResolver": "管理者企業管理",
+    "AdminRoleResolver": "管理者ロール管理",
+    "AdminResolver": "管理者管理",
+    "CompanyRoleResolver": "企業ロール管理",
+    "CompanyUserResolver": "企業ユーザー管理",
+    "CompanyResolver": "企業管理",
+    "NotificationRecipientResolver": "メッセージ通知受信",
+    "NotificationResolver": "メッセージ通知管理"
+  },
+  "action": {
+    "UserResolver": {
+      "findSelfUser": "現在のユーザー情報を検索",
+      "findOneUser": "単一ユーザーを検索",
+      "paginateUsers": "ユーザーをページ分割して検索",
+      "createOneUser": "ユーザーを追加",
+      "updateSelfUser": "現在のユーザー情報を変更",
+      "updateOneUser": "ユーザーを変更"
+    },
+    "AdminCompanyResolver": {
+      "findOneAdminCompany": "単一管理者企業関連を検索",
+      "paginateAdminCompanies": "管理者企業関連をページ分割して検索",
+      "createOneAdminCompany": "管理者企業関連を追加",
+      "updateOneAdminCompany": "管理者企業関連を変更",
+      "deleteAdminCompany": "管理者企業関連を削除"
+    },
+    "AdminRoleResolver": {
+      "findOneAdminRole": "単一管理者ロールを検索",
+      "paginateAdminRoles": "管理者ロールをページ分割して検索",
+      "createOneAdminRole": "管理者ロールを追加",
+      "updateOneAdminRole": "管理者ロールを変更",
+      "listAdminRolePermission": "企業ロール権限リストを取得"
+    },
+    "AdminResolver": {
+      "findSelfAdmin": "現在の管理者情報を検索",
+      "findOneAdmin": "単一管理者を検索",
+      "paginateAdmins": "管理者をページ分割して検索",
+      "createOneAdmin": "管理者を追加",
+      "updateSelfAdmin": "現在の管理者情報を変更",
+      "updateOneAdmin": "管理者を変更",
+      "findAdminById": "IDで管理者を検索",
+      "findAdminByEmail": "メールアドレスで管理者を検索"
+    },
+    "CompanyRoleResolver": {
+      "findOneCompanyRole": "単一企業ロールを検索",
+      "paginateCompanyRoles": "企業ロールをページ分割して検索",
+      "createOneCompanyRole": "企業ロールを追加",
+      "updateOneCompanyRole": "企業ロールを変更",
+      "listCompanyRolePermission": "企業ロール権限リストを取得"
+    },
+    "CompanyUserResolver": {
+      "findOneCompanyUser": "単一企業ユーザー関連を検索",
+      "paginateCompanyUsers": "企業ユーザー関連をページ分割して検索",
+      "createOneCompanyUser": "企業ユーザー関連を追加",
+      "updateOneCompanyUser": "企業ユーザー関連を変更"
+    },
+    "CompanyResolver": {
+      "findSelfCompany": "現在の企業情報を検索",
+      "findOneCompany": "単一企業を検索",
+      "paginateCompanies": "企業をページ分割して検索",
+      "createOneCompany": "企業を追加",
+      "updateSelfCompany": "現在の企業情報を変更",
+      "updateOneCompany": "企業を変更"
+    },
+    "NotificationRecipientResolver": {
+      "paginateNotificationRecipes": "メッセージ受信情報をページ分割して検索"
+    },
+    "NotificationResolver": {
+      "paginateNotifications": "メッセージ通知をページ分割して検索",
+      "listSelfNotifications": "現在のユーザーのメッセージ通知を取得"
+    }
+  }
+}

@@ -356,26 +356,19 @@
       "Admin": "管理员"
     },
     "NotificationType": {
-      "Public": "公开",
-      "Private": "私有",
-      "Alert": "Alert",
-      "Confirm": "Confirm",
-      "Message": "Message",
-      "Prompt": "Prompt"
-    },
-    "NotificationRecipier": {
-      "User": "用户",
-      "Company": "公司",
-      "Admin": "管理员"
+      "Alert": "警告",
+      "Confirm": "消息确认",
+      "Message": "消息提醒",
+      "Prompt": "提示消息"
     },
     "NotificationPrivacy": {
-      "Public": "Public",
-      "Private": "Private"
+      "Public": "公开",
+      "Private": "私有"
     },
     "NotificationReceiver": {
-      "User": "User",
-      "Company": "Company",
-      "Admin": "Admin"
+      "User": "用户",
+      "Company": "企业",
+      "Admin": "管理员"
     }
   },
   "title": {
@@ -426,7 +419,8 @@
     "company": "公司",
     "recipients": "接收者",
     "options": "选项",
-    "privacy": "隐私"
+    "privacy": "隐私",
+    "receiver": "Notification.receiver"
   },
   "NotificationRecipient": {
     "id": "ID",

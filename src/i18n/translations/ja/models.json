@@ -1,0 +1,457 @@
+{
+  "Auth": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "expiredAt": "有効期限",
+    "adminId": "管理者ID",
+    "_relations": {
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company"
+    },
+    "userId": "ユーザーID",
+    "companyId": "会社ID",
+    "token": "トークン",
+    "fingerprint": "フィンガープリント",
+    "device": "デバイス",
+    "location": "位置",
+    "target": "ターゲット",
+    "_enums": {
+      "target": "Target"
+    },
+    "admin": "管理者",
+    "user": "ユーザー",
+    "company": "会社"
+  },
+  "Admin": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "status": "ステータス",
+    "name": "名前",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "roleId": "ロールID",
+    "_relations": {
+      "role": "AdminRole",
+      "companies": "AdminCompany",
+      "auths": "Auth",
+      "logs": "RequestLog",
+      "mediaFolders": "MediaFolder",
+      "mediaFiles": "MediaFile",
+      "notifications": "Notification",
+      "notificationRecipients": "NotificationRecipient"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "role": "ロール",
+    "companies": "会社",
+    "auths": "認証",
+    "logs": "ログ",
+    "mediaFolders": "メディアフォルダ",
+    "mediaFiles": "メディアファイル",
+    "notifications": "通知",
+    "notificationRecipients": "通知受信者"
+  },
+  "AdminRole": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "status": "ステータス",
+    "name": "名前",
+    "description": "説明",
+    "code": "コード",
+    "permissions": "権限",
+    "_relations": {
+      "admins": "Admin"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "admins": "管理者"
+  },
+  "AdminCompany": {
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "adminId": "管理者ID",
+    "_relations": {
+      "admin": "Admin",
+      "company": "Company",
+      "role": "CompanyRole"
+    },
+    "companyId": "会社ID",
+    "permissions": "権限",
+    "admin": "管理者",
+    "company": "会社",
+    "roleId": "ロールID",
+    "role": "ロール"
+  },
+  "User": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "status": "ステータス",
+    "name": "名前",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "_relations": {
+      "companies": "CompanyUser",
+      "auths": "Auth",
+      "logs": "RequestLog",
+      "mediaFolders": "MediaFolder",
+      "mediaFiles": "MediaFile",
+      "notifications": "Notification",
+      "notificationRecipients": "NotificationRecipient"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "companies": "会社",
+    "auths": "認証",
+    "logs": "ログ",
+    "mediaFolders": "メディアフォルダ",
+    "mediaFiles": "メディアファイル",
+    "notifications": "通知",
+    "notificationRecipients": "通知受信者"
+  },
+  "Company": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "status": "ステータス",
+    "name": "会社名",
+    "alias": "別名",
+    "code": "会社コード",
+    "description": "説明",
+    "_relations": {
+      "auths": "Auth",
+      "admins": "AdminCompany",
+      "roles": "CompanyRole",
+      "users": "CompanyUser",
+      "logs": "RequestLog",
+      "mediaFolders": "MediaFolder",
+      "mediaFiles": "MediaFile",
+      "notifications": "Notification",
+      "notificationRecipients": "NotificationRecipient"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "auths": "認証",
+    "admins": "管理者",
+    "roles": "ロール",
+    "users": "ユーザー",
+    "logs": "ログ",
+    "mediaFolders": "メディアフォルダ",
+    "mediaFiles": "メディアファイル",
+    "notifications": "通知",
+    "notificationRecipients": "通知受信者"
+  },
+  "CompanyRole": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "status": "ステータス",
+    "name": "名前",
+    "description": "説明",
+    "code": "コード",
+    "permissions": "権限",
+    "companyId": "会社ID",
+    "_relations": {
+      "company": "Company",
+      "users": "CompanyUser",
+      "admins": "AdminCompany"
+    },
+    "_enums": {
+      "status": "Status"
+    },
+    "company": "会社",
+    "users": "ユーザー",
+    "admins": "管理者"
+  },
+  "CompanyUser": {
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "status": "ステータス",
+    "companyId": "会社ID",
+    "_relations": {
+      "company": "Company",
+      "user": "User",
+      "role": "CompanyRole"
+    },
+    "userId": "ユーザーID",
+    "roleId": "ロールID",
+    "_enums": {
+      "status": "Status"
+    },
+    "company": "会社",
+    "user": "ユーザー",
+    "role": "ロール"
+  },
+  "RequestLog": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "recordAt": "記録時間",
+    "beforeAt": "以前の時間",
+    "afterAt": "以降の時間",
+    "duration": "期間",
+    "route": "ルート",
+    "method": "メソッド",
+    "message": "メッセージ",
+    "headers": "リクエストヘッダー",
+    "body": "リクエストボディ",
+    "params": "パラメータ",
+    "query": "クエリパラメータ",
+    "device": "デバイス",
+    "location": "位置",
+    "ip": "IP",
+    "subject": "主体",
+    "action": "操作",
+    "language": "言語",
+    "fingerprint": "フィンガープリント",
+    "target": "ターゲット",
+    "userId": "ユーザーID",
+    "_relations": {
+      "user": "User",
+      "admin": "Admin",
+      "company": "Company"
+    },
+    "adminId": "管理者ID",
+    "companyId": "会社ID",
+    "_enums": {
+      "method": "RequestMethod",
+      "target": "Target"
+    },
+    "user": "ユーザー",
+    "admin": "管理者",
+    "company": "会社"
+  },
+  "MediaFolder": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "status": "ステータス",
+    "name": "名前",
+    "description": "説明",
+    "path": "パス",
+    "level": "レベル",
+    "parentId": "親ID",
+    "_relations": {
+      "parent": "MediaFolder",
+      "children": "MediaFolder",
+      "company": "Company",
+      "admin": "Admin",
+      "user": "User",
+      "files": "MediaFile"
+    },
+    "companyId": "会社ID",
+    "ownerId": "所有者ID",
+    "ownerType": "所有者タイプ",
+    "adminId": "管理者ID",
+    "userId": "ユーザーID",
+    "visibility": "可視性",
+    "_enums": {
+      "status": "Status",
+      "ownerType": "Target",
+      "visibility": "MediaVisibility"
+    },
+    "parent": "親",
+    "children": "子",
+    "company": "会社",
+    "admin": "管理者",
+    "user": "ユーザー",
+    "files": "ファイル"
+  },
+  "MediaFile": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "uploadedAt": "アップロード日時",
+    "store": "ストレージ",
+    "status": "ステータス",
+    "mediaType": "メディアタイプ",
+    "mimeType": "MIMEタイプ",
+    "originName": "元のファイル名",
+    "fileName": "ファイル名",
+    "fileSize": "ファイルサイズ",
+    "filePath": "ファイルパス",
+    "fileHash": "ファイルハッシュ",
+    "width": "幅",
+    "height": "高さ",
+    "duration": "期間",
+    "metadata": "メタデータ",
+    "description": "説明",
+    "folderId": "フォルダID",
+    "_relations": {
+      "folder": "MediaFolder",
+      "company": "Company",
+      "admin": "Admin",
+      "user": "User"
+    },
+    "companyId": "会社ID",
+    "ownerId": "所有者ID",
+    "ownerType": "所有者タイプ",
+    "adminId": "管理者ID",
+    "userId": "ユーザーID",
+    "visibility": "可視性",
+    "_enums": {
+      "store": "MediaStore",
+      "status": "Status",
+      "mediaType": "MediaType",
+      "ownerType": "Target",
+      "visibility": "MediaVisibility"
+    },
+    "folder": "フォルダ",
+    "company": "会社",
+    "admin": "管理者",
+    "user": "ユーザー"
+  },
+  "enum": {
+    "Target": {
+      "Admin": "管理者",
+      "User": "ユーザー"
+    },
+    "Status": {
+      "Enabled": "有効",
+      "Disabled": "無効"
+    },
+    "RequestMethod": {
+      "GET": "GET",
+      "POST": "POST",
+      "PUT": "PUT",
+      "DELETE": "DELETE",
+      "PATCH": "PATCH",
+      "OPTIONS": "OPTIONS",
+      "HEAD": "HEAD",
+      "GRAPHQL": "GRAPHQL",
+      "GRAPHQL_WS": "GRAPHQL_WS"
+    },
+    "MediaVisibility": {
+      "Public": "公開",
+      "Private": "非公開",
+      "Shared": "共有"
+    },
+    "MediaStore": {
+      "Local": "ローカル",
+      "Qiniu": "七牛云",
+      "Oss": "阿里云 OSS",
+      "Cos": "腾讯云 COS",
+      "S3": "AWS S3"
+    },
+    "MediaType": {
+      "Image": "画像",
+      "Video": "動画",
+      "Audio": "音声",
+      "Document": "ドキュメント",
+      "Archive": "アーカイブファイル",
+      "Other": "その他"
+    },
+    "NotificationSender": {
+      "User": "ユーザー",
+      "Company": "会社",
+      "System": "システム",
+      "Admin": "管理者"
+    },
+    "NotificationType": {
+      "Alert": "警告",
+      "Confirm": "メッセージ確認",
+      "Message": "メッセージ通知",
+      "Prompt": "プロンプトメッセージ"
+    },
+    "NotificationPrivacy": {
+      "Public": "公開",
+      "Private": "非公開"
+    },
+    "NotificationReceiver": {
+      "User": "ユーザー",
+      "Company": "企業",
+      "Admin": "管理者"
+    }
+  },
+  "title": {
+    "Auth": "認証",
+    "Admin": "管理者",
+    "AdminRole": "管理者ロール",
+    "AdminCompany": "会社管理者",
+    "User": "ユーザー",
+    "Company": "会社",
+    "CompanyRole": "会社ロール",
+    "CompanyUser": "会社ユーザー",
+    "RequestLog": "リクエストログ",
+    "MediaFolder": "メディアフォルダ",
+    "MediaFile": "メディアファイル",
+    "Notification": "通知",
+    "NotificationRecipient": "通知受信者"
+  },
+  "Notification": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "sentAt": "送信日時",
+    "title": "タイトル",
+    "content": "内容",
+    "_enums": {
+      "status": "Status",
+      "sender": "NotificationSender",
+      "type": "NotificationType",
+      "privacy": "NotificationPrivacy"
+    },
+    "status": "ステータス",
+    "priority": "優先度",
+    "category": "カテゴリ",
+    "senderId": "送信者ID",
+    "sender": "送信者",
+    "type": "タイプ",
+    "adminId": "管理者ID",
+    "admin": "管理者",
+    "_relations": {
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company",
+      "recipients": "NotificationRecipient"
+    },
+    "userId": "ユーザーID",
+    "user": "ユーザー",
+    "companyId": "会社ID",
+    "company": "会社",
+    "recipients": "受信者",
+    "options": "オプション",
+    "privacy": "プライバシー",
+    "receiver": "Notification.receiver"
+  },
+  "NotificationRecipient": {
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "deletedAt": "削除日時",
+    "archivedAt": "アーカイブ日時",
+    "archived": "アーカイブ済み",
+    "deleted": "削除済み",
+    "_enums": {
+      "receiver": "NotificationReceiver"
+    },
+    "adminId": "管理者ID",
+    "admin": "管理者",
+    "_relations": {
+      "admin": "Admin",
+      "user": "User",
+      "company": "Company",
+      "notification": "Notification"
+    },
+    "userId": "ユーザーID",
+    "user": "ユーザー",
+    "companyId": "会社ID",
+    "company": "会社",
+    "notificationId": "通知ID",
+    "notification": "通知",
+    "readAt": "読了日時",
+    "isRead": "既読かどうか",
+    "isArchived": "アーカイブ済みかどうか",
+    "isDeleted": "削除済みかどうか",
+    "receiverId": "受信者ID",
+    "receiver": "受信者"
+  }
+}

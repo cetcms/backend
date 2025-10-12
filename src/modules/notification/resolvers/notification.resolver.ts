@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { UsePermission } from 'src/auth/decorators';
+import {CurrentAuth, UsePermission} from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import { Notification, FindManyNotificationArgs } from 'src/generated/graphql';
@@ -26,5 +26,14 @@ export class NotificationResolver {
   @Query(() => PaginatedNotification)
   paginateNotifications(@Args() args: FindManyNotificationArgs): Promise<IPaginated<Notification>> {
     return this.service.paginate(args);
+  }
+
+  /**
+   * 获取当前用户消息通知
+   */
+  @UsePermission()
+  @Query(() => [Notification])
+  listSelfNotifications(@CurrentAuth() auth: CurrentAuth) {
+    return this.service.selfNotifications(auth);
   }
 }

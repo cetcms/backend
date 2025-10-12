@@ -157,6 +157,8 @@ export abstract class CompanyAbstract {
       logs: true,
       mediaFiles: true,
       mediaFolders: true,
+      notifications: true,
+      notificationRecipients: true,
     }).parse(data) as unknown as Prisma.CompanyCreateInput;
   }
 
@@ -170,7 +172,17 @@ export abstract class CompanyAbstract {
    * @private
    */
   private parseUpdateData(data: CompanyUpdateInput) {
-    return CompanyUpdateInputObjectZodSchema.parse(data) as unknown as Prisma.CompanyUpdateInput;
+    return CompanyUpdateInputObjectZodSchema.omit({
+      auths: true,
+      admins: true,
+      roles: true,
+      users: true,
+      logs: true,
+      mediaFiles: true,
+      mediaFolders: true,
+      notifications: true,
+      notificationRecipients: true,
+    }).parse(data) as unknown as Prisma.CompanyUpdateInput;
   }
 
   /**
