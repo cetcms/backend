@@ -5,6 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NextFunction, Request, Response } from 'express';
+import { graphqlUploadExpress } from 'graphql-upload-ts';
 import { ExtensionsFilter } from 'src/common/filters';
 import { LoggingInterceptor } from 'src/common/interceptors';
 import { ConfigService } from 'src/config/config.service';
@@ -26,6 +27,14 @@ export class AppService {
     this.app = app;
 
     this.app.setGlobalPrefix('/api');
+
+    this.app.use(
+      graphqlUploadExpress({
+        overrideSendResponse: false,
+        maxFileSize: 100 * 1024 * 1024, // 100 MB
+        maxFiles: 5,
+      })
+    );
 
     this.app.use((req: Request, _res: Response, next: NextFunction) => {
       i18n.changeLanguage(i18n.requestLanguage(req));
