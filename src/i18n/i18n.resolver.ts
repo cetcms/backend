@@ -9,11 +9,22 @@ export class I18nResolver {
   constructor(private readonly i18n: I18nService) {}
 
   @Query(() => GraphQLJSONObject)
-  translations(@Args('scope', { type: () => String }) scope: string) {
+  translations(@Args('scopes', { type: () => [String] }) scopes: string[]) {
     const namespaces = ['models', 'permissions'];
-    if (!namespaces.includes(scope)) {
-      throw new ForbiddenException(`Invalid scope: ${scope}`);
+    for (const scope of scopes) {
+      if (!namespaces.includes(scope)) {
+        throw new ForbiddenException(`Invalid scope: ${scope}`);
+      }
     }
-    return this.i18n.all(scope);
+
+    if (scopes.length === 1) {
+      return this.i18n.all(scopes[0]);
+    }
+
+    const result = {};
+    for (const scope of scopes) {
+      result[scope] = this.i18n.all(scope);
+    }
+    return result;
   }
 }

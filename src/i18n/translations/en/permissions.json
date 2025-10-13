@@ -75,7 +75,7 @@
     },
     "NotificationResolver": {
       "paginateNotifications": "Paginate Notifications",
-      "listSelfNotifications": "获取当前用户消息通知"
+      "listSelfNotifications": "List Current User Notifications"
     }
   }
 }

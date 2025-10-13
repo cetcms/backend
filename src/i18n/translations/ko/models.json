@@ -53,7 +53,8 @@
     "mediaFolders": "미디어 폴더",
     "mediaFiles": "미디어 파일",
     "notifications": "알림",
-    "notificationRecipients": "알림 수신자"
+    "notificationRecipients": "알림 수신자",
+    "avatar": "아바타"
   },
   "AdminRole": {
     "id": "ID",
@@ -344,9 +345,9 @@
     },
     "MediaStore": {
       "Local": "로컬",
-      "Qiniu": "七牛云",
-      "Oss": "阿里云 OSS",
-      "Cos": "腾讯云 COS",
+      "Qiniu": "Qiniu",
+      "Oss": "OSS",
+      "Cos": "COS",
       "S3": "AWS S3"
     },
     "MediaType": {

@@ -53,7 +53,8 @@
     "mediaFolders": "Media Folders",
     "mediaFiles": "Media Files",
     "notifications": "Notifications",
-    "notificationRecipients": "Notification Recipients"
+    "notificationRecipients": "Notification Recipients",
+    "avatar": "Avatar"
   },
   "AdminRole": {
     "id": "ID",

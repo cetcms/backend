@@ -190,6 +190,8 @@ model Admin {
   /// @DtoEntityHidden()
   password String
 
+  avatar String?
+
   /// @DtoRelationIncludeId()
   roleId String    @map("role_id")
   /// @DtoEntityHidden()

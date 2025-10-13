@@ -71,11 +71,11 @@
       "updateOneCompany": "修改企業"
     },
     "NotificationRecipientResolver": {
-      "paginateNotificationRecipes": "分頁查詢通知接收信息"
+      "paginateNotificationRecipes": "分頁查詢通知接收資訊"
     },
     "NotificationResolver": {
       "paginateNotifications": "分頁查詢通知",
-      "listSelfNotifications": "获取当前用户消息通知"
+      "listSelfNotifications": "獲取當前用戶消息通知"
     }
   }
 }

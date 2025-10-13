@@ -53,7 +53,8 @@
     "mediaFolders": "媒體資料夾",
     "mediaFiles": "媒體檔案",
     "notifications": "通知",
-    "notificationRecipients": "通知接收者"
+    "notificationRecipients": "通知接收者",
+    "avatar": "頭像"
   },
   "AdminRole": {
     "id": "ID",
