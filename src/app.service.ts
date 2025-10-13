@@ -1,7 +1,7 @@
 import os from 'node:os';
 import path from 'node:path';
 
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, RequestMethod } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NextFunction, Request, Response } from 'express';
@@ -27,7 +27,12 @@ export class AppService {
 
     this.app = app;
 
-    this.app.setGlobalPrefix('/api');
+    this.app.setGlobalPrefix('/api', {
+      exclude: [
+        { path: 'health', method: RequestMethod.GET },
+        { path: 'media/*path', method: RequestMethod.GET },
+      ],
+    });
 
     this.app.use(
       graphqlUploadExpress({

@@ -124,13 +124,7 @@ export class MediaFileRepository extends MediaFileAbstract {
    * @returns 查询到的媒体文件信息
    */
   findOneById(id: string) {
-    return this.findFirst({
-      where: {
-        id: {
-          equals: id,
-        },
-      },
-    });
+    return this.findUnique({ id });
   }
 
   /**

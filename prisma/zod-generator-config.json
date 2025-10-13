@@ -1,6 +1,9 @@
 {
   "mode": "full",
   "pureModels": false,
+  "strictMode": {
+    "enabled": false
+  },
   "variants": {
     "pure": { "enabled": false },
     "input": { "enabled": false }
