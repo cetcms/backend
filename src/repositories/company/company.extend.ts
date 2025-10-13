@@ -11,7 +11,7 @@ export class CompanyExtend {
     private readonly mediaFileExtend: MediaFileExtend
   ) {}
 
-  @ResolveField(() => String)
+  @ResolveField(() => String, { nullable: true })
   async logoUrl(@Parent() company: Company) {
     if (company.logo) {
       const file = await this.mediaFile.findOneById(company.logo);

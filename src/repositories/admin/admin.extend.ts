@@ -11,7 +11,7 @@ export class AdminExtend {
     private readonly mediaFileExtend: MediaFileExtend
   ) {}
 
-  @ResolveField(() => String)
+  @ResolveField(() => String, { nullable: true })
   async avatarUrl(@Parent() admin: Admin) {
     if (admin.avatar) {
       const file = await this.mediaFile.findOneById(admin.avatar);

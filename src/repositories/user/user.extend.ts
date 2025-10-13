@@ -13,7 +13,7 @@ export class UserExtend {
     private readonly mediaFileExtend: MediaFileExtend
   ) {}
 
-  @ResolveField(() => String)
+  @ResolveField(() => String, { nullable: true })
   async avatarUrl(@Parent() user: User) {
     if (user.avatar) {
       const file = await this.mediaFile.findOneById(user.avatar);
