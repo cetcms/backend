@@ -115,7 +115,8 @@
     "mediaFolders": "メディアフォルダ",
     "mediaFiles": "メディアファイル",
     "notifications": "通知",
-    "notificationRecipients": "通知受信者"
+    "notificationRecipients": "通知受信者",
+    "avatar": "アバター"
   },
   "Company": {
     "id": "ID",
@@ -148,7 +149,8 @@
     "mediaFolders": "メディアフォルダ",
     "mediaFiles": "メディアファイル",
     "notifications": "通知",
-    "notificationRecipients": "通知受信者"
+    "notificationRecipients": "通知受信者",
+    "logo": "ロゴ"
   },
   "CompanyRole": {
     "id": "ID",

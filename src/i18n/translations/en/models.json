@@ -115,7 +115,8 @@
     "mediaFolders": "Media Folders",
     "mediaFiles": "Media Files",
     "notifications": "Notifications",
-    "notificationRecipients": "Notification Recipients"
+    "notificationRecipients": "Notification Recipients",
+    "avatar": "Avatar"
   },
   "Company": {
     "id": "ID",
@@ -148,7 +149,8 @@
     "mediaFolders": "Media Folders",
     "mediaFiles": "Media Files",
     "notifications": "Notifications",
-    "notificationRecipients": "Notification Recipients"
+    "notificationRecipients": "Notification Recipients",
+    "logo": "Logo"
   },
   "CompanyRole": {
     "id": "ID",

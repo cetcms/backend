@@ -115,7 +115,8 @@
     "mediaFolders": "미디어 폴더",
     "mediaFiles": "미디어 파일",
     "notifications": "알림",
-    "notificationRecipients": "알림 수신자"
+    "notificationRecipients": "알림 수신자",
+    "avatar": "아바타"
   },
   "Company": {
     "id": "ID",
@@ -148,7 +149,8 @@
     "mediaFolders": "미디어 폴더",
     "mediaFiles": "미디어 파일",
     "notifications": "알림",
-    "notificationRecipients": "알림 수신자"
+    "notificationRecipients": "알림 수신자",
+    "logo": "로고"
   },
   "CompanyRole": {
     "id": "ID",

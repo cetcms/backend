@@ -275,12 +275,13 @@ model User {
   status Status @default(Enabled)
 
   /// @zod.min(2).trim()
-  name     String @db.VarChar(100)
+  name     String  @db.VarChar(100)
   /// @zod.email().min(5).trim()
   /// @Validator.IsEmail()
-  email    String @unique @db.VarChar(100)
+  email    String  @unique @db.VarChar(100)
   /// @DtoEntityHidden()
   password String
+  avatar   String?
 
   /// @zod.optional()
   /// @DtoEntityHidden()
@@ -323,6 +324,7 @@ model Company {
   /// @zod.min(2).trim()
   code        String? @unique @db.VarChar(100)
   description String?
+  logo        String?
 
   /// @zod.optional()
   /// @DtoEntityHidden()
