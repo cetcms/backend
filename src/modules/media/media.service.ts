@@ -24,6 +24,12 @@ export class MediaService {
     private readonly configService: ConfigService
   ) {}
 
+  listMediaFiles(fileIds: string[]) {
+    return this.mediaFile.findMany({
+      where: { id: { in: fileIds } },
+    });
+  }
+
   /**
    * 上传文件
    * @param auth

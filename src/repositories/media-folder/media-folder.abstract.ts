@@ -151,7 +151,10 @@ export abstract class MediaFolderAbstract {
    * @private
    */
   private parseCreateData(data: MediaFolderCreateInput) {
-    return MediaFolderCreateInputObjectZodSchema.parse(data) as unknown as Prisma.MediaFolderCreateInput;
+    return MediaFolderCreateInputObjectZodSchema.omit({
+      children: true,
+      files: true,
+    }).parse(data) as unknown as Prisma.MediaFolderCreateInput;
   }
 
   /**

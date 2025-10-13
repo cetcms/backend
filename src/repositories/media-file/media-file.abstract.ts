@@ -149,6 +149,7 @@ export abstract class MediaFileAbstract {
    * @private
    */
   private parseCreateData(data: MediaFileCreateInput) {
+    data.fileSize = BigInt(data.fileSize);
     return MediaFileCreateInputObjectZodSchema.parse(data) as unknown as Prisma.MediaFileCreateInput;
   }
 
