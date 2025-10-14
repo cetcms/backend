@@ -1,0 +1,9 @@
+{
+  "MediaFolder": {
+    "admin_id": {
+      "name": {
+        "depth": "MediaFolder.admin_id.name.depth"
+      }
+    }
+  }
+}

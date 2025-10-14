@@ -600,9 +600,6 @@ model MediaFolder {
   @@unique([userId, path], name: "userFolderPathIdx")
   @@unique([adminId, path], name: "adminFolderPathIdx")
   @@unique([companyId, path], name: "companyFolderPathIdx")
-  @@unique([userId, name, depth], name: "userFolderNameIdx")
-  @@unique([adminId, name, depth], name: "adminFolderNameIdx")
-  @@unique([companyId, name, depth], name: "companyFolderNameIdx")
   @@map("media_folders")
 }
 
