@@ -27,7 +27,7 @@
  *   someCommonQuery() {}
  *
  * 注意事项：
- * - 对应的权限点格式：`${ClassName}:${methodName}`，需要与系统权限数据保持一致。
+ * - 对应的权限点格式：`PermissionItem.name`，需要与系统权限数据保持一致。
  * - 依赖 USE_PERMISSION_KEY 元数据键与 PermissionGuard，须确保两者在应用中已正确引入与提供。
  */
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';

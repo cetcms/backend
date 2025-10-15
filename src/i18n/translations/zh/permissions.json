@@ -37,7 +37,7 @@
       "paginateAdminRoles": "分页查询管理员角色",
       "createOneAdminRole": "新增管理员角色",
       "updateOneAdminRole": "修改管理员角色",
-      "listAdminRolePermission": "获取企业角色权限列表"
+      "listAdminRolePermission": "获取企业角色权限组合"
     },
     "AdminResolver": {
       "findSelfAdmin": "查询当前管理员信息",

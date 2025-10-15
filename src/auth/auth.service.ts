@@ -82,6 +82,7 @@ export class AuthService {
 
     // 如果未找到匹配的用户或密码错误，则抛出异常
     if (!target) {
+      this.logger.warn('Target is null');
       throw new UnprocessableEntityException('Invalid login credentials');
     }
 

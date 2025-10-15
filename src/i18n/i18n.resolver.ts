@@ -10,17 +10,12 @@ export class I18nResolver {
 
   @Query(() => GraphQLJSONObject)
   translations(@Args('scopes', { type: () => [String] }) scopes: string[]) {
-    const namespaces = ['models', 'permissions'];
+    const namespaces = ['models'];
     for (const scope of scopes) {
       if (!namespaces.includes(scope)) {
         throw new ForbiddenException(`Invalid scope: ${scope}`);
       }
     }
-
-    if (scopes.length === 1) {
-      return this.i18n.all(scopes[0]);
-    }
-
     const result = {};
     for (const scope of scopes) {
       result[scope] = this.i18n.all(scope);

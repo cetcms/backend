@@ -19,7 +19,7 @@ const main = async () => {
     const adminRoleRepo = new AdminRoleRepository(db);
     const companyRoleRepo = new CompanyRoleRepository(db);
 
-    const permissions = Permissions.map((p) => `${p.subject}:${p.action}`);
+    const permissions = Permissions.map((p) => p.name);
     if (options.type.toLowerCase() === 'admin') {
       logger.log(`Pushing ${permissions.length} permissions to admin role ${options.role}`);
       await adminRoleRepo.update({ code: options.role.toUpperCase() }, { permissions });

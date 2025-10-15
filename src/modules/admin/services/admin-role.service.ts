@@ -1,7 +1,8 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CurrentAuth } from 'src/auth/decorators';
-import { PermissionInfo, PermissionItem } from 'src/auth/graphql';
+import { PermissionGroup, PermissionInfo, PermissionItem } from 'src/auth/graphql';
 import { PaginationResult } from 'src/common/dto';
+import { PermissionGroupHandler } from 'src/common/handlers';
 import { SystemContract } from 'src/contracts';
 import {
   AdminRoleWhereUniqueInput,
@@ -12,11 +13,15 @@ import {
   UpdateOneAdminRoleArgs,
 } from 'src/generated/graphql';
 import { Permissions } from 'src/generated/permissions';
+import { I18nService } from 'src/i18n';
 import { AdminRoleRepository } from 'src/repositories';
 
 @Injectable()
 export class AdminRoleService {
-  constructor(private readonly adminRole: AdminRoleRepository) {}
+  constructor(
+    private readonly adminRole: AdminRoleRepository,
+    private readonly i18n: I18nService
+  ) {}
 
   async findOneByUnique(args: FindUniqueAdminRoleArgs) {
     const { where } = args;
@@ -59,7 +64,7 @@ export class AdminRoleService {
 
     Permissions.forEach((p) => {
       const allow = !p.targets.length || p.targets.includes(Target.Admin);
-      const resource = `${p.subject}:${p.action}`;
+      const resource = p.name;
       const isSelfResource = currentPermissions.includes(resource);
       const isEditResource = Boolean(editRole && editRole.permissions?.includes(resource));
       p.targets = [];
@@ -104,8 +109,21 @@ export class AdminRoleService {
       items,
       allowSelect,
       allowUnselect,
+      alias: [],
     };
 
+    return result;
+  }
+
+  async permissionGroupInfo(auth: CurrentAuth, where?: AdminRoleWhereUniqueInput) {
+    const { items, allowSelect, allowUnselect, alias } = await this.permissionInfo(auth, where);
+    const groups = await PermissionGroupHandler(items, this.i18n);
+    const result: PermissionGroup = {
+      groups,
+      allowSelect,
+      allowUnselect,
+      alias,
+    };
     return result;
   }
 }

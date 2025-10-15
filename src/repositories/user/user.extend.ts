@@ -1,6 +1,6 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { CurrentAuth } from 'src/auth/decorators';
-import { Admin, CompanyRole, User } from 'src/generated/graphql';
+import { CompanyRole, User } from 'src/generated/graphql';
 import { MediaFileRepository, UserRepository } from 'src/repositories';
 
 import { MediaFileExtend } from '../media-file/media-file.extend';

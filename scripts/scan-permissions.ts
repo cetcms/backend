@@ -5,6 +5,7 @@ import process from 'process';
 import { Logger } from '@nestjs/common';
 import { get, set } from 'radash';
 import { PermissionItem } from 'src/auth/graphql';
+import { PermissionAliasHandler } from 'src/common';
 import { Target } from 'src/generated/graphql/prisma';
 import { Project, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
 import voca from 'voca';
@@ -52,6 +53,7 @@ const main = async () => {
             });
           }
 
+          const methodName = method.getName();
           const methodComment =
             method
               .getJsDocs()
@@ -59,17 +61,19 @@ const main = async () => {
               .join('\n') || 'unknown';
 
           // 校验权限定义是否重复
+          const alias = PermissionAliasHandler(className || 'Unknown', methodName);
           const context = `${className}.${method.getName()}`;
-          if (contextRecords[context]) {
-            throw new Error(`Duplicate permission definition: ${context}`);
+          if (contextRecords[alias.name]) {
+            throw new Error(`Duplicate permission definition: ${JSON.stringify(alias)}`);
           }
           contextRecords[context] = true;
 
           permissions.push({
+            name: alias.name,
             subject: className || 'Unknown',
             subjectLabel: classComment,
             group: classGroup,
-            action: method.getName(),
+            action: methodName,
             actionLabel: methodComment,
             targets: attrs,
           });
@@ -114,6 +118,7 @@ const main = async () => {
           writer.write('[').newLine();
           permissions.forEach((p, idx) => {
             writer.write('  {').newLine();
+            writer.write(`    name: ${JSON.stringify(p.name)},`).newLine();
             writer.write(`    subject: ${JSON.stringify(p.subject)},`).newLine();
             writer.write(`    subjectLabel: ${JSON.stringify(p.subjectLabel)},`).newLine();
             writer.write(`    group: ${JSON.stringify(p.group)},`).newLine();
@@ -134,6 +139,13 @@ const main = async () => {
         },
       },
     ],
+  });
+
+  // 添加权限文件的别名生成
+  sourceFile.addEnum({
+    name: 'PermissionAlias',
+    isExported: true,
+    members: permissions.map((p) => PermissionAliasHandler(p.subject, p.action)),
   });
 
   // 先格式化再保存

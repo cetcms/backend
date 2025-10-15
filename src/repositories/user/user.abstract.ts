@@ -316,11 +316,12 @@ export abstract class UserAbstract {
   update(where: UpdateOneUserArgs['where'], data: UpdateOneUserArgs['data']): PrismaPromise<User> {
     const include = this.getInclude();
     const select = this.getSelect();
+    const update = this.handleParsedData(this.parseUpdateData(data));
     return this.db.user.update({
       ...(Object.keys(include).length > 0 && { include }),
       ...(Object.keys(select).length > 0 && { select }),
       where: this.parseUniqueWhere(where),
-      data: this.parseUpdateData(data),
+      data: update,
     });
   }
 

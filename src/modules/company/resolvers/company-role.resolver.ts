@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentAuth, UsePermission } from 'src/auth/decorators';
-import { PermissionInfo } from 'src/auth/graphql';
+import { PermissionGroup } from 'src/auth/graphql';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
@@ -71,11 +71,11 @@ export class CompanyRoleResolver {
    * 获取企业角色权限列表
    */
   @UsePermission([Target.Admin, Target.User])
-  @Query(() => PermissionInfo)
+  @Query(() => PermissionGroup)
   listCompanyRolePermission(
     @CurrentAuth() auth: CurrentAuth,
     @Args('where', { nullable: true }) where?: CompanyRoleWhereUniqueInput
   ) {
-    return this.service.permissionInfo(auth, where);
+    return this.service.permissionGroupInfo(auth, where);
   }
 }

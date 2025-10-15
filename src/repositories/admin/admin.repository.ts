@@ -33,7 +33,11 @@ export class AdminRepository extends AdminAbstract {
    * @returns 处理后的数据，如果包含密码则进行哈希处理
    */
   protected handleParsedData<T extends Prisma.AdminCreateInput | Prisma.AdminUpdateInput>(input: T): T {
-    if (input.password && typeof input.password === 'string') input.password = PasswordHandler(input.password).hash();
+    if (input.password && typeof input.password === 'string') {
+      input.password = PasswordHandler(input.password).hash();
+    } else {
+      delete input.password;
+    }
     return input;
   }
 

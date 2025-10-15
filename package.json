@@ -26,12 +26,11 @@
     "script:scan-permissions": "tsx scripts/scan-permissions.ts",
     "script:push-permissions-to-role": "tsx scripts/push-permissions-to-role.ts",
     "script:gen-i18n-translations": "tsx scripts/gen-i18n-translations.ts",
-    "script:clear-zod-schema": "tsx scripts/clear-zod-schema.ts",
     "generate": "prisma generate",
     "prebuild": "pnpm generate",
     "predev": "pnpm generate",
     "predebug": "pnpm generate",
-    "postgenerate": "pnpm script:scan-permissions & pnpm script:gen-i18n-translations & pnpm script:clear-zod-schema"
+    "postgenerate": "pnpm script:scan-permissions & pnpm script:gen-i18n-translations"
   },
   "dependencies": {
     "@apollo/server": "^4.12.2",
@@ -106,7 +105,7 @@
     "prettier": "^3.4.2",
     "prisma": "^6.17.1",
     "prisma-nestjs-graphql": "^21.2.0",
-    "prisma-zod-generator": "^1.28.0",
+    "prisma-zod-generator": "^1.28.3",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
