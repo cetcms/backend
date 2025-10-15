@@ -135,7 +135,7 @@ export class AuthService {
    * @param meta
    * @param companyId
    */
-  async switchCompany(auth: Auth, meta: LoginMeta, companyId: string) {
+  async switchCompany(auth: Auth, meta: LoginMeta, companyId?: string) {
     const target = auth.target as Target;
     const targetId = target === Target.Admin ? auth.adminId : auth.userId;
     try {

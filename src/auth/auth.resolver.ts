@@ -4,7 +4,6 @@ import { AuthService } from 'src/auth/auth.service';
 import { CurrentAuth, CurrentRequestMeta } from 'src/auth/decorators';
 import { Login, LoginInput } from 'src/auth/graphql';
 import { JwtAuthGuard } from 'src/auth/guards';
-import { Company } from 'src/generated/graphql';
 import { Auth } from 'src/generated/graphql/auth';
 
 @Resolver()
@@ -42,14 +41,8 @@ export class AuthResolver {
   switchAuthCompany(
     @CurrentAuth() auth: CurrentAuth,
     @CurrentRequestMeta() meta: CurrentRequestMeta,
-    @Args('companyId') companyId: string
+    @Args('companyId', { nullable: true }) companyId?: string
   ) {
     return this.service.switchCompany(auth, meta, companyId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Query(() => [Company], { nullable: true })
-  listAuthCompanies(@CurrentAuth() auth: CurrentAuth, @Args('name', { nullable: true }) name?: string) {
-    return this.service.listCompanies(auth, name);
   }
 }
