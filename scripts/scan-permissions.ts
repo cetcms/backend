@@ -5,7 +5,7 @@ import process from 'process';
 import { Logger } from '@nestjs/common';
 import { get, set } from 'radash';
 import { PermissionItem } from 'src/auth/graphql';
-import { PermissionAliasHandler } from 'src/common';
+import { PermissionAliasHandler } from 'src/common/handlers';
 import { Target } from 'src/generated/graphql/prisma';
 import { Project, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
 import voca from 'voca';
