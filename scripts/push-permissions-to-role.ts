@@ -22,13 +22,19 @@ const main = async () => {
     const permissions = Permissions.map((p) => p.name);
     if (options.type.toLowerCase() === 'admin') {
       logger.log(`Pushing ${permissions.length} permissions to admin role ${options.role}`);
-      await adminRoleRepo.update({ code: options.role.toUpperCase() }, { permissions });
+      await adminRoleRepo.update({ code: options.role.toUpperCase() }, { permissions }).then((role) => {
+        logger.log(`Pushed ${role?.permissions.length} permissions to admin role ${role?.code}`);
+      });
     }
     if (options.type.toLowerCase() === 'company') {
       logger.log(`Pushing ${permissions.length} permissions to company role ${options.role}`);
-      await companyRoleRepo.updateCommonRole(options.role.toUpperCase(), {
-        permissions,
-      });
+      await companyRoleRepo
+        .updateCommonRole(options.role.toUpperCase(), {
+          permissions,
+        })
+        .then((role) => {
+          logger.log(`Pushed ${role?.permissions.length} permissions to company role ${role?.code}`);
+        });
     }
   }
 };

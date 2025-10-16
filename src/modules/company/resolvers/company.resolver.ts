@@ -40,7 +40,7 @@ export class CompanyResolver {
    * 查询单个企业
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission()
   @Query(() => Company)
   findOneCompany(@Args() args: FindUniqueCompanyArgs): Promise<Company> {
     return this.service.findOneByUnique(args);
@@ -50,7 +50,7 @@ export class CompanyResolver {
    * 分页查询企业
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission()
   @Query(() => PaginatedCompany)
   paginateCompanies(@Args() args: FindManyCompanyArgs): Promise<IPaginated<Company>> {
     return this.service.paginate(args);

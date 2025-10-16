@@ -285,7 +285,7 @@ export abstract class AdminRoleAbstract {
     return this.db.adminRole.create({
       ...(Object.keys(include).length > 0 && { include }),
       ...(Object.keys(select).length > 0 && { select }),
-      data: this.parseCreateData(data),
+      data: this.handleParsedData(this.parseCreateData(data)),
     });
   }
 
@@ -302,8 +302,8 @@ export abstract class AdminRoleAbstract {
     return this.db.adminRole.update({
       ...(Object.keys(include).length > 0 && { include }),
       ...(Object.keys(select).length > 0 && { select }),
+      data: this.handleParsedData(this.parseUpdateData(data)),
       where: this.parseUniqueWhere(where),
-      data: this.parseUpdateData(data),
     });
   }
 
