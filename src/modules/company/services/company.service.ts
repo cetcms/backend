@@ -3,7 +3,6 @@ import { CurrentAuth } from 'src/auth/decorators';
 import { PaginationResult } from 'src/common/dto';
 import { SystemContract } from 'src/contracts';
 import {
-  Client,
   CreateOneCompanyArgs,
   FindManyCompanyArgs,
   FindUniqueCompanyArgs,
