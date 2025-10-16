@@ -1,6 +1,6 @@
 import { SystemContract } from 'src/contracts';
 import { DatabaseService } from 'src/database';
-import { NotificationPrivacy, NotificationTarget, NotificationTarget } from 'src/generated/graphql';
+import { NotificationPrivacy, NotificationTarget } from 'src/generated/graphql';
 import { I18nEnum } from 'src/i18n';
 import {
   AdminCompanyRepository,
