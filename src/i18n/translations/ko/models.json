@@ -360,11 +360,11 @@
       "Archive": "아카이브 파일",
       "Other": "기타"
     },
-    "NotificationSender": {
+    "NotificationTarget": {
       "Member": "사용자",
-      "Company": "회사",
-      "System": "시스템",
-      "Admin": "관리자"
+      "Company": "기업",
+      "Admin": "관리자",
+      "System": "System"
     },
     "NotificationType": {
       "Alert": "경고",
@@ -375,11 +375,6 @@
     "NotificationPrivacy": {
       "Public": "공개",
       "Private": "비공개"
-    },
-    "NotificationReceiver": {
-      "Member": "사용자",
-      "Company": "기업",
-      "Admin": "관리자"
     },
     "Owner": {
       "Member": "Member",
@@ -411,7 +406,7 @@
     "content": "내용",
     "_enums": {
       "status": "Status",
-      "sender": "NotificationSender",
+      "sender": "NotificationTarget",
       "type": "NotificationType",
       "privacy": "NotificationPrivacy"
     },
@@ -447,7 +442,7 @@
     "archived": "아카이브됨",
     "deleted": "삭제됨",
     "_enums": {
-      "receiver": "NotificationReceiver"
+      "receiver": "NotificationTarget"
     },
     "adminId": "관리자 ID",
     "admin": "관리자",

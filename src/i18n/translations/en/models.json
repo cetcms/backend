@@ -360,11 +360,11 @@
       "Archive": "Archive",
       "Other": "Other"
     },
-    "NotificationSender": {
+    "NotificationTarget": {
       "Member": "Member",
       "Company": "Company",
-      "System": "System",
-      "Admin": "Admin"
+      "Admin": "Admin",
+      "System": "System"
     },
     "NotificationType": {
       "Alert": "Alert",
@@ -375,11 +375,6 @@
     "NotificationPrivacy": {
       "Public": "Public",
       "Private": "Private"
-    },
-    "NotificationReceiver": {
-      "Member": "Member",
-      "Company": "Company",
-      "Admin": "Admin"
     },
     "Owner": {
       "Member": "Member",
@@ -411,7 +406,7 @@
     "content": "Content",
     "_enums": {
       "status": "Status",
-      "sender": "NotificationSender",
+      "sender": "NotificationTarget",
       "type": "NotificationType",
       "privacy": "NotificationPrivacy"
     },
@@ -447,7 +442,7 @@
     "archived": "Archived",
     "deleted": "Deleted",
     "_enums": {
-      "receiver": "NotificationReceiver"
+      "receiver": "NotificationTarget"
     },
     "adminId": "Admin ID",
     "admin": "Admin",

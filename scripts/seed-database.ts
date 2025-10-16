@@ -1,6 +1,6 @@
 import { SystemContract } from 'src/contracts';
 import { DatabaseService } from 'src/database';
-import { NotificationPrivacy, NotificationReceiver, NotificationSender } from 'src/generated/graphql';
+import { NotificationPrivacy, NotificationTarget, NotificationTarget } from 'src/generated/graphql';
 import { I18nEnum } from 'src/i18n';
 import {
   AdminCompanyRepository,
@@ -116,9 +116,9 @@ const main = async () => {
 
   const notificationRepo = new NotificationRepository(prisma);
   const notification = await notificationRepo.create({
-    sender: NotificationSender.System,
+    sender: NotificationTarget.System,
     privacy: NotificationPrivacy.Public,
-    receiver: [NotificationReceiver.Admin, NotificationReceiver.Company, NotificationReceiver.Member],
+    receiver: [NotificationTarget.Admin, NotificationTarget.Company, NotificationTarget.Member],
     content: {
       [I18nEnum.En]: 'Welcome to use the system',
       [I18nEnum.Zh]: '欢迎使用本系统',

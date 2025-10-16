@@ -2,8 +2,6 @@ import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Target } from 'src/generated/graphql/prisma';
 import { PermissionAlias } from 'src/generated/permissions';
 
-registerEnumType(PermissionAlias, { name: 'PermissionAlias', description: undefined });
-
 @ObjectType()
 export class PermissionItem {
   @Field(() => String)
@@ -72,3 +70,5 @@ export class PermissionGroup {
   @Field(() => [PermissionAlias], { defaultValue: [], nullable: true })
   alias: PermissionAlias[];
 }
+
+registerEnumType(PermissionAlias, { name: 'PermissionAlias', description: undefined });

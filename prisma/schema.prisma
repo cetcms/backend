@@ -88,7 +88,6 @@ enum Status {
 enum Target {
   Admin
   Member
-  Company
 }
 
 enum Owner {
@@ -97,13 +96,7 @@ enum Owner {
   Company
 }
 
-enum NotificationReceiver {
-  Admin
-  Member
-  Company
-}
-
-enum NotificationSender {
+enum NotificationTarget {
   Admin
   Member
   Company
@@ -435,7 +428,7 @@ model Notification {
 
   // 发送者信息
   senderId  String?             @map("sender_id") @db.VarChar(50)
-  sender    NotificationSender  @default(System) // Admin, Member, Company 或 System
+  sender    NotificationTarget  @default(System) // Admin, Member, Company 或 System
   receiver  String[] // Admin, Member, Company
   privacy   NotificationPrivacy @default(Private)
   type      NotificationType    @default(Message)
@@ -471,20 +464,20 @@ model NotificationRecipient {
   isDeleted  Boolean   @default(false) @map("is_deleted") // 是否删除
 
   // 接收者信息
-  receiverId String               @map("receiver_id") @db.VarChar(50)
-  receiver   NotificationReceiver @map("receiver") // Admin, Member, Company
+  receiverId String             @map("receiver_id") @db.VarChar(50)
+  receiver   NotificationTarget @map("receiver") // Admin, Member, Company
   /// @DtoRelationIncludeId()
-  adminId    String?              @map("admin_id")
+  adminId    String?            @map("admin_id")
   /// @DtoEntityHidden()
-  admin      Admin?               @relation(fields: [adminId], references: [id])
+  admin      Admin?             @relation(fields: [adminId], references: [id])
   /// @DtoRelationIncludeId()
-  memberId   String?              @map("member_id")
+  memberId   String?            @map("member_id")
   /// @DtoEntityHidden()
-  member     Member?              @relation(fields: [memberId], references: [id])
+  member     Member?            @relation(fields: [memberId], references: [id])
   /// @DtoRelationIncludeId()
-  companyId  String?              @map("company_id")
+  companyId  String?            @map("company_id")
   /// @DtoEntityHidden()
-  company    Company?             @relation(fields: [companyId], references: [id])
+  company    Company?           @relation(fields: [companyId], references: [id])
 
   // 关联的通知
   /// @DtoRelationIncludeId()

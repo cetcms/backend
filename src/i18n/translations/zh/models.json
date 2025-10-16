@@ -360,11 +360,11 @@
       "Archive": "归档文件",
       "Other": "其他"
     },
-    "NotificationSender": {
+    "NotificationTarget": {
       "Member": "成员",
-      "Company": "公司",
-      "System": "系统",
-      "Admin": "管理员"
+      "Company": "企业",
+      "Admin": "管理员",
+      "System": "System"
     },
     "NotificationType": {
       "Alert": "警告",
@@ -375,11 +375,6 @@
     "NotificationPrivacy": {
       "Public": "公开",
       "Private": "私有"
-    },
-    "NotificationReceiver": {
-      "Member": "成员",
-      "Company": "企业",
-      "Admin": "管理员"
     },
     "Owner": {
       "Member": "Member",
@@ -411,7 +406,7 @@
     "content": "内容",
     "_enums": {
       "status": "Status",
-      "sender": "NotificationSender",
+      "sender": "NotificationTarget",
       "type": "NotificationType",
       "privacy": "NotificationPrivacy"
     },
@@ -447,7 +442,7 @@
     "archived": "已归档",
     "deleted": "已删除",
     "_enums": {
-      "receiver": "NotificationReceiver"
+      "receiver": "NotificationTarget"
     },
     "adminId": "管理员ID",
     "admin": "管理员",

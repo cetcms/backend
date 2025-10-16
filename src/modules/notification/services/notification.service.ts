@@ -5,8 +5,7 @@ import {
   CreateOneNotificationArgs,
   FindManyNotificationArgs,
   NotificationPrivacy,
-  NotificationReceiver,
-  NotificationSender,
+  NotificationTarget,
   UpdateOneNotificationArgs,
 } from 'src/generated/graphql';
 import { NotificationRepository } from 'src/repositories';
@@ -32,15 +31,15 @@ export class NotificationService {
           OR: [
             {
               // 系统发送的消息
-              sender: { equals: NotificationSender.System },
-              receiver: { hasSome: [NotificationReceiver.Admin] },
+              sender: { equals: NotificationTarget.System },
+              receiver: { hasSome: [NotificationTarget.Admin] },
               recipients: { some: { adminId: { equals: admin.id }, isRead: { equals: false } } },
             },
             {
               // 系统发送的公开消息
-              sender: { equals: NotificationSender.System },
+              sender: { equals: NotificationTarget.System },
               privacy: { equals: NotificationPrivacy.Public },
-              receiver: { hasSome: [NotificationReceiver.Admin] },
+              receiver: { hasSome: [NotificationTarget.Admin] },
               recipients: { none: { adminId: { equals: admin.id } } },
             },
           ],
@@ -55,15 +54,15 @@ export class NotificationService {
           OR: [
             {
               // 系统发送的消息
-              sender: { equals: NotificationSender.System },
-              receiver: { hasSome: [NotificationReceiver.Member] },
+              sender: { equals: NotificationTarget.System },
+              receiver: { hasSome: [NotificationTarget.Member] },
               recipients: { some: { memberId: { equals: member.id }, isRead: { equals: false } } },
             },
             {
               // 系统发送的公开消息
-              sender: { equals: NotificationSender.System },
+              sender: { equals: NotificationTarget.System },
               privacy: { equals: NotificationPrivacy.Public },
-              receiver: { hasSome: [NotificationReceiver.Member] },
+              receiver: { hasSome: [NotificationTarget.Member] },
               recipients: { none: { memberId: { equals: member.id } } },
             },
           ],
@@ -78,9 +77,9 @@ export class NotificationService {
           OR: [
             {
               // 系统发送的公开消息
-              sender: { equals: NotificationSender.System },
+              sender: { equals: NotificationTarget.System },
               privacy: { equals: NotificationPrivacy.Public },
-              receiver: { hasSome: [NotificationReceiver.Company] },
+              receiver: { hasSome: [NotificationTarget.Company] },
               recipients: { some: { companyId: { equals: company.id }, isRead: { equals: false } } },
             },
           ],
@@ -95,16 +94,16 @@ export class NotificationService {
           OR: [
             {
               // 系统发送给企业的公开消息
-              sender: { equals: NotificationSender.System },
+              sender: { equals: NotificationTarget.System },
               privacy: { equals: NotificationPrivacy.Public },
-              receiver: { hasSome: [NotificationReceiver.Company] },
+              receiver: { hasSome: [NotificationTarget.Company] },
               recipients: { some: { companyId: { equals: company.id }, isRead: { equals: false } } },
             },
             {
               // 系统发送给企业成员的私有消息
-              sender: { equals: NotificationSender.System },
+              sender: { equals: NotificationTarget.System },
               privacy: { equals: NotificationPrivacy.Private },
-              receiver: { hasSome: [NotificationReceiver.Company] },
+              receiver: { hasSome: [NotificationTarget.Company] },
               recipients: {
                 some: { companyId: { equals: company.id }, memberId: { equals: member.id }, isRead: { equals: false } },
               },

@@ -360,11 +360,11 @@
       "Archive": "アーカイブファイル",
       "Other": "その他"
     },
-    "NotificationSender": {
+    "NotificationTarget": {
       "Member": "ユーザー",
-      "Company": "会社",
-      "System": "システム",
-      "Admin": "管理者"
+      "Company": "企業",
+      "Admin": "管理者",
+      "System": "System"
     },
     "NotificationType": {
       "Alert": "警告",
@@ -375,11 +375,6 @@
     "NotificationPrivacy": {
       "Public": "公開",
       "Private": "非公開"
-    },
-    "NotificationReceiver": {
-      "Member": "ユーザー",
-      "Company": "企業",
-      "Admin": "管理者"
     },
     "Owner": {
       "Member": "Member",
@@ -411,7 +406,7 @@
     "content": "内容",
     "_enums": {
       "status": "Status",
-      "sender": "NotificationSender",
+      "sender": "NotificationTarget",
       "type": "NotificationType",
       "privacy": "NotificationPrivacy"
     },
@@ -447,7 +442,7 @@
     "archived": "アーカイブ済み",
     "deleted": "削除済み",
     "_enums": {
-      "receiver": "NotificationReceiver"
+      "receiver": "NotificationTarget"
     },
     "adminId": "管理者ID",
     "admin": "管理者",
