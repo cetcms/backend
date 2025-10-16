@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { CurrentAuth } from 'src/auth/decorators';
 import { PaginationResult } from 'src/common/dto';
 import {
   CreateOneMemberArgs,
@@ -21,9 +22,18 @@ export class MemberService {
     throw new NotFoundException('成员不存在');
   }
 
-  async paginate(args: FindManyMemberArgs) {
+  async paginate(args: FindManyMemberArgs, auth?: CurrentAuth) {
     if (!args.take) args.take = 10;
     if (!args.skip) args.skip = 0;
+    // 对公司可查询的范围做限制
+    if (auth && auth.companyId) {
+      args.where = {
+        ...args.where,
+        companies: {
+          some: { companyId: { equals: auth.companyId } },
+        },
+      };
+    }
     const [members, totalCount] = await this.member.findManyAndCount(args);
     return PaginationResult(members, args.take, args.skip, totalCount);
   }

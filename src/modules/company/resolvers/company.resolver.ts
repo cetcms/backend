@@ -80,11 +80,12 @@ export class CompanyResolver {
 
   /**
    * 修改企业
+   * @param auth
    * @param args
    */
-  @UsePermission([Client.Admin])
+  @UsePermission([Client.Admin, Client.Company])
   @Mutation(() => Company)
-  updateOneCompany(@Args() args: UpdateOneCompanyArgs): Promise<Company> {
-    return this.service.updateOne(args);
+  updateOneCompany(@CurrentAuth() auth: CurrentAuth, @Args() args: UpdateOneCompanyArgs): Promise<Company> {
+    return this.service.updateOne(args, auth);
   }
 }

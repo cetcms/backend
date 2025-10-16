@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CurrentAuthMember, UsePermission } from 'src/auth/decorators';
+import { CurrentAuth, CurrentAuthMember, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
@@ -48,12 +48,13 @@ export class MemberResolver {
 
   /**
    * 分页查询成员
+   * @param auth
    * @param args
    */
   @UsePermission([Client.Admin, Client.Company])
   @Query(() => PaginatedMember)
-  paginateMembers(@Args() args: FindManyMemberArgs): Promise<IPaginated<Member>> {
-    return this.service.paginate(args);
+  paginateMembers(@CurrentAuth() auth: CurrentAuth, @Args() args: FindManyMemberArgs): Promise<IPaginated<Member>> {
+    return this.service.paginate(args, auth);
   }
 
   /**

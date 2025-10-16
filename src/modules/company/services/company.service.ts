@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CurrentAuth } from 'src/auth/decorators';
 import { PaginationResult } from 'src/common/dto';
 import { SystemContract } from 'src/contracts';
@@ -55,16 +55,16 @@ export class CompanyService {
     return this.company.create(data);
   }
 
-  updateOne(args: UpdateOneCompanyArgs) {
+  updateOne(args: UpdateOneCompanyArgs, auth?: CurrentAuth) {
     const { where, data } = args;
-    return this.company.update(where, data);
-  }
-
-  async findOneById(id: string) {
-    const company = await this.company.findOneById(id);
-    if (company) {
-      return company;
+    if (auth && auth.company) {
+      for (const key in where) {
+        console.log(where[key], auth.company[key]);
+        if (where[key] && where[key] !== auth.company[key]) {
+          throw new ForbiddenException('无权限操作');
+        }
+      }
     }
-    throw new NotFoundException('企业不存在');
+    return this.company.update(where, data);
   }
 }
