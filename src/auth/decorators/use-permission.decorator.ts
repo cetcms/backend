@@ -4,13 +4,13 @@
  * 功能描述：
  * - 为控制器/解析器的类或方法声明访问目标（Target[]），并启用 PermissionGuard 进行权限校验。
  * - PermissionGuard 会：
- *   1) 校验是否已登录（存在 user 或 admin）。
+ *   1) 校验是否已登录（存在 member 或 admin）。
  *   2) 若指定了 targets，则要求当前会话的 auth.target 必须包含在 targets 中。
  *   3) 使用 ClassName:MethodName 组装资源标识，并在权限列表中查找是否具备该权限。
  *
  * 参数说明：
  * - targets?: Target[] = []
- *   - 类型：Target 数组（可选），来自 GraphQL 生成的枚举，取值如 Target.Admin、Target.User。
+ *   - 类型：Target 数组（可选），来自 GraphQL 生成的枚举，取值如 Target.Admin、Target.Member。
  *   - 用途：限制允许访问的身份目标；为空数组表示不限定目标，仅进行登录与权限点校验。
  *
  * 返回值说明：

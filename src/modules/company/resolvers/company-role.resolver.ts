@@ -31,7 +31,7 @@ export class CompanyRoleResolver {
    * 查询单个企业角色
    * @param args
    */
-  @UsePermission([Target.Admin, Target.User])
+  @UsePermission([Target.Admin, Target.Member])
   @Query(() => CompanyRole)
   findOneCompanyRole(@Args() args: FindUniqueCompanyRoleArgs): Promise<CompanyRole> {
     return this.service.findOneByUnique(args);
@@ -41,7 +41,7 @@ export class CompanyRoleResolver {
    * 分页查询企业角色
    * @param args
    */
-  @UsePermission([Target.Admin, Target.User])
+  @UsePermission([Target.Admin, Target.Member])
   @Query(() => PaginatedCompanyRole)
   paginateCompanyRoles(@Args() args: FindManyCompanyRoleArgs): Promise<IPaginated<CompanyRole>> {
     return this.service.paginate(args);
@@ -70,7 +70,7 @@ export class CompanyRoleResolver {
   /**
    * 获取企业角色权限列表
    */
-  @UsePermission([Target.Admin, Target.User])
+  @UsePermission([Target.Admin, Target.Member])
   @Query(() => PermissionGroup)
   listCompanyRolePermission(
     @CurrentAuth() auth: CurrentAuth,

@@ -1,7 +1,7 @@
 export const ModelsRelation = {
   Auth: {
     admin: 'Admin',
-    user: 'User',
+    member: 'Member',
     company: 'Company',
   },
   Admin: {
@@ -22,8 +22,8 @@ export const ModelsRelation = {
     company: 'Company',
     role: 'CompanyRole',
   },
-  User: {
-    companies: 'CompanyUser',
+  Member: {
+    companies: 'CompanyMember',
     auths: 'Auth',
     logs: 'RequestLog',
     mediaFolders: 'MediaFolder',
@@ -35,7 +35,7 @@ export const ModelsRelation = {
     auths: 'Auth',
     admins: 'AdminCompany',
     roles: 'CompanyRole',
-    users: 'CompanyUser',
+    members: 'CompanyMember',
     logs: 'RequestLog',
     mediaFolders: 'MediaFolder',
     mediaFiles: 'MediaFile',
@@ -44,28 +44,28 @@ export const ModelsRelation = {
   },
   CompanyRole: {
     company: 'Company',
-    users: 'CompanyUser',
+    members: 'CompanyMember',
     admins: 'AdminCompany',
   },
-  CompanyUser: {
+  CompanyMember: {
     company: 'Company',
-    user: 'User',
+    member: 'Member',
     role: 'CompanyRole',
   },
   Notification: {
     admin: 'Admin',
-    user: 'User',
+    member: 'Member',
     company: 'Company',
     recipients: 'NotificationRecipient',
   },
   NotificationRecipient: {
     admin: 'Admin',
-    user: 'User',
+    member: 'Member',
     company: 'Company',
     notification: 'Notification',
   },
   RequestLog: {
-    user: 'User',
+    member: 'Member',
     admin: 'Admin',
     company: 'Company',
   },
@@ -73,14 +73,14 @@ export const ModelsRelation = {
     parent: 'MediaFolder',
     children: 'MediaFolder',
     admin: 'Admin',
-    user: 'User',
+    member: 'Member',
     company: 'Company',
     files: 'MediaFile',
   },
   MediaFile: {
     folder: 'MediaFolder',
     admin: 'Admin',
-    user: 'User',
+    member: 'Member',
     company: 'Company',
   },
 } as const;

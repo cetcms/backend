@@ -125,7 +125,7 @@ export class MediaFolderRepository extends MediaFolderAbstract {
         case Owner.Admin:
           data.admin = { connect: { id: ownerId } };
           // 移除其他所有者关系字段以避免冲突
-          delete (data as any).user;
+          delete (data as any).member;
           delete (data as any).company;
           where = {
             adminFolderPathIdx: {
@@ -134,22 +134,22 @@ export class MediaFolderRepository extends MediaFolderAbstract {
             },
           };
           break;
-        case Owner.User:
-          data.user = { connect: { id: ownerId } };
+        case Owner.Member:
+          data.member = { connect: { id: ownerId } };
           delete (data as any).admin;
           delete (data as any).company;
           where = {
-            userFolderPathIdx: {
-              userId: ownerId,
+            memberFolderPathIdx: {
+              memberId: ownerId,
               path: currPath,
             },
           };
           break;
         case Owner.Company:
           data.company = { connect: { id: ownerId } };
-          // company 可以同时关联 admin 或 user，但此处创建文件夹仅绑定 company
+          // company 可以同时关联 admin 或 member，但此处创建文件夹仅绑定 company
           delete (data as any).admin;
-          delete (data as any).user;
+          delete (data as any).member;
           where = {
             companyFolderPathIdx: {
               companyId: ownerId,
@@ -207,10 +207,10 @@ export class MediaFolderRepository extends MediaFolderAbstract {
             path: path,
           },
         });
-      case Owner.User:
+      case Owner.Member:
         return this.findUnique({
-          userFolderPathIdx: {
-            userId: ownerId,
+          memberFolderPathIdx: {
+            memberId: ownerId,
             path: path,
           },
         });

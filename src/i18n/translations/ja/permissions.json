@@ -1,29 +1,29 @@
 {
   "group": {
-    "User": "ユーザー",
+    "Member": "ユーザー",
     "Admin": "管理者",
     "Company": "会社",
     "Notification": "通知"
   },
   "subject": {
-    "UserResolver": "ユーザー管理",
+    "MemberResolver": "ユーザー管理",
     "AdminCompanyResolver": "管理者企業管理",
     "AdminRoleResolver": "管理者ロール管理",
     "AdminResolver": "管理者管理",
     "CompanyRoleResolver": "企業ロール管理",
-    "CompanyUserResolver": "企業ユーザー管理",
+    "CompanyMemberResolver": "企業ユーザー管理",
     "CompanyResolver": "企業管理",
     "NotificationRecipientResolver": "メッセージ通知受信",
     "NotificationResolver": "メッセージ通知管理"
   },
   "action": {
-    "UserResolver": {
-      "findSelfUser": "現在のユーザー情報を検索",
-      "findOneUser": "単一ユーザーを検索",
-      "paginateUsers": "ユーザーをページ分割して検索",
-      "createOneUser": "ユーザーを追加",
-      "updateSelfUser": "現在のユーザー情報を変更",
-      "updateOneUser": "ユーザーを変更"
+    "MemberResolver": {
+      "findSelfMember": "現在のユーザー情報を検索",
+      "findOneMember": "単一ユーザーを検索",
+      "paginateMembers": "ユーザーをページ分割して検索",
+      "createOneMember": "ユーザーを追加",
+      "updateSelfMember": "現在のユーザー情報を変更",
+      "updateOneMember": "ユーザーを変更"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "単一管理者企業関連を検索",
@@ -56,11 +56,11 @@
       "updateOneCompanyRole": "企業ロールを変更",
       "listCompanyRolePermission": "企業ロール権限リストを取得"
     },
-    "CompanyUserResolver": {
-      "findOneCompanyUser": "単一企業ユーザー関連を検索",
-      "paginateCompanyUsers": "企業ユーザー関連をページ分割して検索",
-      "createOneCompanyUser": "企業ユーザー関連を追加",
-      "updateOneCompanyUser": "企業ユーザー関連を変更"
+    "CompanyMemberResolver": {
+      "findOneCompanyMember": "単一企業ユーザー関連を検索",
+      "paginateCompanyMembers": "企業ユーザー関連をページ分割して検索",
+      "createOneCompanyMember": "企業ユーザー関連を追加",
+      "updateOneCompanyMember": "企業ユーザー関連を変更"
     },
     "CompanyResolver": {
       "findSelfCompany": "現在の企業情報を検索",

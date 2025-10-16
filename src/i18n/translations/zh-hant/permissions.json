@@ -1,29 +1,29 @@
 {
   "group": {
-    "User": "用戶",
+    "Member": "用戶",
     "Admin": "管理員",
     "Company": "公司",
     "Notification": "通知"
   },
   "subject": {
-    "UserResolver": "用戶管理",
+    "MemberResolver": "用戶管理",
     "AdminCompanyResolver": "管理員企業管理",
     "AdminRoleResolver": "管理員角色管理",
     "AdminResolver": "管理員管理",
     "CompanyRoleResolver": "企業角色管理",
-    "CompanyUserResolver": "企業用戶管理",
+    "CompanyMemberResolver": "企業用戶管理",
     "CompanyResolver": "企業管理",
     "NotificationRecipientResolver": "通知接收管理",
     "NotificationResolver": "通知管理"
   },
   "action": {
-    "UserResolver": {
-      "findSelfUser": "查詢當前用戶信息",
-      "findOneUser": "查詢單個用戶",
-      "paginateUsers": "分頁查詢用戶",
-      "createOneUser": "新增用戶",
-      "updateSelfUser": "修改當前用戶信息",
-      "updateOneUser": "修改用戶"
+    "MemberResolver": {
+      "findSelfMember": "查詢當前用戶信息",
+      "findOneMember": "查詢單個用戶",
+      "paginateMembers": "分頁查詢用戶",
+      "createOneMember": "新增用戶",
+      "updateSelfMember": "修改當前用戶信息",
+      "updateOneMember": "修改用戶"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "查詢單個管理員企業關聯",
@@ -56,11 +56,11 @@
       "updateOneCompanyRole": "修改企業角色",
       "listCompanyRolePermission": "獲取企業角色權限列表"
     },
-    "CompanyUserResolver": {
-      "findOneCompanyUser": "查詢單個企業用戶關聯",
-      "paginateCompanyUsers": "分頁查詢企業用戶關聯",
-      "createOneCompanyUser": "新增企業用戶關聯",
-      "updateOneCompanyUser": "修改企業用戶關聯"
+    "CompanyMemberResolver": {
+      "findOneCompanyMember": "查詢單個企業用戶關聯",
+      "paginateCompanyMembers": "分頁查詢企業用戶關聯",
+      "createOneCompanyMember": "新增企業用戶關聯",
+      "updateOneCompanyMember": "修改企業用戶關聯"
     },
     "CompanyResolver": {
       "findSelfCompany": "查詢當前企業信息",

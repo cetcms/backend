@@ -1,29 +1,29 @@
 {
   "group": {
-    "User": "用户",
+    "Member": "成员",
     "Admin": "管理员",
     "Company": "公司",
     "Notification": "通知"
   },
   "subject": {
-    "UserResolver": "用户管理",
+    "MemberResolver": "成员管理",
     "AdminCompanyResolver": "管理员企业管理",
     "AdminRoleResolver": "管理员角色管理",
     "AdminResolver": "管理员管理",
     "CompanyRoleResolver": "企业角色管理",
-    "CompanyUserResolver": "企业用户管理",
+    "CompanyMemberResolver": "企业成员管理",
     "CompanyResolver": "企业管理",
     "NotificationRecipientResolver": "消息通知接收",
     "NotificationResolver": "消息通知管理"
   },
   "action": {
-    "UserResolver": {
-      "findSelfUser": "查询当前用户信息",
-      "findOneUser": "查询单个用户",
-      "paginateUsers": "分页查询用户",
-      "createOneUser": "新增用户",
-      "updateSelfUser": "修改当前用户信息",
-      "updateOneUser": "修改用户"
+    "MemberResolver": {
+      "findSelfMember": "查询当前成员信息",
+      "findOneMember": "查询单个成员",
+      "paginateMembers": "分页查询成员",
+      "createOneMember": "新增成员",
+      "updateSelfMember": "修改当前成员信息",
+      "updateOneMember": "修改成员"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "查询单个管理员企业关联",
@@ -56,11 +56,11 @@
       "updateOneCompanyRole": "修改企业角色",
       "listCompanyRolePermission": "获取企业角色权限列表"
     },
-    "CompanyUserResolver": {
-      "findOneCompanyUser": "查询单个企业用户关联",
-      "paginateCompanyUsers": "分页查询企业用户关联",
-      "createOneCompanyUser": "新增企业用户关联",
-      "updateOneCompanyUser": "修改企业用户关联"
+    "CompanyMemberResolver": {
+      "findOneCompanyMember": "查询单个企业成员关联",
+      "paginateCompanyMembers": "分页查询企业成员关联",
+      "createOneCompanyMember": "新增企业成员关联",
+      "updateOneCompanyMember": "修改企业成员关联"
     },
     "CompanyResolver": {
       "findSelfCompany": "查询当前企业信息",
@@ -75,7 +75,7 @@
     },
     "NotificationResolver": {
       "paginateNotifications": "分页查询消息通知",
-      "listSelfNotifications": "获取当前用户消息通知"
+      "listSelfNotifications": "获取当前成员消息通知"
     }
   }
 }

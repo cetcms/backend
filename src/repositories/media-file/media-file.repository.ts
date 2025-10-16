@@ -72,7 +72,7 @@ export class MediaFileRepository extends MediaFileAbstract {
     switch (owner) {
       case Owner.Admin:
         data.admin = { connect: { id: ownerId } };
-        delete data.user;
+        delete data.member;
         delete data.company;
         return this.save(
           {
@@ -84,15 +84,15 @@ export class MediaFileRepository extends MediaFileAbstract {
           },
           data
         );
-      case Owner.User:
-        data.user = { connect: { id: ownerId } };
+      case Owner.Member:
+        data.member = { connect: { id: ownerId } };
         delete data.admin;
         delete data.company;
         return this.save(
           {
-            userFileIdx: {
+            memberFileIdx: {
               folderId,
-              userId: ownerId,
+              memberId: ownerId,
               fileName: data.fileName,
             },
           },
@@ -100,8 +100,8 @@ export class MediaFileRepository extends MediaFileAbstract {
         );
       case Owner.Company:
         data.company = { connect: { id: ownerId } };
-        if (data.user) delete data.admin;
-        if (data.admin) delete data.user;
+        if (data.member) delete data.admin;
+        if (data.admin) delete data.member;
         return this.save(
           {
             companyFileIdx: {

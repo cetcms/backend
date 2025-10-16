@@ -8,9 +8,9 @@ import {
   AdminRoleRepository,
   CompanyRepository,
   CompanyRoleRepository,
-  CompanyUserRepository,
+  CompanyMemberRepository,
   NotificationRepository,
-  UserRepository,
+  MemberRepository,
 } from 'src/repositories';
 
 const main = async () => {
@@ -55,17 +55,17 @@ const main = async () => {
   });
   console.log('Company role saved:', companyRole);
 
-  // 创建用户
-  const userRepo = new UserRepository(prisma);
-  const user = await userRepo.save(
-    { email: 'user@email.com' },
+  // 创建成员
+  const memberRepo = new MemberRepository(prisma);
+  const member = await memberRepo.save(
+    { email: 'member@email.com' },
     {
-      name: 'User',
-      email: 'user@email.com',
+      name: 'Member',
+      email: 'member@email.com',
       password: '123456',
     }
   );
-  console.log('User saved:', user);
+  console.log('Member saved:', member);
 
   // 创建企业
   const companyRepo = new CompanyRepository(prisma);
@@ -97,28 +97,28 @@ const main = async () => {
   );
   console.log('Admin company saved:', adminCompany);
 
-  // 关联用户
-  const companyUserRepo = new CompanyUserRepository(prisma);
-  const companyUser = await companyUserRepo.save(
+  // 关联成员
+  const companyMemberRepo = new CompanyMemberRepository(prisma);
+  const companyMember = await companyMemberRepo.save(
     {
-      companyUserIdx: {
+      companyMemberIdx: {
         companyId: company.id,
-        userId: user.id,
+        memberId: member.id,
       },
     },
     {
       company: { connect: { id: company.id } },
       role: { connect: { id: companyRole.id } },
-      user: { connect: { id: user.id } },
+      member: { connect: { id: member.id } },
     }
   );
-  console.log('Company user saved:', companyUser);
+  console.log('Company member saved:', companyMember);
 
   const notificationRepo = new NotificationRepository(prisma);
   const notification = await notificationRepo.create({
     sender: NotificationSender.System,
     privacy: NotificationPrivacy.Public,
-    receiver: [NotificationReceiver.Admin, NotificationReceiver.Company, NotificationReceiver.User],
+    receiver: [NotificationReceiver.Admin, NotificationReceiver.Company, NotificationReceiver.Member],
     content: {
       [I18nEnum.En]: 'Welcome to use the system',
       [I18nEnum.Zh]: '欢迎使用本系统',

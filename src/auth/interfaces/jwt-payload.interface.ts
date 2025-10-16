@@ -7,7 +7,7 @@
  *
  * 字段说明：
  * - iss?: string - 签发者
- * - sub?: string - 主题（用户 ID）
+ * - sub?: string - 主题（成员 ID）
  * - aud?: string | string[] - 接收者（目标类型）
  * - exp?: number - 过期时间戳
  * - nbf?: number - 生效时间戳

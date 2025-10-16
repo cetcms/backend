@@ -3,7 +3,7 @@
  *
  * 功能描述：
  * - 结合 @UsePermission 装饰器提供的元数据进行权限校验
- * - 校验用户身份和权限点
+ * - 校验成员身份和权限点
  * - 支持目标类型限制
  *
  * 核心功能：
@@ -11,7 +11,7 @@
  * - checkPermission: 执行权限检查逻辑
  *
  * 校验逻辑：
- * 1. 是否已登录（存在 user 或 admin）
+ * 1. 是否已登录（存在 member 或 admin）
  * 2. 若声明了 targets，当前会话的 auth.target 必须在 targets 集合内
  * 3. 以 `${ClassName}.${methodName}` 生成权限点，要求出现在权限字符串数组中
  */
@@ -51,7 +51,7 @@ export class PermissionGuard implements CanActivate {
    * 执行权限检查逻辑
    *
    * 功能描述：
-   * - 检查用户是否具有访问权限
+   * - 检查成员是否具有访问权限
    * - 验证目标类型和权限点
    *
    * 参数说明：
@@ -68,12 +68,12 @@ export class PermissionGuard implements CanActivate {
 
     const request = ContextHandler(context).getRequest();
     const auth = <CurrentAuth>request.authInfo;
-    const user = auth.user;
+    const member = auth.member;
     const admin = auth.admin;
     const permissions = auth.permissions || [];
 
-    // Check if user is authenticated
-    if (!user && !admin) {
+    // Check if member is authenticated
+    if (!member && !admin) {
       return false;
     }
 

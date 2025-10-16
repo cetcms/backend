@@ -14,7 +14,7 @@ export class AuthResolver {
   login(@Args('input') input: LoginInput, @CurrentRequestMeta() meta: CurrentRequestMeta) {
     return this.service.login(input, {
       fingerprint: meta.fingerprint,
-      userAgent: meta.userAgent,
+      memberAgent: meta.memberAgent,
       ip: meta.ip,
     });
   }

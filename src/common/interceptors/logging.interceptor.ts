@@ -39,7 +39,7 @@ export class LoggingInterceptor implements NestInterceptor {
     const messages: string[] = [`[REQ:${data.id}]`, `${data.method}`, `${data.action}`, '{duration}', '{message}'];
 
     if (data.target) {
-      messages.push(`${data.target}->${data.userId || data.adminId}`);
+      messages.push(`${data.target}->${data.memberId || data.adminId}`);
     } else {
       messages.push(`Guest->${data.fingerprint}`);
     }
@@ -94,7 +94,7 @@ export class LoggingInterceptor implements NestInterceptor {
       route: req.getRoute(), // 请求路由
       params: req.getParams(), // 路径参数
       target: auth?.target || null, // 认证目标
-      userId: auth?.userId || null, // 用户ID
+      memberId: auth?.memberId || null, // 成员ID
       adminId: auth?.adminId || null, // 管理员ID
       companyId: auth?.companyId || null, // 公司ID
       message: 'OK',

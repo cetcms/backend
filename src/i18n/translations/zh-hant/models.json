@@ -7,10 +7,10 @@
     "adminId": "管理員ID",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company"
     },
-    "userId": "使用者ID",
+    "memberId": "使用者ID",
     "companyId": "公司ID",
     "token": "令牌",
     "fingerprint": "指紋",
@@ -21,7 +21,7 @@
       "target": "Target"
     },
     "admin": "管理員",
-    "user": "用戶",
+    "member": "用戶",
     "company": "公司"
   },
   "Admin": {
@@ -89,7 +89,7 @@
     "roleId": "角色ID",
     "role": "角色"
   },
-  "User": {
+  "Member": {
     "id": "ID",
     "createdAt": "建立時間",
     "updatedAt": "更新時間",
@@ -98,7 +98,7 @@
     "email": "電子郵件",
     "password": "密碼",
     "_relations": {
-      "companies": "CompanyUser",
+      "companies": "CompanyMember",
       "auths": "Auth",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
@@ -131,7 +131,7 @@
       "auths": "Auth",
       "admins": "AdminCompany",
       "roles": "CompanyRole",
-      "users": "CompanyUser",
+      "members": "CompanyMember",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile",
@@ -144,7 +144,7 @@
     "auths": "認證",
     "admins": "管理員",
     "roles": "角色",
-    "users": "用戶",
+    "members": "用戶",
     "logs": "日誌",
     "mediaFolders": "媒體資料夾",
     "mediaFiles": "媒體檔案",
@@ -164,33 +164,33 @@
     "companyId": "公司ID",
     "_relations": {
       "company": "Company",
-      "users": "CompanyUser",
+      "members": "CompanyMember",
       "admins": "AdminCompany"
     },
     "_enums": {
       "status": "Status"
     },
     "company": "公司",
-    "users": "用戶",
+    "members": "用戶",
     "admins": "管理員"
   },
-  "CompanyUser": {
+  "CompanyMember": {
     "createdAt": "建立時間",
     "updatedAt": "更新時間",
     "status": "狀態",
     "companyId": "公司ID",
     "_relations": {
       "company": "Company",
-      "user": "User",
+      "member": "Member",
       "role": "CompanyRole"
     },
-    "userId": "使用者ID",
+    "memberId": "使用者ID",
     "roleId": "角色ID",
     "_enums": {
       "status": "Status"
     },
     "company": "公司",
-    "user": "用戶",
+    "member": "用戶",
     "role": "角色"
   },
   "RequestLog": {
@@ -216,9 +216,9 @@
     "language": "語言",
     "fingerprint": "指紋",
     "target": "目標",
-    "userId": "使用者ID",
+    "memberId": "使用者ID",
     "_relations": {
-      "user": "User",
+      "member": "Member",
       "admin": "Admin",
       "company": "Company"
     },
@@ -228,7 +228,7 @@
       "method": "RequestMethod",
       "target": "Target"
     },
-    "user": "用戶",
+    "member": "用戶",
     "admin": "管理員",
     "company": "公司"
   },
@@ -247,14 +247,14 @@
       "children": "MediaFolder",
       "company": "Company",
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "files": "MediaFile"
     },
     "companyId": "公司ID",
     "ownerId": "所有者ID",
     "ownerType": "所有者類型",
     "adminId": "管理員ID",
-    "userId": "使用者ID",
+    "memberId": "使用者ID",
     "visibility": "可見性",
     "_enums": {
       "status": "Status",
@@ -266,7 +266,7 @@
     "children": "子級",
     "company": "公司",
     "admin": "管理員",
-    "user": "用戶",
+    "member": "用戶",
     "files": "檔案",
     "depth": "深度",
     "owner": "MediaFolder.owner"
@@ -295,13 +295,13 @@
       "folder": "MediaFolder",
       "company": "Company",
       "admin": "Admin",
-      "user": "User"
+      "member": "Member"
     },
     "companyId": "公司ID",
     "ownerId": "所有者ID",
     "ownerType": "所有者類型",
     "adminId": "管理員ID",
-    "userId": "使用者ID",
+    "memberId": "使用者ID",
     "visibility": "可見性",
     "_enums": {
       "store": "MediaStore",
@@ -314,7 +314,7 @@
     "folder": "資料夾",
     "company": "公司",
     "admin": "管理員",
-    "user": "用戶",
+    "member": "用戶",
     "fileExtension": "MediaFile.fileExtension",
     "owner": "MediaFile.owner",
     "uploadFailed": "MediaFile.uploadFailed",
@@ -323,7 +323,7 @@
   "enum": {
     "Target": {
       "Admin": "管理員",
-      "User": "用戶"
+      "Member": "用戶"
     },
     "Status": {
       "Enabled": "啟用",
@@ -361,7 +361,7 @@
       "Other": "其他"
     },
     "NotificationSender": {
-      "User": "用戶",
+      "Member": "用戶",
       "Company": "公司",
       "System": "系統",
       "Admin": "管理員"
@@ -377,12 +377,12 @@
       "Private": "Private"
     },
     "NotificationReceiver": {
-      "User": "User",
+      "Member": "Member",
       "Company": "Company",
       "Admin": "Admin"
     },
     "Owner": {
-      "User": "User",
+      "Member": "Member",
       "Admin": "Admin",
       "Company": "Company"
     }
@@ -392,10 +392,10 @@
     "Admin": "管理員",
     "AdminRole": "管理員角色",
     "AdminCompany": "公司管理員",
-    "User": "用戶",
+    "Member": "用戶",
     "Company": "公司",
     "CompanyRole": "公司角色",
-    "CompanyUser": "公司用戶",
+    "CompanyMember": "公司用戶",
     "RequestLog": "請求日誌",
     "MediaFolder": "媒體資料夾",
     "MediaFile": "媒體檔案",
@@ -425,12 +425,12 @@
     "admin": "管理員",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company",
       "recipients": "NotificationRecipient"
     },
-    "userId": "用戶ID",
-    "user": "用戶",
+    "memberId": "用戶ID",
+    "member": "用戶",
     "companyId": "公司ID",
     "company": "公司",
     "recipients": "接收者",
@@ -453,12 +453,12 @@
     "admin": "管理員",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company",
       "notification": "Notification"
     },
-    "userId": "用戶ID",
-    "user": "用戶",
+    "memberId": "用戶ID",
+    "member": "用戶",
     "companyId": "公司ID",
     "company": "公司",
     "notificationId": "通知ID",

@@ -7,10 +7,10 @@
     "adminId": "Admin ID",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company"
     },
-    "userId": "User ID",
+    "memberId": "Member ID",
     "companyId": "Company ID",
     "token": "Token",
     "fingerprint": "Fingerprint",
@@ -21,7 +21,7 @@
       "target": "Target"
     },
     "admin": "Admin",
-    "user": "User",
+    "member": "Member",
     "company": "Company"
   },
   "Admin": {
@@ -89,7 +89,7 @@
     "roleId": "Role ID",
     "role": "Role"
   },
-  "User": {
+  "Member": {
     "id": "ID",
     "createdAt": "Created At",
     "updatedAt": "Updated At",
@@ -98,7 +98,7 @@
     "email": "Email",
     "password": "Password",
     "_relations": {
-      "companies": "CompanyUser",
+      "companies": "CompanyMember",
       "auths": "Auth",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
@@ -131,7 +131,7 @@
       "auths": "Auth",
       "admins": "AdminCompany",
       "roles": "CompanyRole",
-      "users": "CompanyUser",
+      "members": "CompanyMember",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile",
@@ -144,7 +144,7 @@
     "auths": "Auths",
     "admins": "Admins",
     "roles": "Roles",
-    "users": "Users",
+    "members": "Members",
     "logs": "Logs",
     "mediaFolders": "Media Folders",
     "mediaFiles": "Media Files",
@@ -164,33 +164,33 @@
     "companyId": "Company ID",
     "_relations": {
       "company": "Company",
-      "users": "CompanyUser",
+      "members": "CompanyMember",
       "admins": "AdminCompany"
     },
     "_enums": {
       "status": "Status"
     },
     "company": "Company",
-    "users": "Users",
+    "members": "Members",
     "admins": "Administrators"
   },
-  "CompanyUser": {
+  "CompanyMember": {
     "createdAt": "Created At",
     "updatedAt": "Updated At",
     "status": "Status",
     "companyId": "Company ID",
     "_relations": {
       "company": "Company",
-      "user": "User",
+      "member": "Member",
       "role": "CompanyRole"
     },
-    "userId": "User ID",
+    "memberId": "Member ID",
     "roleId": "Role ID",
     "_enums": {
       "status": "Status"
     },
     "company": "Company",
-    "user": "User",
+    "member": "Member",
     "role": "Role"
   },
   "RequestLog": {
@@ -216,9 +216,9 @@
     "language": "Language",
     "fingerprint": "Fingerprint",
     "target": "Target",
-    "userId": "User ID",
+    "memberId": "Member ID",
     "_relations": {
-      "user": "User",
+      "member": "Member",
       "admin": "Admin",
       "company": "Company"
     },
@@ -228,7 +228,7 @@
       "method": "RequestMethod",
       "target": "Target"
     },
-    "user": "User",
+    "member": "Member",
     "admin": "Admin",
     "company": "Company"
   },
@@ -247,14 +247,14 @@
       "children": "MediaFolder",
       "company": "Company",
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "files": "MediaFile"
     },
     "companyId": "Company ID",
     "ownerId": "Owner ID",
     "ownerType": "Owner Type",
     "adminId": "Admin ID",
-    "userId": "User ID",
+    "memberId": "Member ID",
     "visibility": "Visibility",
     "_enums": {
       "status": "Status",
@@ -266,7 +266,7 @@
     "children": "Children",
     "company": "Company",
     "admin": "Admin",
-    "user": "User",
+    "member": "Member",
     "files": "Files",
     "depth": "Depth",
     "owner": "MediaFolder.owner"
@@ -295,13 +295,13 @@
       "folder": "MediaFolder",
       "company": "Company",
       "admin": "Admin",
-      "user": "User"
+      "member": "Member"
     },
     "companyId": "Company ID",
     "ownerId": "Owner ID",
     "ownerType": "Owner Type",
     "adminId": "Admin ID",
-    "userId": "User ID",
+    "memberId": "Member ID",
     "visibility": "Visibility",
     "_enums": {
       "store": "MediaStore",
@@ -314,7 +314,7 @@
     "folder": "Folder",
     "company": "Company",
     "admin": "Admin",
-    "user": "User",
+    "member": "Member",
     "fileExtension": "MediaFile.fileExtension",
     "owner": "MediaFile.owner",
     "uploadFailed": "MediaFile.uploadFailed",
@@ -323,7 +323,7 @@
   "enum": {
     "Target": {
       "Admin": "Admin",
-      "User": "User"
+      "Member": "Member"
     },
     "Status": {
       "Enabled": "Enabled",
@@ -361,7 +361,7 @@
       "Other": "Other"
     },
     "NotificationSender": {
-      "User": "User",
+      "Member": "Member",
       "Company": "Company",
       "System": "System",
       "Admin": "Admin"
@@ -377,12 +377,12 @@
       "Private": "Private"
     },
     "NotificationReceiver": {
-      "User": "User",
+      "Member": "Member",
       "Company": "Company",
       "Admin": "Admin"
     },
     "Owner": {
-      "User": "User",
+      "Member": "Member",
       "Admin": "Admin",
       "Company": "Company"
     }
@@ -392,10 +392,10 @@
     "Admin": "Administrator",
     "AdminRole": "Admin Role",
     "AdminCompany": "Company Admin",
-    "User": "User",
+    "Member": "Member",
     "Company": "Company",
     "CompanyRole": "Company Role",
-    "CompanyUser": "Company User",
+    "CompanyMember": "Company Member",
     "RequestLog": "Request Log",
     "MediaFolder": "Media Folder",
     "MediaFile": "Media File",
@@ -425,12 +425,12 @@
     "admin": "Admin",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company",
       "recipients": "NotificationRecipient"
     },
-    "userId": "User ID",
-    "user": "User",
+    "memberId": "Member ID",
+    "member": "Member",
     "companyId": "Company ID",
     "company": "Company",
     "recipients": "Recipients",
@@ -453,12 +453,12 @@
     "admin": "Admin",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company",
       "notification": "Notification"
     },
-    "userId": "User ID",
-    "user": "User",
+    "memberId": "Member ID",
+    "member": "Member",
     "companyId": "Company ID",
     "company": "Company",
     "notificationId": "Notification ID",

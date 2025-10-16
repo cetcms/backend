@@ -23,7 +23,7 @@ export class NotificationService {
   }
 
   selfNotifications(auth: CurrentAuth) {
-    const { admin, user, company } = auth;
+    const { admin, member, company } = auth;
 
     // 管理员接收消息
     if (admin && !company) {
@@ -48,23 +48,23 @@ export class NotificationService {
       });
     }
 
-    // 用户接收消息
-    if (user && !company) {
+    // 成员接收消息
+    if (member && !company) {
       return this.notification.findMany({
         where: {
           OR: [
             {
               // 系统发送的消息
               sender: { equals: NotificationSender.System },
-              receiver: { hasSome: [NotificationReceiver.User] },
-              recipients: { some: { userId: { equals: user.id }, isRead: { equals: false } } },
+              receiver: { hasSome: [NotificationReceiver.Member] },
+              recipients: { some: { memberId: { equals: member.id }, isRead: { equals: false } } },
             },
             {
               // 系统发送的公开消息
               sender: { equals: NotificationSender.System },
               privacy: { equals: NotificationPrivacy.Public },
-              receiver: { hasSome: [NotificationReceiver.User] },
-              recipients: { none: { userId: { equals: user.id } } },
+              receiver: { hasSome: [NotificationReceiver.Member] },
+              recipients: { none: { memberId: { equals: member.id } } },
             },
           ],
         },
@@ -88,8 +88,8 @@ export class NotificationService {
       });
     }
 
-    // 用户企业消息
-    if (company && user) {
+    // 成员企业消息
+    if (company && member) {
       return this.notification.findMany({
         where: {
           OR: [
@@ -101,12 +101,12 @@ export class NotificationService {
               recipients: { some: { companyId: { equals: company.id }, isRead: { equals: false } } },
             },
             {
-              // 系统发送给企业用户的私有消息
+              // 系统发送给企业成员的私有消息
               sender: { equals: NotificationSender.System },
               privacy: { equals: NotificationPrivacy.Private },
               receiver: { hasSome: [NotificationReceiver.Company] },
               recipients: {
-                some: { companyId: { equals: company.id }, userId: { equals: user.id }, isRead: { equals: false } },
+                some: { companyId: { equals: company.id }, memberId: { equals: member.id }, isRead: { equals: false } },
               },
             },
           ],

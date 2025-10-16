@@ -2,7 +2,7 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import { AuthCreateInput, FindManyAuthArgs, Target, UpsertOneAuthArgs } from 'src/generated/graphql';
-import { AdminCompanyRepository, AdminRepository, CompanyUserRepository, UserRepository } from 'src/repositories';
+import { AdminCompanyRepository, AdminRepository, CompanyMemberRepository, MemberRepository } from 'src/repositories';
 
 import { AuthAbstract } from './auth.abstract';
 
@@ -20,14 +20,14 @@ export class AuthRepository extends AuthAbstract {
    * @param db - 数据库服务实例，用于执行数据库操作
    * @param admin
    * @param adminCompany
-   * @param companyUser
+   * @param companyMember
    */
   constructor(
     protected readonly db: DatabaseService,
     private readonly admin: AdminRepository,
-    private readonly user: UserRepository,
+    private readonly member: MemberRepository,
     private readonly adminCompany: AdminCompanyRepository,
-    private readonly companyUser: CompanyUserRepository
+    private readonly companyMember: CompanyMemberRepository
   ) {
     super(db);
   }
@@ -78,16 +78,16 @@ export class AuthRepository extends AuthAbstract {
   }
 
   /**
-   * 根据用户ID查找认证信息
+   * 根据成员ID查找认证信息
    *
-   * @param userId - 用户ID
+   * @param memberId - 成员ID
    * @returns 查询到的认证信息
    */
-  findOneByUserId(userId: string) {
+  findOneByMemberId(memberId: string) {
     return this.findFirst({
       where: {
-        userId: {
-          equals: userId,
+        memberId: {
+          equals: memberId,
         },
       },
     });
@@ -130,8 +130,8 @@ export class AuthRepository extends AuthAbstract {
     switch (input.target) {
       case Target.Admin:
         return this.createOnlyAdmin(targetId, companyId, input);
-      case Target.User:
-        return this.createOnlyUser(targetId, companyId, input);
+      case Target.Member:
+        return this.createOnlyMember(targetId, companyId, input);
       default:
         throw new UnprocessableEntityException('target not supported');
     }
@@ -172,24 +172,24 @@ export class AuthRepository extends AuthAbstract {
     } else {
       delete data.company;
     }
-    delete data.user;
+    delete data.member;
     return this.create(data);
   }
 
   /**
-   * 创建用户认证记录
-   * @param userId 用户 ID
+   * 创建成员认证记录
+   * @param memberId 成员 ID
    * @param companyId 公司 ID
    * @param data 创建认证记录输入数据
    * @returns 创建的认证记录
    */
-  async createOnlyUser(userId: string, companyId: string | null, data: AuthCreateInput) {
-    data.target = Target.User;
-    data.user = { connect: { id: userId } };
+  async createOnlyMember(memberId: string, companyId: string | null, data: AuthCreateInput) {
+    data.target = Target.Member;
+    data.member = { connect: { id: memberId } };
     if (companyId) {
       data.company = { connect: { id: companyId } };
       // 设置查询信息
-      const service = this.user.setInclude({
+      const service = this.member.setInclude({
         companies: {
           where: {
             companyId: {
@@ -198,13 +198,13 @@ export class AuthRepository extends AuthAbstract {
           },
         },
       });
-      // 获取用户信息
-      const user = await service.findOneById(userId);
-      if (!user) {
+      // 获取成员信息
+      const member = await service.findOneById(memberId);
+      if (!member) {
         throw new Error('target not found');
       }
-      // 检查用户是否拥有管理公司的权限
-      if (!user.companies?.length) {
+      // 检查成员是否拥有管理公司的权限
+      if (!member.companies?.length) {
         throw new Error('you cannot manage the company');
       }
     } else {
@@ -215,13 +215,13 @@ export class AuthRepository extends AuthAbstract {
   }
 
   /**
-   * 删除所有与用户相关的身份认证记录
-   * 根据用户 ID 删除该用户的所有身份认证记录
-   * @param userId - 用户唯一标识符
+   * 删除所有与成员相关的身份认证记录
+   * 根据成员 ID 删除该成员的所有身份认证记录
+   * @param memberId - 成员唯一标识符
    * @returns 删除操作的结果，包含删除的记录数量
    */
-  deleteAllByUserId(userId: string) {
-    return this.deleteMany({ userId: { equals: userId } });
+  deleteAllByMemberId(memberId: string) {
+    return this.deleteMany({ memberId: { equals: memberId } });
   }
 
   /**
@@ -252,8 +252,8 @@ export class AuthRepository extends AuthAbstract {
     switch (target) {
       case Target.Admin:
         return this.deleteAllByAdminId(targetId);
-      case Target.User:
-        return this.deleteAllByUserId(targetId);
+      case Target.Member:
+        return this.deleteAllByMemberId(targetId);
       default:
         throw new UnprocessableEntityException('target not supported');
     }

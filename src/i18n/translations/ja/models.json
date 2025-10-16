@@ -7,10 +7,10 @@
     "adminId": "管理者ID",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company"
     },
-    "userId": "ユーザーID",
+    "memberId": "ユーザーID",
     "companyId": "会社ID",
     "token": "トークン",
     "fingerprint": "フィンガープリント",
@@ -21,7 +21,7 @@
       "target": "Target"
     },
     "admin": "管理者",
-    "user": "ユーザー",
+    "member": "ユーザー",
     "company": "会社"
   },
   "Admin": {
@@ -89,7 +89,7 @@
     "roleId": "ロールID",
     "role": "ロール"
   },
-  "User": {
+  "Member": {
     "id": "ID",
     "createdAt": "作成日時",
     "updatedAt": "更新日時",
@@ -98,7 +98,7 @@
     "email": "メールアドレス",
     "password": "パスワード",
     "_relations": {
-      "companies": "CompanyUser",
+      "companies": "CompanyMember",
       "auths": "Auth",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
@@ -131,7 +131,7 @@
       "auths": "Auth",
       "admins": "AdminCompany",
       "roles": "CompanyRole",
-      "users": "CompanyUser",
+      "members": "CompanyMember",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile",
@@ -144,7 +144,7 @@
     "auths": "認証",
     "admins": "管理者",
     "roles": "ロール",
-    "users": "ユーザー",
+    "members": "ユーザー",
     "logs": "ログ",
     "mediaFolders": "メディアフォルダ",
     "mediaFiles": "メディアファイル",
@@ -164,33 +164,33 @@
     "companyId": "会社ID",
     "_relations": {
       "company": "Company",
-      "users": "CompanyUser",
+      "members": "CompanyMember",
       "admins": "AdminCompany"
     },
     "_enums": {
       "status": "Status"
     },
     "company": "会社",
-    "users": "ユーザー",
+    "members": "ユーザー",
     "admins": "管理者"
   },
-  "CompanyUser": {
+  "CompanyMember": {
     "createdAt": "作成日時",
     "updatedAt": "更新日時",
     "status": "ステータス",
     "companyId": "会社ID",
     "_relations": {
       "company": "Company",
-      "user": "User",
+      "member": "Member",
       "role": "CompanyRole"
     },
-    "userId": "ユーザーID",
+    "memberId": "ユーザーID",
     "roleId": "ロールID",
     "_enums": {
       "status": "Status"
     },
     "company": "会社",
-    "user": "ユーザー",
+    "member": "ユーザー",
     "role": "ロール"
   },
   "RequestLog": {
@@ -216,9 +216,9 @@
     "language": "言語",
     "fingerprint": "フィンガープリント",
     "target": "ターゲット",
-    "userId": "ユーザーID",
+    "memberId": "ユーザーID",
     "_relations": {
-      "user": "User",
+      "member": "Member",
       "admin": "Admin",
       "company": "Company"
     },
@@ -228,7 +228,7 @@
       "method": "RequestMethod",
       "target": "Target"
     },
-    "user": "ユーザー",
+    "member": "ユーザー",
     "admin": "管理者",
     "company": "会社"
   },
@@ -247,14 +247,14 @@
       "children": "MediaFolder",
       "company": "Company",
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "files": "MediaFile"
     },
     "companyId": "会社ID",
     "ownerId": "所有者ID",
     "ownerType": "所有者タイプ",
     "adminId": "管理者ID",
-    "userId": "ユーザーID",
+    "memberId": "ユーザーID",
     "visibility": "可視性",
     "_enums": {
       "status": "Status",
@@ -266,7 +266,7 @@
     "children": "子",
     "company": "会社",
     "admin": "管理者",
-    "user": "ユーザー",
+    "member": "ユーザー",
     "files": "ファイル",
     "depth": "MediaFolder.depth",
     "owner": "MediaFolder.owner"
@@ -295,13 +295,13 @@
       "folder": "MediaFolder",
       "company": "Company",
       "admin": "Admin",
-      "user": "User"
+      "member": "Member"
     },
     "companyId": "会社ID",
     "ownerId": "所有者ID",
     "ownerType": "所有者タイプ",
     "adminId": "管理者ID",
-    "userId": "ユーザーID",
+    "memberId": "ユーザーID",
     "visibility": "可視性",
     "_enums": {
       "store": "MediaStore",
@@ -314,7 +314,7 @@
     "folder": "フォルダ",
     "company": "会社",
     "admin": "管理者",
-    "user": "ユーザー",
+    "member": "ユーザー",
     "fileExtension": "MediaFile.fileExtension",
     "owner": "MediaFile.owner",
     "uploadFailed": "MediaFile.uploadFailed",
@@ -323,7 +323,7 @@
   "enum": {
     "Target": {
       "Admin": "管理者",
-      "User": "ユーザー"
+      "Member": "ユーザー"
     },
     "Status": {
       "Enabled": "有効",
@@ -361,7 +361,7 @@
       "Other": "その他"
     },
     "NotificationSender": {
-      "User": "ユーザー",
+      "Member": "ユーザー",
       "Company": "会社",
       "System": "システム",
       "Admin": "管理者"
@@ -377,12 +377,12 @@
       "Private": "非公開"
     },
     "NotificationReceiver": {
-      "User": "ユーザー",
+      "Member": "ユーザー",
       "Company": "企業",
       "Admin": "管理者"
     },
     "Owner": {
-      "User": "User",
+      "Member": "Member",
       "Admin": "Admin",
       "Company": "Company"
     }
@@ -392,10 +392,10 @@
     "Admin": "管理者",
     "AdminRole": "管理者ロール",
     "AdminCompany": "会社管理者",
-    "User": "ユーザー",
+    "Member": "ユーザー",
     "Company": "会社",
     "CompanyRole": "会社ロール",
-    "CompanyUser": "会社ユーザー",
+    "CompanyMember": "会社ユーザー",
     "RequestLog": "リクエストログ",
     "MediaFolder": "メディアフォルダ",
     "MediaFile": "メディアファイル",
@@ -425,12 +425,12 @@
     "admin": "管理者",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company",
       "recipients": "NotificationRecipient"
     },
-    "userId": "ユーザーID",
-    "user": "ユーザー",
+    "memberId": "ユーザーID",
+    "member": "ユーザー",
     "companyId": "会社ID",
     "company": "会社",
     "recipients": "受信者",
@@ -453,12 +453,12 @@
     "admin": "管理者",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company",
       "notification": "Notification"
     },
-    "userId": "ユーザーID",
-    "user": "ユーザー",
+    "memberId": "ユーザーID",
+    "member": "ユーザー",
     "companyId": "会社ID",
     "company": "会社",
     "notificationId": "通知ID",

@@ -30,7 +30,7 @@ export class CompanyResolver {
    * 查询当前企业信息
    * @param company
    */
-  @UsePermission([Target.Admin, Target.User])
+  @UsePermission([Target.Admin, Target.Member])
   @Query(() => Company)
   findSelfCompany(@CurrentAuthCompany() company: Company): Company {
     return company;
@@ -71,7 +71,7 @@ export class CompanyResolver {
    * @param company
    * @param data
    */
-  @UsePermission([Target.Admin, Target.User])
+  @UsePermission([Target.Admin, Target.Member])
   @Mutation(() => Company)
   updateSelfCompany(@CurrentAuthCompany() company: Company, @Args('data') data: CompanyUpdateInput) {
     return this.service.updateOne({ where: { id: company.id }, data });

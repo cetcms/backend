@@ -15,7 +15,7 @@
  *
  * 返回值说明：
  * - 返回类型：Auth（GraphQL 生成类型）
- * - 含义：当前请求关联的认证信息对象，包含 target、user/admin、company 等字段。
+ * - 含义：当前请求关联的认证信息对象，包含 target、member/admin、company 等字段。
  *
  * 使用示例：
  * - GraphQL Resolver：

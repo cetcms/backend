@@ -29,7 +29,7 @@ export class NotificationResolver {
   }
 
   /**
-   * 获取当前用户消息通知
+   * 获取当前成员消息通知
    */
   @UsePermission()
   @Query(() => [Notification])

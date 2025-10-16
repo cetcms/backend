@@ -68,16 +68,16 @@ export class RequestLogRepository extends RequestLogAbstract {
   }
 
   /**
-   * 根据用户ID查找请求日志
+   * 根据成员ID查找请求日志
    *
-   * @param userId - 用户ID
+   * @param memberId - 成员ID
    * @returns 查询到的请求日志列表
    */
-  findByUserId(userId: string) {
+  findByMemberId(memberId: string) {
     return this.findMany({
       where: {
-        userId: {
-          equals: userId,
+        memberId: {
+          equals: memberId,
         },
       },
     });

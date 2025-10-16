@@ -9,7 +9,7 @@ export class LoginInput {
   companyId?: string;
   @Field(() => String)
   password: string;
-  @Field(() => Target, { nullable: true, defaultValue: Target.User })
+  @Field(() => Target, { nullable: true, defaultValue: Target.Member })
   target?: Target;
 }
 
@@ -18,7 +18,7 @@ export class LoginMeta {
   @Field(() => String, { nullable: true })
   fingerprint?: string | null;
   @Field(() => String, { nullable: true })
-  userAgent?: string | null;
+  memberAgent?: string | null;
   @Field(() => String, { nullable: true })
   ip?: string | null;
 }

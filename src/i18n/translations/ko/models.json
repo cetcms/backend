@@ -7,10 +7,10 @@
     "adminId": "관리자 ID",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company"
     },
-    "userId": "사용자 ID",
+    "memberId": "사용자 ID",
     "companyId": "회사 ID",
     "token": "토큰",
     "fingerprint": "지문",
@@ -21,7 +21,7 @@
       "target": "Target"
     },
     "admin": "관리자",
-    "user": "사용자",
+    "member": "사용자",
     "company": "회사"
   },
   "Admin": {
@@ -89,7 +89,7 @@
     "roleId": "역할 ID",
     "role": "역할"
   },
-  "User": {
+  "Member": {
     "id": "ID",
     "createdAt": "생성 시간",
     "updatedAt": "수정 시간",
@@ -98,7 +98,7 @@
     "email": "이메일",
     "password": "비밀번호",
     "_relations": {
-      "companies": "CompanyUser",
+      "companies": "CompanyMember",
       "auths": "Auth",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
@@ -131,7 +131,7 @@
       "auths": "Auth",
       "admins": "AdminCompany",
       "roles": "CompanyRole",
-      "users": "CompanyUser",
+      "members": "CompanyMember",
       "logs": "RequestLog",
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile",
@@ -144,7 +144,7 @@
     "auths": "인증",
     "admins": "관리자",
     "roles": "역할",
-    "users": "사용자",
+    "members": "사용자",
     "logs": "로그",
     "mediaFolders": "미디어 폴더",
     "mediaFiles": "미디어 파일",
@@ -164,33 +164,33 @@
     "companyId": "회사 ID",
     "_relations": {
       "company": "Company",
-      "users": "CompanyUser",
+      "members": "CompanyMember",
       "admins": "AdminCompany"
     },
     "_enums": {
       "status": "Status"
     },
     "company": "회사",
-    "users": "사용자",
+    "members": "사용자",
     "admins": "관리자"
   },
-  "CompanyUser": {
+  "CompanyMember": {
     "createdAt": "생성 시간",
     "updatedAt": "수정 시간",
     "status": "상태",
     "companyId": "회사 ID",
     "_relations": {
       "company": "Company",
-      "user": "User",
+      "member": "Member",
       "role": "CompanyRole"
     },
-    "userId": "사용자 ID",
+    "memberId": "사용자 ID",
     "roleId": "역할 ID",
     "_enums": {
       "status": "Status"
     },
     "company": "회사",
-    "user": "사용자",
+    "member": "사용자",
     "role": "역할"
   },
   "RequestLog": {
@@ -216,9 +216,9 @@
     "language": "언어",
     "fingerprint": "지문",
     "target": "대상",
-    "userId": "사용자 ID",
+    "memberId": "사용자 ID",
     "_relations": {
-      "user": "User",
+      "member": "Member",
       "admin": "Admin",
       "company": "Company"
     },
@@ -228,7 +228,7 @@
       "method": "RequestMethod",
       "target": "Target"
     },
-    "user": "사용자",
+    "member": "사용자",
     "admin": "관리자",
     "company": "회사"
   },
@@ -247,14 +247,14 @@
       "children": "MediaFolder",
       "company": "Company",
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "files": "MediaFile"
     },
     "companyId": "회사 ID",
     "ownerId": "소유자 ID",
     "ownerType": "소유자 유형",
     "adminId": "관리자 ID",
-    "userId": "사용자 ID",
+    "memberId": "사용자 ID",
     "visibility": "가시성",
     "_enums": {
       "status": "Status",
@@ -266,7 +266,7 @@
     "children": "자식",
     "company": "회사",
     "admin": "관리자",
-    "user": "사용자",
+    "member": "사용자",
     "files": "파일",
     "depth": "MediaFolder.depth",
     "owner": "MediaFolder.owner"
@@ -295,13 +295,13 @@
       "folder": "MediaFolder",
       "company": "Company",
       "admin": "Admin",
-      "user": "User"
+      "member": "Member"
     },
     "companyId": "회사 ID",
     "ownerId": "소유자 ID",
     "ownerType": "소유자 유형",
     "adminId": "관리자 ID",
-    "userId": "사용자 ID",
+    "memberId": "사용자 ID",
     "visibility": "가시성",
     "_enums": {
       "store": "MediaStore",
@@ -314,7 +314,7 @@
     "folder": "폴더",
     "company": "회사",
     "admin": "관리자",
-    "user": "사용자",
+    "member": "사용자",
     "fileExtension": "MediaFile.fileExtension",
     "owner": "MediaFile.owner",
     "uploadFailed": "MediaFile.uploadFailed",
@@ -323,7 +323,7 @@
   "enum": {
     "Target": {
       "Admin": "관리자",
-      "User": "사용자"
+      "Member": "사용자"
     },
     "Status": {
       "Enabled": "활성화",
@@ -361,7 +361,7 @@
       "Other": "기타"
     },
     "NotificationSender": {
-      "User": "사용자",
+      "Member": "사용자",
       "Company": "회사",
       "System": "시스템",
       "Admin": "관리자"
@@ -377,12 +377,12 @@
       "Private": "비공개"
     },
     "NotificationReceiver": {
-      "User": "사용자",
+      "Member": "사용자",
       "Company": "기업",
       "Admin": "관리자"
     },
     "Owner": {
-      "User": "User",
+      "Member": "Member",
       "Admin": "Admin",
       "Company": "Company"
     }
@@ -392,10 +392,10 @@
     "Admin": "관리자",
     "AdminRole": "관리자 역할",
     "AdminCompany": "회사 관리자",
-    "User": "사용자",
+    "Member": "사용자",
     "Company": "회사",
     "CompanyRole": "회사 역할",
-    "CompanyUser": "회사 사용자",
+    "CompanyMember": "회사 사용자",
     "RequestLog": "요청 로그",
     "MediaFolder": "미디어 폴더",
     "MediaFile": "미디어 파일",
@@ -425,12 +425,12 @@
     "admin": "관리자",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company",
       "recipients": "NotificationRecipient"
     },
-    "userId": "사용자 ID",
-    "user": "사용자",
+    "memberId": "사용자 ID",
+    "member": "사용자",
     "companyId": "회사 ID",
     "company": "회사",
     "recipients": "수신자",
@@ -453,12 +453,12 @@
     "admin": "관리자",
     "_relations": {
       "admin": "Admin",
-      "user": "User",
+      "member": "Member",
       "company": "Company",
       "notification": "Notification"
     },
-    "userId": "사용자 ID",
-    "user": "사용자",
+    "memberId": "사용자 ID",
+    "member": "사용자",
     "companyId": "회사 ID",
     "company": "회사",
     "notificationId": "알림 ID",

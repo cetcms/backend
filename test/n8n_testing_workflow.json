@@ -104,7 +104,7 @@
                     "option": "Admin"
                   },
                   {
-                    "option": "User"
+                    "option": "Member"
                   }
                 ]
               },
@@ -230,7 +230,7 @@
     {
       "parameters": {
         "endpoint": "http://192.168.2.15:3000/graphql",
-        "query": "=query AuthInfo {\n    authInfo {\n        id\n        createdAt\n        updatedAt\n        expiredAt\n        adminId\n        userId\n        companyId\n        device\n        location\n        target\n        admin {\n            id\n            createdAt\n            updatedAt\n            status\n            name\n            email\n            roleId\n        }\n        user {\n            id\n            createdAt\n            updatedAt\n            status\n            name\n            email\n        }\n        company {\n            id\n            createdAt\n            updatedAt\n            status\n            name\n            alias\n            code\n            description\n        }\n    }\n}",
+        "query": "=query AuthInfo {\n    authInfo {\n        id\n        createdAt\n        updatedAt\n        expiredAt\n        adminId\n        memberId\n        companyId\n        device\n        location\n        target\n        admin {\n            id\n            createdAt\n            updatedAt\n            status\n            name\n            email\n            roleId\n        }\n        member {\n            id\n            createdAt\n            updatedAt\n            status\n            name\n            email\n        }\n        company {\n            id\n            createdAt\n            updatedAt\n            status\n            name\n            alias\n            code\n            description\n        }\n    }\n}",
         "variables": "={}",
         "headerParametersUi": {
           "parameter": [
@@ -260,7 +260,7 @@
     },
     {
       "parameters": {
-        "html": "<!DOCTYPE html>\n\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>My HTML document</title>\n</head>\n<body>\n  <div class=\"container\">\n    <p>ID: {{ $json.data.authInfo.id }}</p>\n    <p>UserId: {{ $json.data.authInfo.userId }}</p>\n    <p>User Name: {{ $json.data.authInfo.user.name }}</p>\n    <p>AdminId: {{ $json.data.authInfo.adminId }}</p>\n    <p>Admin Name: {{ $json.data.authInfo.admin.name }}</p>\n    <p>Company Name: {{ $json.data.authInfo.company.name }}</p>\n  </div>\n</body>\n</html>\n\n<style>\n.container {\n  background-color: #ffffff;\n  text-align: center;\n  padding: 16px;\n  border-radius: 8px;\n}\n\nh1 {\n  color: #ff6d5a;\n  font-size: 24px;\n  font-weight: bold;\n  padding: 8px;\n}\n\nh2 {\n  color: #909399;\n  font-size: 18px;\n  font-weight: bold;\n  padding: 8px;\n}\n</style>"
+        "html": "<!DOCTYPE html>\n\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>My HTML document</title>\n</head>\n<body>\n  <div class=\"container\">\n    <p>ID: {{ $json.data.authInfo.id }}</p>\n    <p>MemberId: {{ $json.data.authInfo.memberId }}</p>\n    <p>Member Name: {{ $json.data.authInfo.member.name }}</p>\n    <p>AdminId: {{ $json.data.authInfo.adminId }}</p>\n    <p>Admin Name: {{ $json.data.authInfo.admin.name }}</p>\n    <p>Company Name: {{ $json.data.authInfo.company.name }}</p>\n  </div>\n</body>\n</html>\n\n<style>\n.container {\n  background-color: #ffffff;\n  text-align: center;\n  padding: 16px;\n  border-radius: 8px;\n}\n\nh1 {\n  color: #ff6d5a;\n  font-size: 24px;\n  font-weight: bold;\n  padding: 8px;\n}\n\nh2 {\n  color: #909399;\n  font-size: 18px;\n  font-weight: bold;\n  padding: 8px;\n}\n</style>"
       },
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,

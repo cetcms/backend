@@ -1,29 +1,29 @@
 {
   "group": {
-    "User": "User",
+    "Member": "Member",
     "Admin": "Admin",
     "Company": "Company",
     "Notification": "Notification"
   },
   "subject": {
-    "UserResolver": "User Management",
+    "MemberResolver": "Member Management",
     "AdminCompanyResolver": "Admin Company Management",
     "AdminRoleResolver": "Admin Role Management",
     "AdminResolver": "Admin Management",
     "CompanyRoleResolver": "Company Role Management",
-    "CompanyUserResolver": "Company User Management",
+    "CompanyMemberResolver": "Company Member Management",
     "CompanyResolver": "Company Management",
     "NotificationRecipientResolver": "Notification Recipient Management",
     "NotificationResolver": "Notification Management"
   },
   "action": {
-    "UserResolver": {
-      "findSelfUser": "Find Current User Info",
-      "findOneUser": "Find One User",
-      "paginateUsers": "Paginate Users",
-      "createOneUser": "Create User",
-      "updateSelfUser": "Update Current User Info",
-      "updateOneUser": "Update User"
+    "MemberResolver": {
+      "findSelfMember": "Find Current Member Info",
+      "findOneMember": "Find One Member",
+      "paginateMembers": "Paginate Members",
+      "createOneMember": "Create Member",
+      "updateSelfMember": "Update Current Member Info",
+      "updateOneMember": "Update Member"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "Find One Admin Company",
@@ -56,11 +56,11 @@
       "updateOneCompanyRole": "Update Company Role",
       "listCompanyRolePermission": "List Company Role Permissions"
     },
-    "CompanyUserResolver": {
-      "findOneCompanyUser": "Find One Company User",
-      "paginateCompanyUsers": "Paginate Company Users",
-      "createOneCompanyUser": "Create Company User",
-      "updateOneCompanyUser": "Update Company User"
+    "CompanyMemberResolver": {
+      "findOneCompanyMember": "Find One Company Member",
+      "paginateCompanyMembers": "Paginate Company Members",
+      "createOneCompanyMember": "Create Company Member",
+      "updateOneCompanyMember": "Update Company Member"
     },
     "CompanyResolver": {
       "findSelfCompany": "Find Current Company Info",
@@ -75,7 +75,7 @@
     },
     "NotificationResolver": {
       "paginateNotifications": "Paginate Notifications",
-      "listSelfNotifications": "List Current User Notifications"
+      "listSelfNotifications": "List Current Member Notifications"
     }
   }
 }

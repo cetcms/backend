@@ -87,26 +87,27 @@ enum Status {
 
 enum Target {
   Admin
-  User
+  Member
+  Company
 }
 
 enum Owner {
-  User
   Admin
+  Member
+  Company
+}
+
+enum NotificationReceiver {
+  Admin
+  Member
   Company
 }
 
 enum NotificationSender {
-  User
+  Admin
+  Member
   Company
   System
-  Admin
-}
-
-enum NotificationReceiver {
-  User
-  Company
-  Admin
 }
 
 enum NotificationPrivacy {
@@ -156,9 +157,9 @@ model Auth {
   /// @DtoEntityHidden()
   admin       Admin?   @relation(fields: [adminId], references: [id])
   /// @DtoRelationIncludeId()
-  userId      String?  @map("user_id")
+  memberId    String?  @map("member_id")
   /// @DtoEntityHidden()
-  user        User?    @relation(fields: [userId], references: [id])
+  member      Member?  @relation(fields: [memberId], references: [id])
   /// @DtoRelationIncludeId()
   companyId   String?  @map("company_id")
   /// @DtoEntityHidden()
@@ -266,7 +267,7 @@ model AdminCompany {
   @@map("admin_companies")
 }
 
-model User {
+model Member {
   /// @DtoReadOnly()
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
@@ -286,7 +287,7 @@ model User {
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
-  companies              CompanyUser[]
+  companies              CompanyMember[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
@@ -306,7 +307,7 @@ model User {
   notifications          Notification[]
   notificationRecipients NotificationRecipient[]
 
-  @@map("users")
+  @@map("members")
 }
 
 model Company {
@@ -341,7 +342,7 @@ model Company {
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField()
-  users                  CompanyUser[]
+  members                CompanyMember[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField()
@@ -383,17 +384,17 @@ model CompanyRole {
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
-  users  CompanyUser[]
+  members CompanyMember[]
   /// @zod.optional()
   /// @DtoEntityHidden()
   /// @HideField({ match: '+(*Create*|*Update*)' })
-  admins AdminCompany[]
+  admins  AdminCompany[]
 
   @@unique([companyId, code], name: "companyRoleIdx")
   @@map("company_roles")
 }
 
-model CompanyUser {
+model CompanyMember {
   /// @DtoReadOnly()
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -405,16 +406,16 @@ model CompanyUser {
   /// @DtoEntityHidden()
   company   Company     @relation(fields: [companyId], references: [id])
   /// @DtoRelationIncludeId()
-  userId    String      @map("user_id")
+  memberId  String      @map("member_id")
   /// @DtoEntityHidden()
-  user      User        @relation(fields: [userId], references: [id])
+  member    Member      @relation(fields: [memberId], references: [id])
   /// @DtoRelationIncludeId()
   roleId    String      @map("role_id")
   /// @DtoEntityHidden()
   role      CompanyRole @relation(fields: [roleId], references: [id])
 
-  @@id([companyId, userId], name: "companyUserIdx")
-  @@map("company_users")
+  @@id([companyId, memberId], name: "companyMemberIdx")
+  @@map("company_members")
 }
 
 model Notification {
@@ -434,8 +435,8 @@ model Notification {
 
   // 发送者信息
   senderId  String?             @map("sender_id") @db.VarChar(50)
-  sender    NotificationSender  @default(System) // Admin, User, Company 或 System
-  receiver  String[] // Admin, User, Company
+  sender    NotificationSender  @default(System) // Admin, Member, Company 或 System
+  receiver  String[] // Admin, Member, Company
   privacy   NotificationPrivacy @default(Private)
   type      NotificationType    @default(Message)
   /// @DtoRelationIncludeId()
@@ -443,9 +444,9 @@ model Notification {
   /// @DtoEntityHidden()
   admin     Admin?              @relation(fields: [adminId], references: [id])
   /// @DtoRelationIncludeId()
-  userId    String?             @map("user_id")
+  memberId  String?             @map("member_id")
   /// @DtoEntityHidden()
-  user      User?               @relation(fields: [userId], references: [id])
+  member    Member?             @relation(fields: [memberId], references: [id])
   /// @DtoRelationIncludeId()
   companyId String?             @map("company_id")
   /// @DtoEntityHidden()
@@ -471,15 +472,15 @@ model NotificationRecipient {
 
   // 接收者信息
   receiverId String               @map("receiver_id") @db.VarChar(50)
-  receiver   NotificationReceiver @map("receiver") // Admin, User, Company
+  receiver   NotificationReceiver @map("receiver") // Admin, Member, Company
   /// @DtoRelationIncludeId()
   adminId    String?              @map("admin_id")
   /// @DtoEntityHidden()
   admin      Admin?               @relation(fields: [adminId], references: [id])
   /// @DtoRelationIncludeId()
-  userId     String?              @map("user_id")
+  memberId   String?              @map("member_id")
   /// @DtoEntityHidden()
-  user       User?                @relation(fields: [userId], references: [id])
+  member     Member?              @relation(fields: [memberId], references: [id])
   /// @DtoRelationIncludeId()
   companyId  String?              @map("company_id")
   /// @DtoEntityHidden()
@@ -538,9 +539,9 @@ model RequestLog {
   target Target?
 
   /// @DtoRelationIncludeId()
-  userId    String?  @map("user_id")
+  memberId  String?  @map("member_id")
   /// @DtoEntityHidden()
-  user      User?    @relation(fields: [userId], references: [id])
+  member    Member?  @relation(fields: [memberId], references: [id])
   /// @DtoRelationIncludeId()
   adminId   String?  @map("admin_id")
   /// @DtoEntityHidden()
@@ -583,9 +584,9 @@ model MediaFolder {
   /// @DtoEntityHidden()
   admin     Admin?   @relation(fields: [adminId], references: [id])
   /// @DtoRelationIncludeId()
-  userId    String?  @map("user_id")
+  memberId  String?  @map("member_id")
   /// @DtoEntityHidden()
-  user      User?    @relation(fields: [userId], references: [id])
+  member    Member?  @relation(fields: [memberId], references: [id])
   /// @DtoRelationIncludeId()
   companyId String?  @map("company_id")
   /// @DtoEntityHidden()
@@ -597,7 +598,7 @@ model MediaFolder {
   /// @HideField({ match: '+(*Create*|*Update*|*UniqueInput*)' })
   files MediaFile[]
 
-  @@unique([userId, path], name: "userFolderPathIdx")
+  @@unique([memberId, path], name: "memberFolderPathIdx")
   @@unique([adminId, path], name: "adminFolderPathIdx")
   @@unique([companyId, path], name: "companyFolderPathIdx")
   @@map("media_folders")
@@ -640,9 +641,9 @@ model MediaFile {
   /// @DtoEntityHidden()
   admin     Admin?   @relation(fields: [adminId], references: [id])
   /// @DtoRelationIncludeId()
-  userId    String?  @map("user_id")
+  memberId  String?  @map("member_id")
   /// @DtoEntityHidden()
-  user      User?    @relation(fields: [userId], references: [id])
+  member    Member?  @relation(fields: [memberId], references: [id])
   /// @DtoRelationIncludeId()
   companyId String?  @map("company_id")
   /// @DtoEntityHidden()
@@ -652,7 +653,7 @@ model MediaFile {
   visibility MediaVisibility @default(Public)
 
   @@unique([adminId, folderId, fileName], name: "adminFileIdx")
-  @@unique([userId, folderId, fileName], name: "userFileIdx")
+  @@unique([memberId, folderId, fileName], name: "memberFileIdx")
   @@unique([companyId, folderId, fileName], name: "companyFileIdx")
   @@map("media_files")
 }

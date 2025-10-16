@@ -5,7 +5,7 @@ import {
   AuthEntity,
   CompanyEntity,
   CompanyRoleEntity,
-  UserEntity,
+  MemberEntity,
 } from 'src/generated/dto';
 
 class AuthInfoAdmin extends AdminEntity {
@@ -15,7 +15,7 @@ class AuthInfoAdmin extends AdminEntity {
   role: AdminRoleEntity;
 }
 
-class AuthInfoUser extends UserEntity {
+class AuthInfoMember extends MemberEntity {
   @ApiProperty({
     type: String,
   })
@@ -39,10 +39,10 @@ export class GetAuthInfoResult extends AuthEntity {
   admin?: AuthInfoAdmin;
 
   @ApiProperty({
-    type: AuthInfoUser,
+    type: AuthInfoMember,
     nullable: true,
   })
-  user?: AuthInfoUser;
+  member?: AuthInfoMember;
 
   @ApiProperty({
     type: CompanyEntity,

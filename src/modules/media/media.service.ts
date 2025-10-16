@@ -62,9 +62,9 @@ export class MediaService {
     const resource = await args.file;
     const filename = sanitizeFilename(resource.filename);
     this.helper.validateFile(filename, resource.mimetype);
-    const { admin, user, company } = auth;
-    const owner = company ? Owner.Company : user ? Owner.User : Owner.Admin;
-    const ownerId = company ? company.id : user?.id || admin?.id;
+    const { admin, member, company } = auth;
+    const owner = company ? Owner.Company : member ? Owner.Member : Owner.Admin;
+    const ownerId = company ? company.id : member?.id || admin?.id;
     if (!owner || !ownerId) {
       throw new Error('Invalid owner');
     }
@@ -110,7 +110,7 @@ export class MediaService {
         fileSize,
         mediaType,
         store: defaultStore,
-        user: user ? { connect: { id: user?.id } } : undefined,
+        member: member ? { connect: { id: member?.id } } : undefined,
         admin: admin ? { connect: { id: admin?.id } } : undefined,
         mimeType: resource.mimetype,
         fileName: filename,
@@ -178,7 +178,11 @@ export class MediaService {
       }
 
       const ownerId =
-        record.owner === Owner.Admin ? record.adminId : record.owner === Owner.User ? record.userId : record.companyId;
+        record.owner === Owner.Admin
+          ? record.adminId
+          : record.owner === Owner.Member
+            ? record.memberId
+            : record.companyId;
       if (!ownerId || !record.folder) {
         res.status(404).send('Owner or folder not found');
         return;

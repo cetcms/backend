@@ -40,7 +40,7 @@ export class CompanyRoleRepository extends CompanyRoleAbstract {
   protected handleParsedData<T extends Prisma.CompanyRoleCreateInput | Prisma.CompanyRoleUpdateInput>(input: T): T {
     if (input.permissions && Array.isArray(input.permissions)) {
       const checked = Permissions.reduce((acc, p) => {
-        if (!p.targets.length || p.targets.includes(Target.User)) acc[p.name] = true;
+        if (!p.targets.length || p.targets.includes(Target.Member)) acc[p.name] = true;
         return acc;
       }, {});
       input.permissions = input.permissions.filter((p) => checked[p]);

@@ -174,14 +174,14 @@ describe('Auth Flow (e2e)', () => {
               id
               target
               adminId
-              userId
+              memberId
               companyId
               admin {
                 id
                 name
                 email
               }
-              user {
+              member {
                 id
                 name
                 email

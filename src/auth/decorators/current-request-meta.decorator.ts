@@ -2,7 +2,7 @@
  * CurrentRequestMeta 参数装饰器
  *
  * 功能描述：
- * - 从当前请求上下文中提取请求元信息（IP地址、User-Agent、指纹等）
+ * - 从当前请求上下文中提取请求元信息（IP地址、Member-Agent、指纹等）
  * - 封装这些信息为 CurrentRequestMeta 对象返回
  *
  * 参数说明：
@@ -15,14 +15,14 @@
  *
  * 返回值说明：
  * - 返回类型：CurrentRequestMeta
- * - 含义：包含请求元信息的对象，包括IP地址、User-Agent和指纹
+ * - 含义：包含请求元信息的对象，包括IP地址、Member-Agent和指纹
  *
  * 使用示例：
  * - GraphQL Resolver：
  *   @Query(() => String)
  *   logRequest(@CurrentRequestMeta() meta: CurrentRequestMeta) {
  *     console.log('IP:', meta.ip);
- *     console.log('User-Agent:', meta.userAgent);
+ *     console.log('Member-Agent:', meta.memberAgent);
  *     console.log('Fingerprint:', meta.fingerprint);
  *     return 'ok';
  *   }
@@ -36,7 +36,7 @@ import { ContextHandler, RequestHandler } from 'src/common/handlers';
 
 export interface CurrentRequestMeta {
   ip: string | null;
-  userAgent: string | null;
+  memberAgent: string | null;
   fingerprint: string | null;
 }
 
@@ -45,7 +45,7 @@ export const CurrentRequestMeta = createParamDecorator((data: any, ctx: Executio
   const req = RequestHandler(request);
   const meta: CurrentRequestMeta = {
     ip: req.getIp(),
-    userAgent: req.getUserAgent(),
+    memberAgent: req.getMemberAgent(),
     fingerprint: req.getFingerprint(),
   };
   return meta;

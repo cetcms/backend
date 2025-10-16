@@ -1,5 +1,5 @@
 export const enum RequestHeaders {
   Fingerprint = 'X-Fingerprint',
-  UserAgent = 'User-Agent',
+  MemberAgent = 'Member-Agent',
   Language = 'X-Lang',
 }

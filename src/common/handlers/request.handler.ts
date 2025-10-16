@@ -78,11 +78,11 @@ export function RequestHandler(req: Request) {
     },
 
     /**
-     * 获取用户代理信息
-     * @returns 用户代理字符串，如果不存在则返回null
+     * 获取成员代理信息
+     * @returns 成员代理字符串，如果不存在则返回null
      */
-    getUserAgent() {
-      return req.header?.(RequestHeaders.UserAgent.toLowerCase()) || null;
+    getMemberAgent() {
+      return req.header?.(RequestHeaders.MemberAgent.toLowerCase()) || null;
     },
 
     /**
@@ -111,11 +111,11 @@ export function RequestHandler(req: Request) {
 
     /**
      * 获取设备信息
-     * @returns 包含用户代理信息的设备对象
+     * @returns 包含成员代理信息的设备对象
      */
     getDevice() {
       return {
-        userAgent: this.getUserAgent(),
+        memberAgent: this.getMemberAgent(),
       };
     },
 

@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { FindManyCompanyUserArgs, UpsertOneCompanyUserArgs } from 'src/generated/graphql';
+import { FindManyCompanyMemberArgs, UpsertOneCompanyMemberArgs } from 'src/generated/graphql';
 
-import { CompanyUserAbstract } from './company-user.abstract';
+import { CompanyMemberAbstract } from './company-member.abstract';
 
 /**
- * 企业用户关联数据访问仓库类
+ * 企业成员关联数据访问仓库类
  *
- * 继承自CompanyUserAbstract抽象类，实现了企业用户关联数据的具体访问方法
+ * 继承自CompanyMemberAbstract抽象类，实现了企业成员关联数据的具体访问方法
  */
 
 @Injectable()
-export class CompanyUserRepository extends CompanyUserAbstract {
+export class CompanyMemberRepository extends CompanyMemberAbstract {
   /**
    * 构造函数
    *
@@ -30,20 +30,20 @@ export class CompanyUserRepository extends CompanyUserAbstract {
    * @param input - 输入的创建或更新数据
    * @returns 处理后的数据
    */
-  protected handleParsedData<T extends Prisma.CompanyUserCreateInput | Prisma.CompanyUserUpdateInput>(input: T): T {
+  protected handleParsedData<T extends Prisma.CompanyMemberCreateInput | Prisma.CompanyMemberUpdateInput>(input: T): T {
     return input;
   }
 
   /**
-   * 保存企业用户关联记录
+   * 保存企业成员关联记录
    *
    * 如果记录存在则更新，不存在则创建
    *
    * @param where - 唯一标识符
    * @param data - 更新或创建数据
-   * @returns 更新或创建后的企业用户关联记录
+   * @returns 更新或创建后的企业成员关联记录
    */
-  save(where: UpsertOneCompanyUserArgs['where'], data: UpsertOneCompanyUserArgs['create']) {
+  save(where: UpsertOneCompanyMemberArgs['where'], data: UpsertOneCompanyMemberArgs['create']) {
     return this.upsert({
       where: where,
       update: data,
@@ -52,42 +52,42 @@ export class CompanyUserRepository extends CompanyUserAbstract {
   }
 
   /**
-   * 根据用户ID和企业ID查找企业用户关联
+   * 根据成员ID和企业ID查找企业成员关联
    *
-   * @param userId - 用户ID
+   * @param memberId - 成员ID
    * @param companyId - 企业ID
-   * @returns 查询到的企业用户关联信息
+   * @returns 查询到的企业成员关联信息
    */
-  findOneByUnique(userId: string, companyId: string) {
+  findOneByUnique(memberId: string, companyId: string) {
     return this.findUnique({
-      companyUserIdx: {
+      companyMemberIdx: {
         companyId,
-        userId,
+        memberId,
       },
     });
   }
 
   /**
-   * 根据用户ID查找企业用户关联
+   * 根据成员ID查找企业成员关联
    *
-   * @param userId - 用户ID
-   * @returns 查询到的企业用户关联信息
+   * @param memberId - 成员ID
+   * @returns 查询到的企业成员关联信息
    */
-  findManyByUserId(userId: string) {
+  findManyByMemberId(memberId: string) {
     return this.findMany({
       where: {
-        userId: {
-          equals: userId,
+        memberId: {
+          equals: memberId,
         },
       },
     });
   }
 
   /**
-   * 根据企业ID查找企业用户关联
+   * 根据企业ID查找企业成员关联
    *
    * @param companyId - 企业ID
-   * @returns 查询到的企业用户关联信息
+   * @returns 查询到的企业成员关联信息
    */
   findManyByCompanyId(companyId: string) {
     return this.findMany({
@@ -100,12 +100,12 @@ export class CompanyUserRepository extends CompanyUserAbstract {
   }
 
   /**
-   * 查询多个企业用户关联并返回总数
+   * 查询多个企业成员关联并返回总数
    *
    * @param args - 查询参数
    * @returns 包含查询结果和总数的Promise数组
    */
-  findManyAndCount(args: FindManyCompanyUserArgs) {
+  findManyAndCount(args: FindManyCompanyMemberArgs) {
     return Promise.all([this.findMany(args), this.count(args.where)]);
   }
 }

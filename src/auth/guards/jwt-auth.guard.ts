@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentAuth, IS_PUBLIC_ACCESS_KEY } from 'src/auth/decorators';
 import { ContextHandler, RequestHandler } from 'src/common/handlers';
-import { Admin, User } from 'src/generated/graphql';
+import { Admin, Member } from 'src/generated/graphql';
 
 /**
  * JWT 认证守卫
@@ -75,28 +75,28 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * 处理认证结果与错误
    *
    * 功能描述：
-   * - 当 user 或 auth 缺失时抛出 401（TOKEN_INVALID）
+   * - 当 member 或 auth 缺失时抛出 401（TOKEN_INVALID）
    * - 校验请求头 Fingerprint 是否与 auth.fingerprint 一致
-   * - 认证通过后返回 [user, auth]
+   * - 认证通过后返回 [member, auth]
    *
    * 参数说明：
    * - error: Error - 来自底层认证策略的错误
-   * - user: Admin | User - 认证通过的用户（Admin | User）
+   * - member: Admin | Member - 认证通过的成员（Admin | Member）
    * - auth: Auth - GraphQL Auth 实体，包含指纹等信息
    * - context: ExecutionContext - 当前执行上下文
    *
    * 返回值说明：
-   * - any - 认证结果 [user, auth]
+   * - any - 认证结果 [member, auth]
    */
-  handleRequest(error: Error, user: Admin | User, auth: CurrentAuth, context: ExecutionContext): any {
-    if (!auth || !user) {
+  handleRequest(error: Error, member: Admin | Member, auth: CurrentAuth, context: ExecutionContext): any {
+    if (!auth || !member) {
       throw new UnauthorizedException({
         message: error?.message || 'Invalid token',
         code: 'TOKEN_INVALID',
       });
     }
 
-    // 获取请求对象, 并使用请求对象中的用户信息进行认证
+    // 获取请求对象, 并使用请求对象中的成员信息进行认证
     const req = ContextHandler(context).getRequest();
     if (RequestHandler(req).getFingerprint() !== auth.fingerprint) {
       throw new UnauthorizedException({
@@ -105,7 +105,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       });
     }
 
-    return user;
+    return member;
   }
 
   /**

@@ -66,7 +66,7 @@ export class CompanyRoleService {
     const editRole = isEdit ? await this.findOneByUnique({ where: where as FindUniqueCompanyRoleArgs['where'] }) : null;
 
     Permissions.forEach((p) => {
-      const allow = !p.targets.length || p.targets.includes(Target.User);
+      const allow = !p.targets.length || p.targets.includes(Target.Member);
       const resource = p.name;
       const isSelfResource = currentPermissions.includes(resource);
       const isEditResource = Boolean(editRole && editRole.permissions?.includes(resource));
