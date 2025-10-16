@@ -2,7 +2,7 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import { AuthCreateInput, FindManyAuthArgs, Target, UpsertOneAuthArgs } from 'src/generated/graphql';
-import { AdminCompanyRepository, AdminRepository, CompanyMemberRepository, MemberRepository } from 'src/repositories';
+import { AdminRepository, MemberRepository } from 'src/repositories';
 
 import { AuthAbstract } from './auth.abstract';
 
@@ -19,15 +19,12 @@ export class AuthRepository extends AuthAbstract {
    *
    * @param db - 数据库服务实例，用于执行数据库操作
    * @param admin
-   * @param adminCompany
-   * @param companyMember
+   * @param member
    */
   constructor(
     protected readonly db: DatabaseService,
     private readonly admin: AdminRepository,
-    private readonly member: MemberRepository,
-    private readonly adminCompany: AdminCompanyRepository,
-    private readonly companyMember: CompanyMemberRepository
+    private readonly member: MemberRepository
   ) {
     super(db);
   }

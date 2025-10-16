@@ -3,7 +3,7 @@ import { createWriteStream, existsSync, mkdirSync, unlinkSync, createReadStream,
 import { extname, join } from 'path';
 import { finished } from 'stream/promises';
 
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { sanitizeFilename } from 'graphql-upload-ts';
 import { CurrentAuth } from 'src/auth/decorators';
@@ -29,8 +29,6 @@ interface PreviewCacheEntry {
 
 @Injectable()
 export class MediaService {
-  private readonly logger = new Logger(MediaService.name);
-
   // 预览缓存：避免相同路径频繁查询数据库
   private readonly previewCache = new Map<string, PreviewCacheEntry>();
   private readonly previewTtlMs = 5 * 60 * 1000; // 5分钟，可根据需要调整

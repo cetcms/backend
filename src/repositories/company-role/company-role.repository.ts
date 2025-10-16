@@ -102,6 +102,7 @@ export class CompanyRoleRepository extends CompanyRoleAbstract {
    * 根据角色代码查找企业角色
    *
    * @param code - 角色代码
+   * @param companyId
    * @returns 查询到的企业角色信息
    */
   findOneByUnique(code: string, companyId: string) {
