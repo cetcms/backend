@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { CurrentAuth } from 'src/auth/decorators';
 import { ConfigService } from 'src/config';
+import { SystemContract } from 'src/contracts';
 import { Auth } from 'src/generated/graphql/auth';
 import { Client, Target } from 'src/generated/graphql/prisma';
 import { Permissions } from 'src/generated/permissions';
@@ -79,38 +80,51 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       companyRole: undefined,
       permissions: [],
     };
+
+    // 管理员登录公司
+    if (auth.admin && auth.companyId) {
+      result.adminRole = auth.admin?.role;
+      // 根管理员
+      if (result.adminRole?.code === SystemContract.RootAdminRole) {
+        result.permissions =
+          Permissions.filter((p) => {
+            return p.clients.includes(Client.Company) || p.clients.length === 0;
+          }).map((p) => p.name) || [];
+      } else {
+        // 非根管理员
+        const adminCompany = await this.adminCompany
+          .setInclude({ role: true })
+          .findOneByUnique(auth.admin.id, auth.companyId);
+        result.companyRole = adminCompany?.role;
+        result.permissions = adminCompany?.role?.permissions || [];
+      }
+      return result;
+    }
+
+    // 成员登录公司
+    if (auth.memberId && auth.companyId) {
+      const companyMember = await this.companyMember
+        .setInclude({ role: true })
+        .findOneByUnique(auth.memberId, auth.companyId);
+      result.companyRole = companyMember?.role;
+      result.permissions = companyMember?.role?.permissions || [];
+      return result;
+    }
+
     // 管理员
     if (auth.admin) {
       result.adminRole = auth.admin?.role;
       result.permissions = auth.admin.role?.permissions || [];
+      return result;
     }
 
     // 成员
-    if (auth.member) {
+    if (auth.memberId) {
       result.permissions =
         Permissions.filter((p) => {
           return p.clients.includes(Client.Member) || p.clients.length === 0;
         }).map((p) => p.name) || [];
+      return result;
     }
-
-    // 管理员登录公司
-    if (auth.admin && auth.company) {
-      const adminCompany = await this.adminCompany
-        .setInclude({ role: true })
-        .findOneByUnique(auth.admin.id, auth.company.id);
-      result.companyRole = adminCompany?.role;
-      result.permissions = adminCompany?.role?.permissions || [];
-    }
-
-    // 成员登录公司
-    if (auth.member && auth.company) {
-      const companyMember = await this.companyMember
-        .setInclude({ role: true })
-        .findOneByUnique(auth.member.id, auth.company.id);
-      result.companyRole = companyMember?.role;
-      result.permissions = companyMember?.role?.permissions || [];
-    }
-
-    return result;
   }
 }

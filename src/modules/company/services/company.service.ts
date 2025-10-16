@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { CurrentAuth } from 'src/auth/decorators';
 import { PaginationResult } from 'src/common/dto';
+import { SystemContract } from 'src/contracts';
 import {
+  Client,
   CreateOneCompanyArgs,
   FindManyCompanyArgs,
   FindUniqueCompanyArgs,
@@ -21,9 +24,29 @@ export class CompanyService {
     throw new NotFoundException('企业不存在');
   }
 
-  async paginate(args: FindManyCompanyArgs) {
+  async paginate(auth: CurrentAuth, args: FindManyCompanyArgs) {
     if (!args.take) args.take = 10;
     if (!args.skip) args.skip = 0;
+    const { adminRole } = auth;
+    // 成员查询范围
+    if (auth.memberId) {
+      args.where = {
+        ...args.where,
+        members: {
+          some: { memberId: { equals: auth.memberId } },
+        },
+      };
+    }
+    // 管理员查询范围
+    if (auth.adminId && adminRole?.code !== SystemContract.RootAdminRole) {
+      args.where = {
+        ...args.where,
+        admins: {
+          some: { adminId: { equals: auth.adminId } },
+        },
+      };
+    }
+
     const [companies, totalCount] = await this.company.findManyAndCount(args);
     return PaginationResult(companies, args.take, args.skip, totalCount);
   }

@@ -1,5 +1,6 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { SystemContract } from 'src/contracts';
 import { DatabaseService } from 'src/database';
 import { AuthCreateInput, FindManyAuthArgs, Target, UpsertOneAuthArgs } from 'src/generated/graphql';
 import { AdminRepository, MemberRepository } from 'src/repositories';
@@ -163,7 +164,7 @@ export class AuthRepository extends AuthAbstract {
         throw new Error('target not found');
       }
       // 非 ROOT 角色必须检查是否拥有管理公司的权限
-      if (admin.role?.name !== 'ROOT' && !admin.companies?.length) {
+      if (admin.role?.code !== SystemContract.RootAdminRole && !admin.companies?.length) {
         throw new Error('you cannot manage the company');
       }
     } else {

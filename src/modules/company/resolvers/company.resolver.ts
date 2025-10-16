@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CurrentAuthCompany, UsePermission } from 'src/auth/decorators';
+import { CurrentAuth, CurrentAuthCompany, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
@@ -48,12 +48,13 @@ export class CompanyResolver {
 
   /**
    * 分页查询企业
+   * @param auth
    * @param args
    */
   @UsePermission()
   @Query(() => PaginatedCompany)
-  paginateCompanies(@Args() args: FindManyCompanyArgs): Promise<IPaginated<Company>> {
-    return this.service.paginate(args);
+  paginateCompanies(@CurrentAuth() auth: CurrentAuth, @Args() args: FindManyCompanyArgs): Promise<IPaginated<Company>> {
+    return this.service.paginate(auth, args);
   }
 
   /**

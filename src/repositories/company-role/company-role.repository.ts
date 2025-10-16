@@ -9,6 +9,7 @@ import {
   UpsertOneCompanyRoleArgs,
 } from 'src/generated/graphql';
 import { Permissions } from 'src/generated/permissions';
+import voca from 'voca';
 
 import { CompanyRoleAbstract } from './company-role.abstract';
 
@@ -38,6 +39,18 @@ export class CompanyRoleRepository extends CompanyRoleAbstract {
    * @returns 处理后的数据
    */
   protected handleParsedData<T extends Prisma.CompanyRoleCreateInput | Prisma.CompanyRoleUpdateInput>(input: T): T {
+    // 移除set属性
+    Object.keys(input).forEach((key) => {
+      const value = input[key];
+      if (value.set) input[key] = value.set;
+    });
+
+    // 转换code
+    if (input.code && typeof input.code === 'string') {
+      input.code = voca.snakeCase(input.code).toUpperCase();
+    }
+
+    // 移除无效权限
     if (input.permissions && Array.isArray(input.permissions)) {
       const checked = Permissions.reduce((acc, p) => {
         if (!p.clients.length || p.clients.includes(Client.Company)) acc[p.name] = true;

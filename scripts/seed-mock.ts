@@ -8,10 +8,10 @@ const main = async () => {
   // 创建管理员角色
   const adminRoleRepo = new AdminRoleRepository(prisma);
   const adminRole = await adminRoleRepo.save(
-    { code: 'Admin' },
+    { code: 'ADMIN' },
     {
       name: 'Admin',
-      code: 'Admin',
+      code: 'ADMIN',
       permissions: [],
       description: '管理员角色',
     }
@@ -43,7 +43,7 @@ const main = async () => {
 
   // 创建成员
   const memberRepo = new MemberRepository(prisma);
-  Array.from({ length: 10 }).map(() => {
+  Array.from({ length: 20 }).map(() => {
     const email = `member_${faker.internet.username()}@email.com`;
     memberRepo
       .save(
@@ -61,7 +61,7 @@ const main = async () => {
 
   // 创建企业
   const companyRepo = new CompanyRepository(prisma);
-  Array.from({ length: 5 }).map(() => {
+  Array.from({ length: 10 }).map(() => {
     const code = faker.string.uuid();
     const name = faker.company.name();
     companyRepo
