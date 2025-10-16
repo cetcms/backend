@@ -16,6 +16,10 @@ import { MediaService } from './media.service';
 export class MediaResolver {
   constructor(private readonly service: MediaService) {}
 
+  /**
+   * 根据 ID 列出文件
+   * @param fileIds
+   */
   @Query(() => [MediaFile])
   listMediaFiles(@Args('fileIds', { type: () => [String] }) fileIds: string[]) {
     return this.service.listMediaFiles(fileIds);

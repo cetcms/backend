@@ -90,6 +90,12 @@ enum Target {
   Member
 }
 
+enum Client {
+  Admin
+  Member
+  Company
+}
+
 enum Owner {
   Admin
   Member
@@ -145,25 +151,29 @@ model Auth {
   updatedAt DateTime @updatedAt @map("updated_at")
   expiredAt DateTime @default(now()) @map("expired_at")
 
+  target Target
+  client Client
+
   /// @DtoRelationIncludeId()
-  adminId     String?  @map("admin_id")
+  adminId   String?  @map("admin_id")
   /// @DtoEntityHidden()
-  admin       Admin?   @relation(fields: [adminId], references: [id])
+  admin     Admin?   @relation(fields: [adminId], references: [id])
   /// @DtoRelationIncludeId()
-  memberId    String?  @map("member_id")
+  memberId  String?  @map("member_id")
   /// @DtoEntityHidden()
-  member      Member?  @relation(fields: [memberId], references: [id])
+  member    Member?  @relation(fields: [memberId], references: [id])
   /// @DtoRelationIncludeId()
-  companyId   String?  @map("company_id")
+  companyId String?  @map("company_id")
   /// @DtoEntityHidden()
-  company     Company? @relation(fields: [companyId], references: [id])
+  company   Company? @relation(fields: [companyId], references: [id])
+
   /// @HideField()
   token       String
   /// @HideField()
   fingerprint String?
-  device      Json?
-  location    Json?
-  target      Target
+
+  device   Json?
+  location Json?
 
   @@map("auths")
 }
@@ -530,6 +540,7 @@ model RequestLog {
   fingerprint String?
 
   target Target?
+  client Client?
 
   /// @DtoRelationIncludeId()
   memberId  String?  @map("member_id")

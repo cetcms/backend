@@ -98,6 +98,7 @@ export class LoggingInterceptor implements NestInterceptor {
       adminId: auth?.adminId || null, // 管理员ID
       companyId: auth?.companyId || null, // 公司ID
       message: 'OK',
+      client: auth?.client || null,
       recordAt: new Date(), // 记录时间
       createdAt: new Date(), // 创建时间
       updatedAt: new Date(), // 更新时间

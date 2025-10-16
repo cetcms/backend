@@ -14,6 +14,7 @@
  * - iat?: number - 签发时间戳
  * - jti?: string - JWT ID（Token ID）
  * - cid?: string - 公司 ID
+ * - clt?: string - 客户端 Client
  */
 export interface JwtPayload {
   [key: string]: any;
@@ -25,4 +26,5 @@ export interface JwtPayload {
   iat?: number | undefined;
   jti?: string | undefined;
   cid?: string | undefined;
+  clt?: string | undefined;
 }

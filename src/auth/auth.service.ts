@@ -3,7 +3,7 @@ import { isEmail } from 'class-validator';
 import { TokenFactory } from 'src/auth/factories';
 import { Login, LoginInput, LoginMeta } from 'src/auth/graphql';
 import { DateHandler } from 'src/common/handlers';
-import { Company, FindManyCompanyArgs } from 'src/generated/graphql';
+import { Client, Company, FindManyCompanyArgs } from 'src/generated/graphql';
 import { Admin } from 'src/generated/graphql/admin';
 import { Auth } from 'src/generated/graphql/auth';
 import { Member } from 'src/generated/graphql/member';
@@ -34,11 +34,14 @@ export class AuthService {
    * @private
    */
   private async targetLogin(target: Target, targetId: string, meta: LoginMeta, companyId?: string) {
+    // 登录客户端
+    const client = companyId ? Client.Company : target === Target.Admin ? Client.Admin : Client.Member;
     // 使用令牌工厂创建认证令牌相关信息
     const { tokenId, token, expiredAt } = this.tokenFactory.create({
       target: target,
       targetId: targetId,
       companyId: companyId,
+      client: client,
     });
     // 创建认证记录
     const auth = await this.auth.createByTarget(targetId, companyId || null, {
@@ -49,6 +52,7 @@ export class AuthService {
       expiredAt,
       target,
       token,
+      client,
     });
     // 返回登录结果
     return {

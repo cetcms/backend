@@ -5,11 +5,11 @@ import { PaginationResult } from 'src/common/dto';
 import { PermissionGroupHandler } from 'src/common/handlers';
 import { SystemContract } from 'src/contracts';
 import {
+  Client,
   CompanyRoleWhereUniqueInput,
   CreateOneCompanyRoleArgs,
   FindManyCompanyRoleArgs,
   FindUniqueCompanyRoleArgs,
-  Target,
   UpdateOneCompanyRoleArgs,
 } from 'src/generated/graphql';
 import { Permissions } from 'src/generated/permissions';
@@ -66,11 +66,11 @@ export class CompanyRoleService {
     const editRole = isEdit ? await this.findOneByUnique({ where: where as FindUniqueCompanyRoleArgs['where'] }) : null;
 
     Permissions.forEach((p) => {
-      const allow = !p.targets.length || p.targets.includes(Target.Member);
+      const allow = !p.clients.length || p.clients.includes(Client.Company);
       const resource = p.name;
       const isSelfResource = currentPermissions.includes(resource);
       const isEditResource = Boolean(editRole && editRole.permissions?.includes(resource));
-      p.targets = [];
+      p.clients = [];
       // 过滤掉不允许的项
       if (!allow) return;
       // 角色可操作的项

@@ -26,7 +26,6 @@ import {
   AuthWhereInputObjectZodSchema,
   AuthWhereUniqueInputObjectZodSchema,
 } from 'src/generated/schemas';
-import { z } from 'zod';
 
 /**
  * 认证数据访问抽象类
@@ -175,12 +174,9 @@ export abstract class AuthAbstract {
    * @private
    */
   private parseOrderBy(orderBy: AuthOrderByWithRelationInput | AuthOrderByWithRelationInput[]) {
-    if (Array.isArray(orderBy)) {
-      return z
-        .array(AuthOrderByWithRelationInputObjectZodSchema)
-        .parse(orderBy) as unknown as Prisma.AuthOrderByWithRelationInput[];
-    }
-    return AuthOrderByWithRelationInputObjectZodSchema.parse(orderBy) as unknown as Prisma.AuthOrderByWithRelationInput;
+    return AuthOrderByWithRelationInputObjectZodSchema.parse(
+      Array.isArray(orderBy) ? orderBy : [orderBy]
+    ) as unknown as Prisma.AuthOrderByWithRelationInput[];
   }
 
   /**
@@ -281,7 +277,7 @@ export abstract class AuthAbstract {
     return this.db.auth.create({
       ...(Object.keys(include).length > 0 && { include }),
       ...(Object.keys(select).length > 0 && { select }),
-      data: this.parseCreateData(data),
+      data: this.handleParsedData(this.parseCreateData(data)),
     });
   }
 
@@ -298,8 +294,8 @@ export abstract class AuthAbstract {
     return this.db.auth.update({
       ...(Object.keys(include).length > 0 && { include }),
       ...(Object.keys(select).length > 0 && { select }),
+      data: this.handleParsedData(this.parseUpdateData(data)),
       where: this.parseUniqueWhere(where),
-      data: this.parseUpdateData(data),
     });
   }
 

@@ -4,7 +4,7 @@ import { CurrentAuthCompany, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
-  Target,
+  Client,
   Company,
   CreateOneCompanyArgs,
   FindManyCompanyArgs,
@@ -30,7 +30,7 @@ export class CompanyResolver {
    * 查询当前企业信息
    * @param company
    */
-  @UsePermission([Target.Admin, Target.Member])
+  @UsePermission([Client.Admin, Client.Company])
   @Query(() => Company)
   findSelfCompany(@CurrentAuthCompany() company: Company): Company {
     return company;
@@ -40,7 +40,7 @@ export class CompanyResolver {
    * 查询单个企业
    * @param args
    */
-  @UsePermission()
+  @UsePermission([Client.Admin, Client.Company])
   @Query(() => Company)
   findOneCompany(@Args() args: FindUniqueCompanyArgs): Promise<Company> {
     return this.service.findOneByUnique(args);
@@ -60,7 +60,7 @@ export class CompanyResolver {
    * 新增企业
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => Company)
   createOneCompany(@Args() args: CreateOneCompanyArgs): Promise<Company> {
     return this.service.createOne(args);
@@ -71,7 +71,7 @@ export class CompanyResolver {
    * @param company
    * @param data
    */
-  @UsePermission([Target.Admin, Target.Member])
+  @UsePermission([Client.Company])
   @Mutation(() => Company)
   updateSelfCompany(@CurrentAuthCompany() company: Company, @Args('data') data: CompanyUpdateInput) {
     return this.service.updateOne({ where: { id: company.id }, data });
@@ -81,7 +81,7 @@ export class CompanyResolver {
    * 修改企业
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => Company)
   updateOneCompany(@Args() args: UpdateOneCompanyArgs): Promise<Company> {
     return this.service.updateOne(args);

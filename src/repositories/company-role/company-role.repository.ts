@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
+  Client,
   CompanyRoleCreateInput,
   CompanyRoleUpdateInput,
   FindManyCompanyRoleArgs,
-  Target,
   UpsertOneCompanyRoleArgs,
 } from 'src/generated/graphql';
 import { Permissions } from 'src/generated/permissions';
@@ -40,7 +40,7 @@ export class CompanyRoleRepository extends CompanyRoleAbstract {
   protected handleParsedData<T extends Prisma.CompanyRoleCreateInput | Prisma.CompanyRoleUpdateInput>(input: T): T {
     if (input.permissions && Array.isArray(input.permissions)) {
       const checked = Permissions.reduce((acc, p) => {
-        if (!p.targets.length || p.targets.includes(Target.Member)) acc[p.name] = true;
+        if (!p.clients.length || p.clients.includes(Client.Company)) acc[p.name] = true;
         return acc;
       }, {});
       input.permissions = input.permissions.filter((p) => checked[p]);

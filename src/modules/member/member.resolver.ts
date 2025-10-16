@@ -1,16 +1,16 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CurrentAuthMember, RequireCompany, UsePermission } from 'src/auth/decorators';
+import { CurrentAuthMember, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
-  Member,
-  Target,
+  Client,
   CreateOneMemberArgs,
   FindManyMemberArgs,
   FindUniqueMemberArgs,
-  UpdateOneMemberArgs,
+  Member,
   MemberUpdateInput,
+  UpdateOneMemberArgs,
 } from 'src/generated/graphql';
 
 import { MemberService } from './member.service';
@@ -30,7 +30,7 @@ export class MemberResolver {
    * 查询当前成员信息
    * @param member
    */
-  @UsePermission([Target.Member])
+  @UsePermission([Client.Member])
   @Query(() => Member)
   findSelfMember(@CurrentAuthMember() member: Member): Member {
     return member;
@@ -50,8 +50,7 @@ export class MemberResolver {
    * 分页查询成员
    * @param args
    */
-  @UsePermission()
-  @RequireCompany([Target.Member])
+  @UsePermission([Client.Admin, Client.Company])
   @Query(() => PaginatedMember)
   paginateMembers(@Args() args: FindManyMemberArgs): Promise<IPaginated<Member>> {
     return this.service.paginate(args);
@@ -61,7 +60,7 @@ export class MemberResolver {
    * 新增成员
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => Member)
   createOneMember(@Args() args: CreateOneMemberArgs): Promise<Member> {
     return this.service.createOne(args);
@@ -72,7 +71,7 @@ export class MemberResolver {
    * @param member
    * @param data
    */
-  @UsePermission([Target.Member])
+  @UsePermission([Client.Member])
   @Mutation(() => Member)
   updateSelfMember(@CurrentAuthMember() member: Member, @Args('data') data: MemberUpdateInput) {
     return this.service.updateOne({ where: { id: member.id }, data });
@@ -82,7 +81,7 @@ export class MemberResolver {
    * 修改成员
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => Member)
   updateOneMember(@Args() args: UpdateOneMemberArgs): Promise<Member> {
     return this.service.updateOne(args);

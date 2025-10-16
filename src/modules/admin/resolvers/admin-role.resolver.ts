@@ -6,7 +6,7 @@ import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
   AdminRole,
-  Target,
+  Client,
   CreateOneAdminRoleArgs,
   FindManyAdminRoleArgs,
   FindUniqueAdminRoleArgs,
@@ -31,7 +31,7 @@ export class AdminRoleResolver {
    * 查询单个管理员角色
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Query(() => AdminRole)
   findOneAdminRole(@Args() args: FindUniqueAdminRoleArgs): Promise<AdminRole> {
     return this.service.findOneByUnique(args);
@@ -41,7 +41,7 @@ export class AdminRoleResolver {
    * 分页查询管理员角色
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Query(() => PaginatedAdminRole)
   paginateAdminRoles(@Args() args: FindManyAdminRoleArgs): Promise<IPaginated<AdminRole>> {
     return this.service.paginate(args);
@@ -51,7 +51,7 @@ export class AdminRoleResolver {
    * 新增管理员角色
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => AdminRole)
   createOneAdminRole(@Args() args: CreateOneAdminRoleArgs): Promise<AdminRole> {
     return this.service.createOne(args);
@@ -61,7 +61,7 @@ export class AdminRoleResolver {
    * 修改管理员角色
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => AdminRole)
   updateOneAdminRole(@Args() args: UpdateOneAdminRoleArgs): Promise<AdminRole> {
     return this.service.updateOne(args);
@@ -70,7 +70,7 @@ export class AdminRoleResolver {
   /**
    * 获取企业角色权限组合
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Query(() => PermissionGroup)
   listAdminRolePermission(
     @CurrentAuth() auth: CurrentAuth,

@@ -4,7 +4,7 @@ import { UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
-  Target,
+  Client,
   CompanyMember,
   CreateOneCompanyMemberArgs,
   FindManyCompanyMemberArgs,
@@ -29,7 +29,7 @@ export class CompanyMemberResolver {
    * 查询单个企业成员关联
    * @param args
    */
-  @UsePermission([Target.Admin, Target.Member])
+  @UsePermission([Client.Admin, Client.Company])
   @Query(() => CompanyMember)
   findOneCompanyMember(@Args() args: FindUniqueCompanyMemberArgs): Promise<CompanyMember> {
     return this.service.findOneByUnique(args);
@@ -39,7 +39,7 @@ export class CompanyMemberResolver {
    * 分页查询企业成员关联
    * @param args
    */
-  @UsePermission([Target.Admin, Target.Member])
+  @UsePermission([Client.Admin, Client.Company])
   @Query(() => PaginatedCompanyMember)
   paginateCompanyMembers(@Args() args: FindManyCompanyMemberArgs): Promise<IPaginated<CompanyMember>> {
     return this.service.paginate(args);
@@ -49,7 +49,7 @@ export class CompanyMemberResolver {
    * 新增企业成员关联
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => CompanyMember)
   createOneCompanyMember(@Args() args: CreateOneCompanyMemberArgs): Promise<CompanyMember> {
     return this.service.createOne(args);
@@ -59,7 +59,7 @@ export class CompanyMemberResolver {
    * 修改企业成员关联
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => CompanyMember)
   updateOneCompanyMember(@Args() args: UpdateOneCompanyMemberArgs): Promise<CompanyMember> {
     return this.service.updateOne(args);

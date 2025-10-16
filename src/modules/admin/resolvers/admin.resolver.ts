@@ -5,7 +5,7 @@ import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';
 import {
   Admin,
-  Target,
+  Client,
   CreateOneAdminArgs,
   FindManyAdminArgs,
   FindUniqueAdminArgs,
@@ -30,7 +30,7 @@ export class AdminResolver {
    * 查询当前管理员信息
    * @param admin
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Query(() => Admin)
   findSelfAdmin(@CurrentAuthAdmin() admin: Admin): Admin {
     return admin;
@@ -40,7 +40,7 @@ export class AdminResolver {
    * 查询单个管理员
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Query(() => Admin)
   findOneAdmin(@Args() args: FindUniqueAdminArgs): Promise<Admin> {
     return this.service.findOneByUnique(args);
@@ -50,7 +50,7 @@ export class AdminResolver {
    * 分页查询管理员
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Query(() => PaginatedAdmin)
   paginateAdmins(@Args() args: FindManyAdminArgs): Promise<IPaginated<Admin>> {
     return this.service.paginate(args);
@@ -60,7 +60,7 @@ export class AdminResolver {
    * 新增管理员
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => Admin)
   createOneAdmin(@Args() args: CreateOneAdminArgs): Promise<Admin> {
     return this.service.createOne(args);
@@ -71,7 +71,7 @@ export class AdminResolver {
    * @param admin
    * @param data
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => Admin)
   updateSelfAdmin(@CurrentAuthAdmin() admin: Admin, @Args('data') data: AdminUpdateInput) {
     return this.service.updateOne({ where: { id: admin.id }, data });
@@ -81,7 +81,7 @@ export class AdminResolver {
    * 修改管理员
    * @param args
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Mutation(() => Admin)
   updateOneAdmin(@Args() args: UpdateOneAdminArgs): Promise<Admin> {
     return this.service.updateOne(args);
@@ -91,7 +91,7 @@ export class AdminResolver {
    * 根据ID查询管理员
    * @param id
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Query(() => Admin)
   findAdminById(@Args('id') id: string): Promise<Admin> {
     return this.service.findOneById(id);
@@ -101,7 +101,7 @@ export class AdminResolver {
    * 根据邮箱查询管理员
    * @param email
    */
-  @UsePermission([Target.Admin])
+  @UsePermission([Client.Admin])
   @Query(() => Admin)
   findAdminByEmail(@Args('email') email: string): Promise<Admin> {
     return this.service.findOneByEmail(email);

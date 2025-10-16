@@ -1,5 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Target } from 'src/generated/graphql/prisma';
+import { Client } from 'src/generated/graphql/prisma';
 import { PermissionAlias } from 'src/generated/permissions';
 
 @ObjectType()
@@ -22,8 +22,8 @@ export class PermissionItem {
   @Field(() => String)
   actionLabel: string;
 
-  @Field(() => [Target])
-  targets: Array<Target>;
+  @Field(() => [Client])
+  clients: Array<Client>;
 }
 
 @ObjectType()

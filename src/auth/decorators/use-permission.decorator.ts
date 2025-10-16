@@ -9,7 +9,7 @@
  *   3) 使用 ClassName:MethodName 组装资源标识，并在权限列表中查找是否具备该权限。
  *
  * 参数说明：
- * - targets?: Target[] = []
+ * - clients?: Client[] = []
  *   - 类型：Target 数组（可选），来自 GraphQL 生成的枚举，取值如 Target.Admin、Target.Member。
  *   - 用途：限制允许访问的身份目标；为空数组表示不限定目标，仅进行登录与权限点校验。
  *
@@ -19,7 +19,7 @@
  *
  * 使用示例：
  * - 限制仅管理员访问：
- *   @UsePermission([Target.Admin])
+ *   @UsePermission([Client.Admin])
  *   someAdminQuery() {}
  *
  * - 不限制目标，仅按权限点校验：
@@ -32,9 +32,9 @@
  */
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
 import { PermissionGuard } from 'src/auth/guards';
-import { Target } from 'src/generated/graphql/prisma';
+import { Client } from 'src/generated/graphql';
 
 export const USE_PERMISSION_KEY = 'usePermission';
-export const UsePermission = (targets: Target[] = []) => {
-  return applyDecorators(SetMetadata(USE_PERMISSION_KEY, targets), UseGuards(PermissionGuard));
+export const UsePermission = (clients: Client[] = []) => {
+  return applyDecorators(SetMetadata(USE_PERMISSION_KEY, clients), UseGuards(PermissionGuard));
 };

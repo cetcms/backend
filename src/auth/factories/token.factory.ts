@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DateHandler, TimeHandler } from 'src/common/handlers';
 import { ConfigService } from 'src/config';
-import { Target } from 'src/generated/graphql/prisma';
+import { Client, Target } from 'src/generated/graphql';
 import { v7 as uuid } from 'uuid';
 
 import { JwtPayload, TokenPayload } from '../interfaces';
@@ -137,6 +137,7 @@ export class TokenFactory {
       target: payload.aud,
       targetId: payload.sub,
       companyId: payload.cid,
+      client: payload.clt,
     };
   }
 
@@ -158,6 +159,7 @@ export class TokenFactory {
       target: String(jwtPayload.aud) as Target,
       targetId: String(jwtPayload.sub),
       companyId: jwtPayload.cid,
+      client: String(jwtPayload.clt) as Client,
     };
   }
 }

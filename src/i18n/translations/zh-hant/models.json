@@ -18,11 +18,15 @@
     "location": "位置",
     "target": "目標",
     "_enums": {
-      "target": "Target"
+      "target": "Target",
+      "owner": "Owner",
+      "client": "Client"
     },
     "admin": "管理員",
     "member": "用戶",
-    "company": "公司"
+    "company": "公司",
+    "owner": "Auth.owner",
+    "client": "Auth.client"
   },
   "Admin": {
     "id": "ID",
@@ -226,11 +230,15 @@
     "companyId": "公司ID",
     "_enums": {
       "method": "RequestMethod",
-      "target": "Target"
+      "target": "Target",
+      "owner": "Owner",
+      "client": "Client"
     },
     "member": "用戶",
     "admin": "管理員",
-    "company": "公司"
+    "company": "公司",
+    "owner": "RequestLog.owner",
+    "client": "RequestLog.client"
   },
   "MediaFolder": {
     "id": "ID",
@@ -379,6 +387,11 @@
     "Owner": {
       "Member": "Member",
       "Admin": "Admin",
+      "Company": "Company"
+    },
+    "Client": {
+      "Admin": "Admin",
+      "Member": "Member",
       "Company": "Company"
     }
   },

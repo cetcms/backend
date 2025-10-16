@@ -1,4 +1,4 @@
-import { Target } from 'src/generated/graphql/prisma';
+import { Client, Target } from 'src/generated/graphql';
 
 /**
  * Token 载荷接口
@@ -16,6 +16,7 @@ import { Target } from 'src/generated/graphql/prisma';
 export interface TokenPayload {
   tokenId?: string;
   target: Target;
+  client: Client;
   targetId: string;
   companyId?: string;
 }

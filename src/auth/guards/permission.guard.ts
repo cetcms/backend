@@ -4,7 +4,7 @@
  * 功能描述：
  * - 结合 @UsePermission 装饰器提供的元数据进行权限校验
  * - 校验成员身份和权限点
- * - 支持目标类型限制
+ * - 支持客户端类型限制
  *
  * 核心功能：
  * - canActivate: 权限检查入口
@@ -12,14 +12,14 @@
  *
  * 校验逻辑：
  * 1. 是否已登录（存在 member 或 admin）
- * 2. 若声明了 targets，当前会话的 auth.target 必须在 targets 集合内
+ * 2. 若声明了 clients，当前会话的 auth.client 必须在 clients 集合内
  * 3. 以 `${ClassName}.${methodName}` 生成权限点，要求出现在权限字符串数组中
  */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CurrentAuth, USE_PERMISSION_KEY } from 'src/auth/decorators';
 import { ContextHandler, PermissionAliasHandler } from 'src/common/handlers';
-import { Target } from 'src/generated/graphql';
+import { Client } from 'src/generated/graphql';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
@@ -61,7 +61,7 @@ export class PermissionGuard implements CanActivate {
    * - boolean - 是否具有权限
    */
   private checkPermission(context: ExecutionContext): boolean {
-    const targets = this.reflector.getAllAndOverride<Target[]>(USE_PERMISSION_KEY, [
+    const clients = this.reflector.getAllAndOverride<Client[]>(USE_PERMISSION_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -77,7 +77,8 @@ export class PermissionGuard implements CanActivate {
       return false;
     }
 
-    if (targets?.length && !targets.includes(auth.target as Target)) {
+    // Check if member has the required clients
+    if (clients?.length && !clients.includes(auth.client as Client)) {
       return false;
     }
 

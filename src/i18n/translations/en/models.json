@@ -18,11 +18,15 @@
     "location": "Location",
     "target": "Target",
     "_enums": {
-      "target": "Target"
+      "target": "Target",
+      "owner": "Owner",
+      "client": "Client"
     },
     "admin": "Admin",
     "member": "Member",
-    "company": "Company"
+    "company": "Company",
+    "owner": "Auth.owner",
+    "client": "Auth.client"
   },
   "Admin": {
     "id": "ID",
@@ -226,11 +230,15 @@
     "companyId": "Company ID",
     "_enums": {
       "method": "RequestMethod",
-      "target": "Target"
+      "target": "Target",
+      "owner": "Owner",
+      "client": "Client"
     },
     "member": "Member",
     "admin": "Admin",
-    "company": "Company"
+    "company": "Company",
+    "owner": "RequestLog.owner",
+    "client": "RequestLog.client"
   },
   "MediaFolder": {
     "id": "ID",
@@ -379,6 +387,11 @@
     "Owner": {
       "Member": "Member",
       "Admin": "Admin",
+      "Company": "Company"
+    },
+    "Client": {
+      "Admin": "Admin",
+      "Member": "Member",
       "Company": "Company"
     }
   },

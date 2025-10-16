@@ -6,7 +6,7 @@ import { Logger } from '@nestjs/common';
 import { get, set } from 'radash';
 import { PermissionItem } from 'src/auth/graphql';
 import { PermissionAliasHandler } from 'src/common/handlers';
-import { Target } from 'src/generated/graphql/prisma';
+import { Client } from 'src/generated/graphql';
 import { Project, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
 import voca from 'voca';
 
@@ -44,12 +44,12 @@ const main = async () => {
         // 查找 @UsePermission 装饰器
         const permissionDecorator = method.getDecorator('UsePermission');
         if (permissionDecorator) {
-          let attrs: Target[] = [];
+          let attrs: Client[] = [];
           const args = permissionDecorator.getArguments();
           const arrayArg = args[0]?.asKind(SyntaxKind.ArrayLiteralExpression);
           if (arrayArg) {
             attrs = arrayArg.getElements().map((el) => {
-              return el.getText() as Target;
+              return el.getText() as Client;
             });
           }
 
@@ -75,7 +75,7 @@ const main = async () => {
             group: classGroup,
             action: methodName,
             actionLabel: methodComment,
-            targets: attrs,
+            clients: attrs,
           });
         }
       });
@@ -103,7 +103,7 @@ const main = async () => {
   });
   sourceFile.addImportDeclaration({
     moduleSpecifier: 'src/generated/graphql',
-    namedImports: ['Target'],
+    namedImports: ['Client'],
   });
 
   // 创建权限常量声明，使用 Writer 以生成枚举引用而不是字符串
@@ -124,11 +124,11 @@ const main = async () => {
             writer.write(`    group: ${JSON.stringify(p.group)},`).newLine();
             writer.write(`    action: ${JSON.stringify(p.action)},`).newLine();
             writer.write(`    actionLabel: ${JSON.stringify(p.actionLabel)},`).newLine();
-            writer.write('    targets: [');
-            p.targets.forEach((t, i) => {
-              // t 是诸如 "Target.Admin" 的代码片段文本
+            writer.write('    clients: [');
+            p.clients.forEach((t, i) => {
+              // t 是诸如 "Client.Admin" 的代码片段文本
               writer.write(String(t));
-              if (i < p.targets.length - 1) writer.write(', ');
+              if (i < p.clients.length - 1) writer.write(', ');
             });
             writer.write('],').newLine();
             writer.write('  }');

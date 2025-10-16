@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
-import { FindManyAdminRoleArgs, Target, UpsertOneAdminRoleArgs } from 'src/generated/graphql';
+import { Client, FindManyAdminRoleArgs, UpsertOneAdminRoleArgs } from 'src/generated/graphql';
 import { Permissions } from 'src/generated/permissions';
 
 import { AdminRoleAbstract } from './admin-role.abstract';
@@ -34,7 +34,7 @@ export class AdminRoleRepository extends AdminRoleAbstract {
   protected handleParsedData<T extends Prisma.AdminRoleCreateInput | Prisma.AdminRoleUpdateInput>(input: T): T {
     if (input.permissions && Array.isArray(input.permissions)) {
       const checked = Permissions.reduce((acc, p) => {
-        if (!p.targets.length || p.targets.includes(Target.Admin)) acc[p.name] = true;
+        if (!p.clients.length || p.clients.includes(Client.Admin)) acc[p.name] = true;
         return acc;
       }, {});
       input.permissions = input.permissions.filter((p) => checked[p]);

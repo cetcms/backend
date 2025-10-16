@@ -34,11 +34,9 @@ import { AdminRole, CompanyRole } from 'src/generated/graphql';
 import { Auth } from 'src/generated/graphql/auth';
 
 export interface CurrentAuth extends Auth {
-  permissions?: Array<string>;
   companyRole?: CompanyRole;
   adminRole?: AdminRole;
-  companyRolePermissions?: Array<string>;
-  adminRolePermissions?: Array<string>;
+  permissions?: Array<string>;
 }
 
 export const CurrentAuth = createParamDecorator((data: any, ctx: ExecutionContext) => {
