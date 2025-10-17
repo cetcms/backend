@@ -33,9 +33,20 @@ export class CompanyRoleService {
     throw new NotFoundException('企业角色不存在');
   }
 
-  async paginate(args: FindManyCompanyRoleArgs) {
+  async paginate(args: FindManyCompanyRoleArgs, auth: CurrentAuth) {
     if (!args.take) args.take = 10;
     if (!args.skip) args.skip = 0;
+    if (auth.companyId) {
+      args.where = {
+        OR: [
+          { companyId: null as any },
+          {
+            ...args.where,
+            companyId: { equals: auth.companyId },
+          },
+        ],
+      };
+    }
     const [companyRoles, totalCount] = await this.companyRole.findManyAndCount(args);
     return PaginationResult(companyRoles, args.take, args.skip, totalCount);
   }

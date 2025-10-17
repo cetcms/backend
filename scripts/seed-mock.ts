@@ -1,6 +1,13 @@
 import { faker } from '@faker-js/faker/locale/zh_CN';
 import { DatabaseService } from 'src/database';
-import { AdminRepository, AdminRoleRepository, CompanyRepository, MemberRepository } from 'src/repositories';
+import {
+  AdminRepository,
+  AdminRoleRepository,
+  CompanyRepository,
+  CompanyRoleRepository,
+  MemberRepository,
+} from 'src/repositories';
+import voca from 'voca';
 
 const main = async () => {
   const prisma = new DatabaseService();
@@ -61,6 +68,7 @@ const main = async () => {
 
   // 创建企业
   const companyRepo = new CompanyRepository(prisma);
+  const companyRoleRepo = new CompanyRoleRepository(prisma);
   Array.from({ length: 10 }).map(() => {
     const code = faker.string.uuid();
     const name = faker.company.name();
@@ -76,6 +84,33 @@ const main = async () => {
       )
       .then((company) => {
         console.log('Company saved:', company);
+        Array.from({ length: 3 }).map(() => {
+          const code = voca.snakeCase(faker.person.jobArea()).toUpperCase();
+          // 创建企业角色
+          companyRoleRepo
+            .save(
+              {
+                companyRoleIdx: {
+                  code,
+                  companyId: company.id,
+                },
+              },
+              {
+                code,
+                name: faker.person.jobType(),
+                description: faker.person.jobTitle(),
+                company: {
+                  connect: {
+                    id: company.id,
+                  },
+                },
+                permissions: [],
+              }
+            )
+            .then((companyRole) => {
+              console.log('Company role saved:', companyRole);
+            });
+        });
       });
   });
 };

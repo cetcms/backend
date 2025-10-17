@@ -26,6 +26,7 @@
     "script:scan-permissions": "tsx scripts/scan-permissions.ts",
     "script:push-permissions-to-role": "tsx scripts/push-permissions-to-role.ts",
     "script:gen-i18n-translations": "tsx scripts/gen-i18n-translations.ts",
+    "script:seed-mock": "tsx scripts/seed-mock.ts",
     "generate": "prisma generate",
     "prebuild": "pnpm generate",
     "predev": "pnpm generate",

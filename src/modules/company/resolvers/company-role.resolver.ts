@@ -39,12 +39,16 @@ export class CompanyRoleResolver {
 
   /**
    * 分页查询企业角色
+   * @param auth
    * @param args
    */
   @UsePermission([Client.Admin, Client.Company])
   @Query(() => PaginatedCompanyRole)
-  paginateCompanyRoles(@Args() args: FindManyCompanyRoleArgs): Promise<IPaginated<CompanyRole>> {
-    return this.service.paginate(args);
+  paginateCompanyRoles(
+    @CurrentAuth() auth: CurrentAuth,
+    @Args() args: FindManyCompanyRoleArgs
+  ): Promise<IPaginated<CompanyRole>> {
+    return this.service.paginate(args, auth);
   }
 
   /**
