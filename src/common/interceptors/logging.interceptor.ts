@@ -28,7 +28,7 @@ export class LoggingInterceptor implements NestInterceptor {
    */
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     // 排除心跳检查方法的记录
-    if (context.getHandler().name === 'healthCheck') {
+    if (['healthCheck', 'listSelfNotifications'].includes(context.getHandler().name)) {
       return next.handle();
     }
 

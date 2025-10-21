@@ -110,6 +110,7 @@ const main = async () => {
       company: { connect: { id: company.id } },
       role: { connect: { id: companyRole.id } },
       member: { connect: { id: member.id } },
+      invitePassed: true,
     }
   );
   console.log('Company member saved:', companyMember);
@@ -118,7 +119,7 @@ const main = async () => {
   const notification = await notificationRepo.create({
     sender: NotificationTarget.System,
     privacy: NotificationPrivacy.Public,
-    receiver: [NotificationTarget.Admin, NotificationTarget.Company, NotificationTarget.Member],
+    receivers: [NotificationTarget.Admin, NotificationTarget.Company, NotificationTarget.Member],
     content: {
       [I18nEnum.En]: 'Welcome to use the system',
       [I18nEnum.Zh]: '欢迎使用本系统',

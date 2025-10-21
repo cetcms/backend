@@ -14,7 +14,8 @@
     "CompanyMemberResolver": "企業ユーザー管理",
     "CompanyResolver": "企業管理",
     "NotificationRecipientResolver": "メッセージ通知受信",
-    "NotificationResolver": "メッセージ通知管理"
+    "NotificationResolver": "メッセージ通知管理",
+    "NotificationCompanyResolver": "消息通知管理"
   },
   "action": {
     "MemberResolver": {
@@ -23,7 +24,8 @@
       "paginateMembers": "ユーザーをページ分割して検索",
       "createOneMember": "ユーザーを追加",
       "updateSelfMember": "現在のユーザー情報を変更",
-      "updateOneMember": "ユーザーを変更"
+      "updateOneMember": "ユーザーを変更",
+      "listSearchMembers": "搜索成员"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "単一管理者企業関連を検索",
@@ -54,13 +56,15 @@
       "paginateCompanyRoles": "企業ロールをページ分割して検索",
       "createOneCompanyRole": "企業ロールを追加",
       "updateOneCompanyRole": "企業ロールを変更",
-      "listCompanyRolePermission": "企業ロール権限リストを取得"
+      "listCompanyRolePermission": "企業ロール権限リストを取得",
+      "listCompanyRole": "列出企业角色"
     },
     "CompanyMemberResolver": {
       "findOneCompanyMember": "単一企業ユーザー関連を検索",
       "paginateCompanyMembers": "企業ユーザー関連をページ分割して検索",
       "createOneCompanyMember": "企業ユーザー関連を追加",
-      "updateOneCompanyMember": "企業ユーザー関連を変更"
+      "updateOneCompanyMember": "企業ユーザー関連を変更",
+      "inviteMemberToCompany": "邀请用户加入到企业"
     },
     "CompanyResolver": {
       "findSelfCompany": "現在の企業情報を検索",
@@ -75,7 +79,11 @@
     },
     "NotificationResolver": {
       "paginateNotifications": "メッセージ通知をページ分割して検索",
-      "listSelfNotifications": "現在のユーザーのメッセージ通知を取得"
+      "listSelfNotifications": "現在のユーザーのメッセージ通知を取得",
+      "inviteMemberToCompany": "通知用户加入到企业"
+    },
+    "NotificationCompanyResolver": {
+      "inviteMemberToCompany": "通知用户加入到企业"
     }
   }
 }

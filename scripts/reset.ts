@@ -12,6 +12,7 @@ import { spawn } from 'child_process';
 
 const commands = [
   'pnpm db:push --force-reset',
+  'pnpm script:scan-permissions',
   'pnpm db:seed',
   'pnpm script:push-permissions-to-role',
   'pnpm script:push-permissions-to-role --type company --role OWNER',

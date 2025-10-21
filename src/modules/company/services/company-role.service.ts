@@ -47,12 +47,23 @@ export class CompanyRoleService {
         ],
       };
     }
-    const [companyRoles, totalCount] = await this.companyRole.findManyAndCount(args);
+    const [companyRoles, totalCount] = await this.companyRole
+      .setInclude({
+        company: true,
+      })
+      .findManyAndCount(args);
     return PaginationResult(companyRoles, args.take, args.skip, totalCount);
   }
 
-  createOne(args: CreateOneCompanyRoleArgs) {
+  createOne(args: CreateOneCompanyRoleArgs, auth: CurrentAuth) {
     const { data } = args;
+    if (auth.companyId) {
+      data.company = {
+        connect: {
+          id: auth.companyId,
+        },
+      };
+    }
     return this.companyRole.create(data);
   }
 

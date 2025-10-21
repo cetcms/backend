@@ -14,7 +14,8 @@
     "CompanyMemberResolver": "Company Member Management",
     "CompanyResolver": "Company Management",
     "NotificationRecipientResolver": "Notification Recipient Management",
-    "NotificationResolver": "Notification Management"
+    "NotificationResolver": "Notification Management",
+    "NotificationCompanyResolver": "消息通知管理"
   },
   "action": {
     "MemberResolver": {
@@ -23,7 +24,8 @@
       "paginateMembers": "Paginate Members",
       "createOneMember": "Create Member",
       "updateSelfMember": "Update Current Member Info",
-      "updateOneMember": "Update Member"
+      "updateOneMember": "Update Member",
+      "listSearchMembers": "搜索成员"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "Find One Admin Company",
@@ -54,13 +56,15 @@
       "paginateCompanyRoles": "Paginate Company Roles",
       "createOneCompanyRole": "Create Company Role",
       "updateOneCompanyRole": "Update Company Role",
-      "listCompanyRolePermission": "List Company Role Permissions"
+      "listCompanyRolePermission": "List Company Role Permissions",
+      "listCompanyRole": "列出企业角色"
     },
     "CompanyMemberResolver": {
       "findOneCompanyMember": "Find One Company Member",
       "paginateCompanyMembers": "Paginate Company Members",
       "createOneCompanyMember": "Create Company Member",
-      "updateOneCompanyMember": "Update Company Member"
+      "updateOneCompanyMember": "Update Company Member",
+      "inviteMemberToCompany": "邀请用户加入到企业"
     },
     "CompanyResolver": {
       "findSelfCompany": "Find Current Company Info",
@@ -75,7 +79,11 @@
     },
     "NotificationResolver": {
       "paginateNotifications": "Paginate Notifications",
-      "listSelfNotifications": "List Current Member Notifications"
+      "listSelfNotifications": "List Current Member Notifications",
+      "inviteMemberToCompany": "通知用户加入到企业"
+    },
+    "NotificationCompanyResolver": {
+      "inviteMemberToCompany": "通知用户加入到企业"
     }
   }
 }

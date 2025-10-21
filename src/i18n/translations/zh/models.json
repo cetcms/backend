@@ -195,7 +195,8 @@
     },
     "company": "公司",
     "member": "成员",
-    "role": "角色"
+    "role": "角色",
+    "invitePassed": "CompanyMember.invitePassed"
   },
   "RequestLog": {
     "id": "ID",
@@ -444,7 +445,8 @@
     "recipients": "接收者",
     "options": "选项",
     "privacy": "隐私",
-    "receiver": "Notification.receiver"
+    "receiver": "Notification.receiver",
+    "receivers": "Notification.receivers"
   },
   "NotificationRecipient": {
     "id": "ID",

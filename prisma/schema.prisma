@@ -402,7 +402,8 @@ model CompanyMember {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  status Status @default(Enabled)
+  status       Status  @default(Enabled)
+  invitePassed Boolean @default(false) @map("invite_passed")
 
   /// @DtoRelationIncludeId()
   companyId String      @map("company_id")
@@ -439,7 +440,7 @@ model Notification {
   // 发送者信息
   senderId  String?             @map("sender_id") @db.VarChar(50)
   sender    NotificationTarget  @default(System) // Admin, Member, Company 或 System
-  receiver  String[] // Admin, Member, Company
+  receivers String[] // Admin, Member, Company
   privacy   NotificationPrivacy @default(Private)
   type      NotificationType    @default(Message)
   /// @DtoRelationIncludeId()
@@ -456,6 +457,7 @@ model Notification {
   company   Company?            @relation(fields: [companyId], references: [id])
 
   // 接收者信息 (支持多对多)
+  /// @zod.optional()
   recipients NotificationRecipient[]
 
   @@map("notifications")

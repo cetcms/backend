@@ -30,16 +30,14 @@ export class NotificationService {
         where: {
           OR: [
             {
-              // 系统发送的消息
-              sender: { equals: NotificationTarget.System },
-              receiver: { hasSome: [NotificationTarget.Admin] },
+              // 私有消息
+              receivers: { hasSome: [NotificationTarget.Admin] },
               recipients: { some: { adminId: { equals: admin.id }, isRead: { equals: false } } },
             },
             {
-              // 系统发送的公开消息
-              sender: { equals: NotificationTarget.System },
+              // 公开消息
               privacy: { equals: NotificationPrivacy.Public },
-              receiver: { hasSome: [NotificationTarget.Admin] },
+              receivers: { hasSome: [NotificationTarget.Admin] },
               recipients: { none: { adminId: { equals: admin.id } } },
             },
           ],
@@ -53,16 +51,14 @@ export class NotificationService {
         where: {
           OR: [
             {
-              // 系统发送的消息
-              sender: { equals: NotificationTarget.System },
-              receiver: { hasSome: [NotificationTarget.Member] },
+              // 私有消息
+              receivers: { hasSome: [NotificationTarget.Member] },
               recipients: { some: { memberId: { equals: member.id }, isRead: { equals: false } } },
             },
             {
-              // 系统发送的公开消息
-              sender: { equals: NotificationTarget.System },
+              // 公开消息
               privacy: { equals: NotificationPrivacy.Public },
-              receiver: { hasSome: [NotificationTarget.Member] },
+              receivers: { hasSome: [NotificationTarget.Member] },
               recipients: { none: { memberId: { equals: member.id } } },
             },
           ],
@@ -76,10 +72,9 @@ export class NotificationService {
         where: {
           OR: [
             {
-              // 系统发送的公开消息
-              sender: { equals: NotificationTarget.System },
+              // 公开消息
               privacy: { equals: NotificationPrivacy.Public },
-              receiver: { hasSome: [NotificationTarget.Company] },
+              receivers: { hasSome: [NotificationTarget.Company] },
               recipients: { some: { companyId: { equals: company.id }, isRead: { equals: false } } },
             },
           ],
@@ -93,17 +88,15 @@ export class NotificationService {
         where: {
           OR: [
             {
-              // 系统发送给企业的公开消息
-              sender: { equals: NotificationTarget.System },
+              // 公开消息
               privacy: { equals: NotificationPrivacy.Public },
-              receiver: { hasSome: [NotificationTarget.Company] },
+              receivers: { hasSome: [NotificationTarget.Company] },
               recipients: { some: { companyId: { equals: company.id }, isRead: { equals: false } } },
             },
             {
-              // 系统发送给企业成员的私有消息
-              sender: { equals: NotificationTarget.System },
+              // 私有消息
               privacy: { equals: NotificationPrivacy.Private },
-              receiver: { hasSome: [NotificationTarget.Company] },
+              receivers: { hasSome: [NotificationTarget.Company] },
               recipients: {
                 some: { companyId: { equals: company.id }, memberId: { equals: member.id }, isRead: { equals: false } },
               },

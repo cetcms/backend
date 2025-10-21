@@ -58,6 +58,17 @@ export class MemberResolver {
   }
 
   /**
+   * 搜索成员
+   * @param auth
+   * @param keyword
+   */
+  @UsePermission([Client.Company])
+  @Query(() => PaginatedMember)
+  listSearchMembers(@CurrentAuth() auth: CurrentAuth, @Args('keyword', { nullable: true }) keyword?: string) {
+    return this.service.searchOnCompany(keyword, auth.companyId);
+  }
+
+  /**
    * 新增成员
    * @param args
    */

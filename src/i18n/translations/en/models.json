@@ -195,7 +195,8 @@
     },
     "company": "Company",
     "member": "Member",
-    "role": "Role"
+    "role": "Role",
+    "invitePassed": "CompanyMember.invitePassed"
   },
   "RequestLog": {
     "id": "ID",
@@ -444,7 +445,8 @@
     "recipients": "Recipients",
     "options": "Options",
     "privacy": "Privacy",
-    "receiver": "Notification.receiver"
+    "receiver": "Notification.receiver",
+    "receivers": "Notification.receivers"
   },
   "NotificationRecipient": {
     "id": "ID",
@@ -476,6 +478,7 @@
     "isArchived": "Is Archived",
     "isDeleted": "Is Deleted",
     "receiverId": "Receiver ID",
-    "receiver": "Receiver"
+    "receivers": "Receiver",
+    "receiver": "NotificationRecipient.receiver"
   }
 }

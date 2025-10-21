@@ -195,7 +195,8 @@
     },
     "company": "회사",
     "member": "사용자",
-    "role": "역할"
+    "role": "역할",
+    "invitePassed": "CompanyMember.invitePassed"
   },
   "RequestLog": {
     "id": "ID",
@@ -444,7 +445,8 @@
     "recipients": "수신자",
     "options": "옵션",
     "privacy": "프라이버시",
-    "receiver": "Notification.receiver"
+    "receiver": "Notification.receiver",
+    "receivers": "Notification.receivers"
   },
   "NotificationRecipient": {
     "id": "ID",

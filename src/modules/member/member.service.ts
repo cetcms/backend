@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { isEmail } from 'class-validator';
 import { CurrentAuth } from 'src/auth/decorators';
 import { PaginationResult } from 'src/common/dto';
 import {
@@ -22,6 +23,31 @@ export class MemberService {
     throw new NotFoundException('成员不存在');
   }
 
+  async searchOnCompany(keyword?: string, companyId?: string | null) {
+    const args: FindManyMemberArgs = {};
+    args.take = 10;
+    args.skip = 0;
+    // 对公司可查询的范围做限制
+    if (!keyword || keyword.length < 2 || !companyId) {
+      return PaginationResult([], args.take, args.skip, 0);
+    }
+    if (isEmail(keyword)) {
+      args.where = {
+        OR: [{ email: { equals: keyword } }, { name: { contains: keyword } }],
+      };
+    } else {
+      args.where = { name: { contains: keyword } };
+    }
+    const [members, totalCount] = await this.member
+      .setInclude({
+        companies: {
+          where: { companyId: { equals: companyId } },
+        },
+      })
+      .findManyAndCount(args);
+    return PaginationResult(members, args.take, args.skip, totalCount);
+  }
+
   async paginate(args: FindManyMemberArgs, auth?: CurrentAuth) {
     if (!args.take) args.take = 10;
     if (!args.skip) args.skip = 0;
@@ -30,7 +56,7 @@ export class MemberService {
       args.where = {
         ...args.where,
         companies: {
-          some: { companyId: { equals: auth.companyId } },
+          some: { companyId: { equals: auth.companyId }, invitePassed: { equals: true } },
         },
       };
     }

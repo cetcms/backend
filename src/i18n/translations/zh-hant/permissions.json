@@ -14,7 +14,8 @@
     "CompanyMemberResolver": "企業用戶管理",
     "CompanyResolver": "企業管理",
     "NotificationRecipientResolver": "通知接收管理",
-    "NotificationResolver": "通知管理"
+    "NotificationResolver": "通知管理",
+    "NotificationCompanyResolver": "消息通知管理"
   },
   "action": {
     "MemberResolver": {
@@ -23,7 +24,8 @@
       "paginateMembers": "分頁查詢用戶",
       "createOneMember": "新增用戶",
       "updateSelfMember": "修改當前用戶信息",
-      "updateOneMember": "修改用戶"
+      "updateOneMember": "修改用戶",
+      "listSearchMembers": "搜索成员"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "查詢單個管理員企業關聯",
@@ -54,13 +56,15 @@
       "paginateCompanyRoles": "分頁查詢企業角色",
       "createOneCompanyRole": "新增企業角色",
       "updateOneCompanyRole": "修改企業角色",
-      "listCompanyRolePermission": "獲取企業角色權限列表"
+      "listCompanyRolePermission": "獲取企業角色權限列表",
+      "listCompanyRole": "列出企业角色"
     },
     "CompanyMemberResolver": {
       "findOneCompanyMember": "查詢單個企業用戶關聯",
       "paginateCompanyMembers": "分頁查詢企業用戶關聯",
       "createOneCompanyMember": "新增企業用戶關聯",
-      "updateOneCompanyMember": "修改企業用戶關聯"
+      "updateOneCompanyMember": "修改企業用戶關聯",
+      "inviteMemberToCompany": "邀请用户加入到企业"
     },
     "CompanyResolver": {
       "findSelfCompany": "查詢當前企業信息",
@@ -75,7 +79,11 @@
     },
     "NotificationResolver": {
       "paginateNotifications": "分頁查詢通知",
-      "listSelfNotifications": "獲取當前用戶消息通知"
+      "listSelfNotifications": "獲取當前用戶消息通知",
+      "inviteMemberToCompany": "通知用户加入到企业"
+    },
+    "NotificationCompanyResolver": {
+      "inviteMemberToCompany": "通知用户加入到企业"
     }
   }
 }

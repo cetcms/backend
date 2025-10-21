@@ -151,9 +151,8 @@ export abstract class NotificationAbstract {
    * @private
    */
   private parseCreateData(data: NotificationCreateInput) {
-    return NotificationCreateInputObjectZodSchema.omit({
-      recipients: true,
-    }).parse(data) as unknown as Prisma.NotificationCreateInput;
+    if (!data.recipients) data.recipients = {};
+    return NotificationCreateInputObjectZodSchema.parse(data) as unknown as Prisma.NotificationCreateInput;
   }
 
   /**
@@ -166,9 +165,7 @@ export abstract class NotificationAbstract {
    * @private
    */
   private parseUpdateData(data: NotificationUpdateInput) {
-    return NotificationUpdateInputObjectZodSchema.omit({
-      recipients: true,
-    }).parse(data) as unknown as Prisma.NotificationUpdateInput;
+    return NotificationUpdateInputObjectZodSchema.parse(data) as unknown as Prisma.NotificationUpdateInput;
   }
 
   /**
@@ -287,7 +284,7 @@ export abstract class NotificationAbstract {
     return this.db.notification.create({
       ...(Object.keys(include).length > 0 && { include }),
       ...(Object.keys(select).length > 0 && { select }),
-      data: this.parseCreateData(data),
+      data: this.handleParsedData(this.parseCreateData(data)),
     });
   }
 

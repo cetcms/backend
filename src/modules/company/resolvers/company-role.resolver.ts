@@ -12,6 +12,7 @@ import {
   FindUniqueCompanyRoleArgs,
   UpdateOneCompanyRoleArgs,
   CompanyRoleWhereUniqueInput,
+  CompanyRoleWhereInput,
 } from 'src/generated/graphql';
 
 import { CompanyRoleService } from '../services';
@@ -53,12 +54,13 @@ export class CompanyRoleResolver {
 
   /**
    * 新增企业角色
+   * @param auth
    * @param args
    */
   @UsePermission([Client.Admin, Client.Company])
   @Mutation(() => CompanyRole)
-  createOneCompanyRole(@Args() args: CreateOneCompanyRoleArgs): Promise<CompanyRole> {
-    return this.service.createOne(args);
+  createOneCompanyRole(@CurrentAuth() auth: CurrentAuth, @Args() args: CreateOneCompanyRoleArgs): Promise<CompanyRole> {
+    return this.service.createOne(args, auth);
   }
 
   /**
@@ -69,6 +71,15 @@ export class CompanyRoleResolver {
   @Mutation(() => CompanyRole)
   updateOneCompanyRole(@Args() args: UpdateOneCompanyRoleArgs): Promise<CompanyRole> {
     return this.service.updateOne(args);
+  }
+
+  /**
+   * 列出企业角色
+   */
+  @UsePermission([Client.Company])
+  @Query(() => PaginatedCompanyRole)
+  listCompanyRole(@CurrentAuth() auth: CurrentAuth, @Args('where', { nullable: true }) where?: CompanyRoleWhereInput) {
+    return this.service.paginate({ where }, auth);
   }
 
   /**

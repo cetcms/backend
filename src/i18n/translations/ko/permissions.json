@@ -14,7 +14,8 @@
     "CompanyMemberResolver": "기업 사용자 관리",
     "CompanyResolver": "기업 관리",
     "NotificationRecipientResolver": "메시지 알림 수신",
-    "NotificationResolver": "메시지 알림 관리"
+    "NotificationResolver": "메시지 알림 관리",
+    "NotificationCompanyResolver": "消息通知管理"
   },
   "action": {
     "MemberResolver": {
@@ -23,7 +24,8 @@
       "paginateMembers": "사용자 페이징 조회",
       "createOneMember": "사용자 추가",
       "updateSelfMember": "현재 사용자 정보 수정",
-      "updateOneMember": "사용자 수정"
+      "updateOneMember": "사용자 수정",
+      "listSearchMembers": "搜索成员"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "단일 관리자 기업 연관 조회",
@@ -54,13 +56,15 @@
       "paginateCompanyRoles": "기업 역할 페이징 조회",
       "createOneCompanyRole": "기업 역할 추가",
       "updateOneCompanyRole": "기업 역할 수정",
-      "listCompanyRolePermission": "기업 역할 권한 목록 가져오기"
+      "listCompanyRolePermission": "기업 역할 권한 목록 가져오기",
+      "listCompanyRole": "列出企业角色"
     },
     "CompanyMemberResolver": {
       "findOneCompanyMember": "단일 기업 사용자 연관 조회",
       "paginateCompanyMembers": "기업 사용자 연관 페이징 조회",
       "createOneCompanyMember": "기업 사용자 연관 추가",
-      "updateOneCompanyMember": "기업 사용자 연관 수정"
+      "updateOneCompanyMember": "기업 사용자 연관 수정",
+      "inviteMemberToCompany": "邀请用户加入到企业"
     },
     "CompanyResolver": {
       "findSelfCompany": "현재 기업 정보 조회",
@@ -75,7 +79,11 @@
     },
     "NotificationResolver": {
       "paginateNotifications": "메시지 알림 페이징 조회",
-      "listSelfNotifications": "현재 사용자 메시지 알림 가져오기"
+      "listSelfNotifications": "현재 사용자 메시지 알림 가져오기",
+      "inviteMemberToCompany": "通知用户加入到企业"
+    },
+    "NotificationCompanyResolver": {
+      "inviteMemberToCompany": "通知用户加入到企业"
     }
   }
 }

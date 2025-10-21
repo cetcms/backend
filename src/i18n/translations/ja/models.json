@@ -195,7 +195,8 @@
     },
     "company": "会社",
     "member": "ユーザー",
-    "role": "ロール"
+    "role": "ロール",
+    "invitePassed": "CompanyMember.invitePassed"
   },
   "RequestLog": {
     "id": "ID",
@@ -444,7 +445,8 @@
     "recipients": "受信者",
     "options": "オプション",
     "privacy": "プライバシー",
-    "receiver": "Notification.receiver"
+    "receiver": "Notification.receiver",
+    "receivers": "Notification.receivers"
   },
   "NotificationRecipient": {
     "id": "ID",
