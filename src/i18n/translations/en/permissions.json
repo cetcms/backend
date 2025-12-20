@@ -3,7 +3,8 @@
     "Member": "Member",
     "Admin": "Admin",
     "Company": "Company",
-    "Notification": "Notification"
+    "Notification": "Notification",
+    "Website": "Website"
   },
   "subject": {
     "MemberResolver": "Member Management",
@@ -15,7 +16,8 @@
     "CompanyResolver": "Company Management",
     "NotificationRecipientResolver": "Notification Recipient Management",
     "NotificationResolver": "Notification Management",
-    "NotificationCompanyResolver": "消息通知管理"
+    "NotificationCompanyResolver": "消息通知管理",
+    "WebsiteResolver": "网站管理"
   },
   "action": {
     "MemberResolver": {
@@ -84,6 +86,12 @@
     },
     "NotificationCompanyResolver": {
       "inviteMemberToCompany": "通知用户加入到企业"
+    },
+    "WebsiteResolver": {
+      "findOneWebsite": "查询单个网站",
+      "paginateWebsites": "分页查询网站列表",
+      "createOneWebsite": "新增网站",
+      "updateOneWebsite": "修改网站"
     }
   }
 }
