@@ -12,3 +12,4 @@ export * from './notification-recipient/notification-recipient.repository';
 export * from './request-log/request-log.repository';
 export * from './member/member.repository';
 export * from './auth/auth.repository';
+export * from './website/website.repository';

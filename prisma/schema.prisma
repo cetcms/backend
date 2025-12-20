@@ -144,6 +144,12 @@ enum MediaVisibility {
   Shared
 }
 
+enum WebsiteCms {
+  Strapi
+  WordPress
+  Directus
+}
+
 model Auth {
   /// @DtoReadOnly()
   id        String   @id @default(cuid())
@@ -360,6 +366,7 @@ model Company {
   mediaFiles             MediaFile[]
   notifications          Notification[]
   notificationRecipients NotificationRecipient[]
+  websites               Website[]
 
   @@map("companies")
 }
@@ -420,6 +427,23 @@ model CompanyMember {
 
   @@id([companyId, memberId], name: "companyMemberIdx")
   @@map("company_members")
+}
+
+model Website {
+  /// @DtoReadOnly()
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  title       String
+  description String?
+
+  cms         WebsiteCms?
+  cmsConfig   Json?       @map("cms_config")
+  cmsApiToken String?     @map("cms_api_token")
+  cmsApiUrl   String?     @map("cms_api_url")
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id])
 }
 
 model Notification {
