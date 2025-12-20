@@ -4,7 +4,7 @@
     "Admin": "관리자",
     "Company": "회사",
     "Notification": "알림",
-    "Website": "Website"
+    "Website": "웹사이트"
   },
   "subject": {
     "MemberResolver": "사용자 관리",
@@ -16,8 +16,8 @@
     "CompanyResolver": "기업 관리",
     "NotificationRecipientResolver": "메시지 알림 수신",
     "NotificationResolver": "메시지 알림 관리",
-    "NotificationCompanyResolver": "消息通知管理",
-    "WebsiteResolver": "网站管理"
+    "NotificationCompanyResolver": "기업 알림 관리",
+    "WebsiteResolver": "웹사이트 관리"
   },
   "action": {
     "MemberResolver": {
@@ -27,7 +27,7 @@
       "createOneMember": "사용자 추가",
       "updateSelfMember": "현재 사용자 정보 수정",
       "updateOneMember": "사용자 수정",
-      "listSearchMembers": "搜索成员"
+      "listSearchMembers": "사용자 검색"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "단일 관리자 기업 연관 조회",
@@ -59,14 +59,14 @@
       "createOneCompanyRole": "기업 역할 추가",
       "updateOneCompanyRole": "기업 역할 수정",
       "listCompanyRolePermission": "기업 역할 권한 목록 가져오기",
-      "listCompanyRole": "列出企业角色"
+      "listCompanyRole": "기업 역할 목록"
     },
     "CompanyMemberResolver": {
       "findOneCompanyMember": "단일 기업 사용자 연관 조회",
       "paginateCompanyMembers": "기업 사용자 연관 페이징 조회",
       "createOneCompanyMember": "기업 사용자 연관 추가",
       "updateOneCompanyMember": "기업 사용자 연관 수정",
-      "inviteMemberToCompany": "邀请用户加入到企业"
+      "inviteMemberToCompany": "기업에 사용자 초대"
     },
     "CompanyResolver": {
       "findSelfCompany": "현재 기업 정보 조회",
@@ -82,16 +82,16 @@
     "NotificationResolver": {
       "paginateNotifications": "메시지 알림 페이징 조회",
       "listSelfNotifications": "현재 사용자 메시지 알림 가져오기",
-      "inviteMemberToCompany": "通知用户加入到企业"
+      "inviteMemberToCompany": "사용자에게 기업 가입 알림"
     },
     "NotificationCompanyResolver": {
-      "inviteMemberToCompany": "通知用户加入到企业"
+      "inviteMemberToCompany": "사용자에게 기업 가입 알림"
     },
     "WebsiteResolver": {
-      "findOneWebsite": "查询单个网站",
-      "paginateWebsites": "分页查询网站列表",
-      "createOneWebsite": "新增网站",
-      "updateOneWebsite": "修改网站"
+      "findOneWebsite": "단일 웹사이트 조회",
+      "paginateWebsites": "웹사이트 리스트 페이징 조회",
+      "createOneWebsite": "웹사이트 추가",
+      "updateOneWebsite": "웹사이트 수정"
     }
   }
 }

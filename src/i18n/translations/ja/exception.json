@@ -1,5 +1,33 @@
 {
   "validation": "フィールドの検証に失敗しました",
+  "notFound": {
+    "admin": "管理者が見つかりません",
+    "adminRole": "管理者ロールが見つかりません",
+    "adminCompany": "管理者企業関連が見つかりません",
+    "member": "メンバーが見つかりません",
+    "company": "企業が見つかりません",
+    "companyRole": "企業ロールが見つかりません",
+    "companyMember": "企業メンバー関連が見つかりません",
+    "website": "ウェブサイトが見つかりません"
+  },
+  "badRequest": {
+    "companyIdRequired": "企業IDが必要です",
+    "memberAlreadyExists": "メンバーは既に存在します",
+    "roleNotBelongToCompany": "ロールは企業に属していません",
+    "inviteMemberFailed": "企業へのメンバー招待に失敗しました"
+  },
+  "forbidden": {
+    "noPermission": "操作する権限がありません"
+  },
+  "media": {
+    "invalidOwner": "無効な所有者",
+    "folderNotFound": "フォルダが見つかりません",
+    "uploadFailed": "ファイルのアップロードに失敗しました",
+    "fileNotFound": "ファイルが見つかりません",
+    "fileNameMismatch": "ファイル名が一致しません",
+    "ownerOrFolderNotFound": "所有者またはフォルダが見つかりません",
+    "fileContentNotFound": "ファイルの内容が見つかりません"
+  },
   "prisma": {
     "P1000": "データベースサーバーの認証に失敗しました。有効なデータベース資格情報を提供していることを確認してください。",
     "P1001": "データベースサーバーに接続できません。データベースサーバーが実行されていることを確認してください。",

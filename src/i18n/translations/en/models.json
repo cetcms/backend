@@ -25,8 +25,8 @@
     "admin": "Admin",
     "member": "Member",
     "company": "Company",
-    "owner": "Auth.owner",
-    "client": "Auth.client"
+    "owner": "Owner",
+    "client": "Client"
   },
   "Admin": {
     "id": "ID",
@@ -156,7 +156,7 @@
     "notifications": "Notifications",
     "notificationRecipients": "Notification Recipients",
     "logo": "Logo",
-    "websites": "Company.websites"
+    "websites": "Websites"
   },
   "CompanyRole": {
     "id": "ID",
@@ -198,7 +198,7 @@
     "company": "Company",
     "member": "Member",
     "role": "Role",
-    "invitePassed": "CompanyMember.invitePassed"
+    "invitePassed": "Invite Passed"
   },
   "RequestLog": {
     "id": "ID",
@@ -240,8 +240,8 @@
     "member": "Member",
     "admin": "Admin",
     "company": "Company",
-    "owner": "RequestLog.owner",
-    "client": "RequestLog.client"
+    "owner": "Owner",
+    "client": "Client"
   },
   "MediaFolder": {
     "id": "ID",
@@ -280,7 +280,7 @@
     "member": "Member",
     "files": "Files",
     "depth": "Depth",
-    "owner": "MediaFolder.owner"
+    "owner": "Owner"
   },
   "MediaFile": {
     "id": "ID",
@@ -326,10 +326,10 @@
     "company": "Company",
     "admin": "Admin",
     "member": "Member",
-    "fileExtension": "MediaFile.fileExtension",
-    "owner": "MediaFile.owner",
-    "uploadFailed": "MediaFile.uploadFailed",
-    "extension": "MediaFile.extension"
+    "fileExtension": "File Extension",
+    "owner": "Owner",
+    "uploadFailed": "Upload Failed",
+    "extension": "Extension"
   },
   "enum": {
     "Target": {
@@ -453,8 +453,8 @@
     "recipients": "Recipients",
     "options": "Options",
     "privacy": "Privacy",
-    "receiver": "Notification.receiver",
-    "receivers": "Notification.receivers"
+    "receiver": "Receiver",
+    "receivers": "Receivers"
   },
   "NotificationRecipient": {
     "id": "ID",
@@ -487,23 +487,23 @@
     "isDeleted": "Is Deleted",
     "receiverId": "Receiver ID",
     "receivers": "Receiver",
-    "receiver": "NotificationRecipient.receiver"
+    "receiver": "Receiver"
   },
   "Website": {
-    "id": "Website.id",
-    "createdAt": "Website.createdAt",
-    "updatedAt": "Website.updatedAt",
-    "title": "Website.title",
-    "description": "Website.description",
+    "id": "ID",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "title": "Title",
+    "description": "Description",
     "_enums": {
       "cms": "WebsiteCms"
     },
-    "cms": "Website.cms",
-    "cmsConfig": "Website.cmsConfig",
-    "cmsApiToken": "Website.cmsApiToken",
-    "cmsApiUrl": "Website.cmsApiUrl",
-    "companyId": "Website.companyId",
-    "company": "Website.company",
+    "cms": "CMS",
+    "cmsConfig": "CMS Config",
+    "cmsApiToken": "CMS API Token",
+    "cmsApiUrl": "CMS API URL",
+    "companyId": "Company ID",
+    "company": "Company",
     "_relations": {
       "company": "Company"
     }

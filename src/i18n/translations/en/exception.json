@@ -1,5 +1,33 @@
 {
   "validation": "Field validation failed",
+  "notFound": {
+    "admin": "Admin not found",
+    "adminRole": "Admin role not found",
+    "adminCompany": "Admin company association not found",
+    "member": "Member not found",
+    "company": "Company not found",
+    "companyRole": "Company role not found",
+    "companyMember": "Company member association not found",
+    "website": "Website not found"
+  },
+  "badRequest": {
+    "companyIdRequired": "Company id is required",
+    "memberAlreadyExists": "Member already exists",
+    "roleNotBelongToCompany": "Role does not belong to company",
+    "inviteMemberFailed": "Invite member to company failed"
+  },
+  "forbidden": {
+    "noPermission": "No permission to operate"
+  },
+  "media": {
+    "invalidOwner": "Invalid owner",
+    "folderNotFound": "Folder not found",
+    "uploadFailed": "File upload failed",
+    "fileNotFound": "File not found",
+    "fileNameMismatch": "File name mismatch",
+    "ownerOrFolderNotFound": "Owner or folder not found",
+    "fileContentNotFound": "File content not found"
+  },
   "prisma": {
     "P1000": "Authentication failed against database server. Please make sure to provide valid database credentials.",
     "P1001": "Can't reach database server. Please make sure your database server is running.",

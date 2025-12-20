@@ -25,8 +25,8 @@
     "admin": "管理者",
     "member": "ユーザー",
     "company": "会社",
-    "owner": "Auth.owner",
-    "client": "Auth.client"
+    "owner": "所有者",
+    "client": "クライアント"
   },
   "Admin": {
     "id": "ID",
@@ -156,7 +156,7 @@
     "notifications": "通知",
     "notificationRecipients": "通知受信者",
     "logo": "ロゴ",
-    "websites": "Company.websites"
+    "websites": "ウェブサイト"
   },
   "CompanyRole": {
     "id": "ID",
@@ -198,7 +198,7 @@
     "company": "会社",
     "member": "ユーザー",
     "role": "ロール",
-    "invitePassed": "CompanyMember.invitePassed"
+    "invitePassed": "招待承認済み"
   },
   "RequestLog": {
     "id": "ID",
@@ -240,8 +240,8 @@
     "member": "ユーザー",
     "admin": "管理者",
     "company": "会社",
-    "owner": "RequestLog.owner",
-    "client": "RequestLog.client"
+    "owner": "所有者",
+    "client": "クライアント"
   },
   "MediaFolder": {
     "id": "ID",
@@ -279,8 +279,8 @@
     "admin": "管理者",
     "member": "ユーザー",
     "files": "ファイル",
-    "depth": "MediaFolder.depth",
-    "owner": "MediaFolder.owner"
+    "depth": "深さ",
+    "owner": "所有者"
   },
   "MediaFile": {
     "id": "ID",
@@ -326,10 +326,10 @@
     "company": "会社",
     "admin": "管理者",
     "member": "ユーザー",
-    "fileExtension": "MediaFile.fileExtension",
-    "owner": "MediaFile.owner",
-    "uploadFailed": "MediaFile.uploadFailed",
-    "extension": "MediaFile.extension"
+    "fileExtension": "ファイル拡張子",
+    "owner": "所有者",
+    "uploadFailed": "アップロード失敗",
+    "extension": "拡張子"
   },
   "enum": {
     "Target": {
@@ -375,7 +375,7 @@
       "Member": "ユーザー",
       "Company": "企業",
       "Admin": "管理者",
-      "System": "System"
+      "System": "システム"
     },
     "NotificationType": {
       "Alert": "警告",
@@ -417,7 +417,7 @@
     "MediaFile": "メディアファイル",
     "Notification": "通知",
     "NotificationRecipient": "通知受信者",
-    "Website": "Website"
+    "Website": "ウェブサイト"
   },
   "Notification": {
     "id": "ID",
@@ -453,8 +453,8 @@
     "recipients": "受信者",
     "options": "オプション",
     "privacy": "プライバシー",
-    "receiver": "Notification.receiver",
-    "receivers": "Notification.receivers"
+    "receiver": "受信者",
+    "receivers": "受信者リスト"
   },
   "NotificationRecipient": {
     "id": "ID",
@@ -489,20 +489,20 @@
     "receiver": "受信者"
   },
   "Website": {
-    "id": "Website.id",
-    "createdAt": "Website.createdAt",
-    "updatedAt": "Website.updatedAt",
-    "title": "Website.title",
-    "description": "Website.description",
+    "id": "ID",
+    "createdAt": "作成日時",
+    "updatedAt": "更新日時",
+    "title": "タイトル",
+    "description": "説明",
     "_enums": {
       "cms": "WebsiteCms"
     },
-    "cms": "Website.cms",
-    "cmsConfig": "Website.cmsConfig",
-    "cmsApiToken": "Website.cmsApiToken",
-    "cmsApiUrl": "Website.cmsApiUrl",
-    "companyId": "Website.companyId",
-    "company": "Website.company",
+    "cms": "CMS",
+    "cmsConfig": "CMS設定",
+    "cmsApiToken": "CMS APIトークン",
+    "cmsApiUrl": "CMS API URL",
+    "companyId": "会社ID",
+    "company": "会社",
     "_relations": {
       "company": "Company"
     }

@@ -16,8 +16,8 @@
     "CompanyResolver": "Company Management",
     "NotificationRecipientResolver": "Notification Recipient Management",
     "NotificationResolver": "Notification Management",
-    "NotificationCompanyResolver": "消息通知管理",
-    "WebsiteResolver": "网站管理"
+    "NotificationCompanyResolver": "Company Notification Management",
+    "WebsiteResolver": "Website Management"
   },
   "action": {
     "MemberResolver": {
@@ -27,7 +27,7 @@
       "createOneMember": "Create Member",
       "updateSelfMember": "Update Current Member Info",
       "updateOneMember": "Update Member",
-      "listSearchMembers": "搜索成员"
+      "listSearchMembers": "Search Members"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "Find One Admin Company",
@@ -59,14 +59,14 @@
       "createOneCompanyRole": "Create Company Role",
       "updateOneCompanyRole": "Update Company Role",
       "listCompanyRolePermission": "List Company Role Permissions",
-      "listCompanyRole": "列出企业角色"
+      "listCompanyRole": "List Company Roles"
     },
     "CompanyMemberResolver": {
       "findOneCompanyMember": "Find One Company Member",
       "paginateCompanyMembers": "Paginate Company Members",
       "createOneCompanyMember": "Create Company Member",
       "updateOneCompanyMember": "Update Company Member",
-      "inviteMemberToCompany": "邀请用户加入到企业"
+      "inviteMemberToCompany": "Invite Member to Company"
     },
     "CompanyResolver": {
       "findSelfCompany": "Find Current Company Info",
@@ -82,16 +82,16 @@
     "NotificationResolver": {
       "paginateNotifications": "Paginate Notifications",
       "listSelfNotifications": "List Current Member Notifications",
-      "inviteMemberToCompany": "通知用户加入到企业"
+      "inviteMemberToCompany": "Notify Member to Join Company"
     },
     "NotificationCompanyResolver": {
-      "inviteMemberToCompany": "通知用户加入到企业"
+      "inviteMemberToCompany": "Notify Member to Join Company"
     },
     "WebsiteResolver": {
-      "findOneWebsite": "查询单个网站",
-      "paginateWebsites": "分页查询网站列表",
-      "createOneWebsite": "新增网站",
-      "updateOneWebsite": "修改网站"
+      "findOneWebsite": "Find One Website",
+      "paginateWebsites": "Paginate Websites",
+      "createOneWebsite": "Create Website",
+      "updateOneWebsite": "Update Website"
     }
   }
 }

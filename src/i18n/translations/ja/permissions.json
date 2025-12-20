@@ -4,7 +4,7 @@
     "Admin": "管理者",
     "Company": "会社",
     "Notification": "通知",
-    "Website": "Website"
+    "Website": "ウェブサイト"
   },
   "subject": {
     "MemberResolver": "ユーザー管理",
@@ -16,8 +16,8 @@
     "CompanyResolver": "企業管理",
     "NotificationRecipientResolver": "メッセージ通知受信",
     "NotificationResolver": "メッセージ通知管理",
-    "NotificationCompanyResolver": "消息通知管理",
-    "WebsiteResolver": "网站管理"
+    "NotificationCompanyResolver": "企業通知管理",
+    "WebsiteResolver": "ウェブサイト管理"
   },
   "action": {
     "MemberResolver": {
@@ -27,7 +27,7 @@
       "createOneMember": "ユーザーを追加",
       "updateSelfMember": "現在のユーザー情報を変更",
       "updateOneMember": "ユーザーを変更",
-      "listSearchMembers": "搜索成员"
+      "listSearchMembers": "ユーザーを検索"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "単一管理者企業関連を検索",
@@ -59,14 +59,14 @@
       "createOneCompanyRole": "企業ロールを追加",
       "updateOneCompanyRole": "企業ロールを変更",
       "listCompanyRolePermission": "企業ロール権限リストを取得",
-      "listCompanyRole": "列出企业角色"
+      "listCompanyRole": "企業ロールをリスト"
     },
     "CompanyMemberResolver": {
       "findOneCompanyMember": "単一企業ユーザー関連を検索",
       "paginateCompanyMembers": "企業ユーザー関連をページ分割して検索",
       "createOneCompanyMember": "企業ユーザー関連を追加",
       "updateOneCompanyMember": "企業ユーザー関連を変更",
-      "inviteMemberToCompany": "邀请用户加入到企业"
+      "inviteMemberToCompany": "企業にユーザーを招待"
     },
     "CompanyResolver": {
       "findSelfCompany": "現在の企業情報を検索",
@@ -82,16 +82,16 @@
     "NotificationResolver": {
       "paginateNotifications": "メッセージ通知をページ分割して検索",
       "listSelfNotifications": "現在のユーザーのメッセージ通知を取得",
-      "inviteMemberToCompany": "通知用户加入到企业"
+      "inviteMemberToCompany": "ユーザーに企業への参加を通知"
     },
     "NotificationCompanyResolver": {
-      "inviteMemberToCompany": "通知用户加入到企业"
+      "inviteMemberToCompany": "ユーザーに企業への参加を通知"
     },
     "WebsiteResolver": {
-      "findOneWebsite": "查询单个网站",
-      "paginateWebsites": "分页查询网站列表",
-      "createOneWebsite": "新增网站",
-      "updateOneWebsite": "修改网站"
+      "findOneWebsite": "ウェブサイトを検索",
+      "paginateWebsites": "ウェブサイトリストをページ分割して検索",
+      "createOneWebsite": "ウェブサイトを追加",
+      "updateOneWebsite": "ウェブサイトを変更"
     }
   }
 }

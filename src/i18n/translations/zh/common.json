@@ -1,3 +1,6 @@
 {
-  "hello": "你好, 世界"
+  "hello": "你好, 世界",
+  "notification": {
+    "inviteToJoinCompany": "邀请您加入企业"
+  }
 }

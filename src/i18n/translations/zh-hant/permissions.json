@@ -4,7 +4,7 @@
     "Admin": "管理員",
     "Company": "公司",
     "Notification": "通知",
-    "Website": "Website"
+    "Website": "網站"
   },
   "subject": {
     "MemberResolver": "用戶管理",
@@ -16,8 +16,8 @@
     "CompanyResolver": "企業管理",
     "NotificationRecipientResolver": "通知接收管理",
     "NotificationResolver": "通知管理",
-    "NotificationCompanyResolver": "消息通知管理",
-    "WebsiteResolver": "网站管理"
+    "NotificationCompanyResolver": "企業通知管理",
+    "WebsiteResolver": "網站管理"
   },
   "action": {
     "MemberResolver": {
@@ -27,7 +27,7 @@
       "createOneMember": "新增用戶",
       "updateSelfMember": "修改當前用戶信息",
       "updateOneMember": "修改用戶",
-      "listSearchMembers": "搜索成员"
+      "listSearchMembers": "搜尋用戶"
     },
     "AdminCompanyResolver": {
       "findOneAdminCompany": "查詢單個管理員企業關聯",
@@ -59,14 +59,14 @@
       "createOneCompanyRole": "新增企業角色",
       "updateOneCompanyRole": "修改企業角色",
       "listCompanyRolePermission": "獲取企業角色權限列表",
-      "listCompanyRole": "列出企业角色"
+      "listCompanyRole": "列出企業角色"
     },
     "CompanyMemberResolver": {
       "findOneCompanyMember": "查詢單個企業用戶關聯",
       "paginateCompanyMembers": "分頁查詢企業用戶關聯",
       "createOneCompanyMember": "新增企業用戶關聯",
       "updateOneCompanyMember": "修改企業用戶關聯",
-      "inviteMemberToCompany": "邀请用户加入到企业"
+      "inviteMemberToCompany": "邀請用戶加入企業"
     },
     "CompanyResolver": {
       "findSelfCompany": "查詢當前企業信息",
@@ -82,16 +82,16 @@
     "NotificationResolver": {
       "paginateNotifications": "分頁查詢通知",
       "listSelfNotifications": "獲取當前用戶消息通知",
-      "inviteMemberToCompany": "通知用户加入到企业"
+      "inviteMemberToCompany": "通知用戶加入企業"
     },
     "NotificationCompanyResolver": {
-      "inviteMemberToCompany": "通知用户加入到企业"
+      "inviteMemberToCompany": "通知用戶加入企業"
     },
     "WebsiteResolver": {
-      "findOneWebsite": "查询单个网站",
-      "paginateWebsites": "分页查询网站列表",
-      "createOneWebsite": "新增网站",
-      "updateOneWebsite": "修改网站"
+      "findOneWebsite": "查詢單個網站",
+      "paginateWebsites": "分頁查詢網站列表",
+      "createOneWebsite": "新增網站",
+      "updateOneWebsite": "修改網站"
     }
   }
 }

@@ -1,3 +1,6 @@
 {
-  "hello": "你好, 世界"
+  "hello": "안녕하세요, 세계",
+  "notification": {
+    "inviteToJoinCompany": "기업에 합류하도록 초대합니다"
+  }
 }

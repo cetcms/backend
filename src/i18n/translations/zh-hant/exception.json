@@ -1,5 +1,33 @@
 {
   "validation": "字段校驗未通過",
+  "notFound": {
+    "admin": "管理員不存在",
+    "adminRole": "管理員角色不存在",
+    "adminCompany": "管理員企業關聯不存在",
+    "member": "成員不存在",
+    "company": "企業不存在",
+    "companyRole": "企業角色不存在",
+    "companyMember": "企業成員關聯不存在",
+    "website": "網站不存在"
+  },
+  "badRequest": {
+    "companyIdRequired": "需要企業ID",
+    "memberAlreadyExists": "成員已存在",
+    "roleNotBelongToCompany": "角色不屬於該企業",
+    "inviteMemberFailed": "邀請成員加入企業失敗"
+  },
+  "forbidden": {
+    "noPermission": "無權限操作"
+  },
+  "media": {
+    "invalidOwner": "無效的所有者",
+    "folderNotFound": "文件夾不存在",
+    "uploadFailed": "文件上傳失敗",
+    "fileNotFound": "文件不存在",
+    "fileNameMismatch": "文件名不匹配",
+    "ownerOrFolderNotFound": "所有者或文件夾不存在",
+    "fileContentNotFound": "文件內容不存在"
+  },
   "prisma": {
     "P1000": "資料庫伺服器認證失敗。請確保提供了有效的資料庫憑證。",
     "P1001": "無法連接資料庫伺服器。請確保資料庫伺服器正在運行。",

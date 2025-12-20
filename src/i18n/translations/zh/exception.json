@@ -1,5 +1,33 @@
 {
   "validation": "字段校验未通过",
+  "notFound": {
+    "admin": "管理员不存在",
+    "adminRole": "管理员角色不存在",
+    "adminCompany": "管理员企业关联不存在",
+    "member": "成员不存在",
+    "company": "企业不存在",
+    "companyRole": "企业角色不存在",
+    "companyMember": "企业成员关联不存在",
+    "website": "网站不存在"
+  },
+  "badRequest": {
+    "companyIdRequired": "需要企业ID",
+    "memberAlreadyExists": "成员已存在",
+    "roleNotBelongToCompany": "角色不属于该企业",
+    "inviteMemberFailed": "邀请成员加入企业失败"
+  },
+  "forbidden": {
+    "noPermission": "无权限操作"
+  },
+  "media": {
+    "invalidOwner": "无效的所有者",
+    "folderNotFound": "文件夹不存在",
+    "uploadFailed": "文件上传失败",
+    "fileNotFound": "文件不存在",
+    "fileNameMismatch": "文件名不匹配",
+    "ownerOrFolderNotFound": "所有者或文件夹不存在",
+    "fileContentNotFound": "文件内容不存在"
+  },
   "prisma": {
     "P1000": "数据库服务器认证失败。请确保提供了有效的数据库凭证。",
     "P1001": "无法连接数据库服务器。请确保数据库服务器正在运行。",

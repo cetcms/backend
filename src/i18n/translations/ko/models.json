@@ -25,8 +25,8 @@
     "admin": "관리자",
     "member": "사용자",
     "company": "회사",
-    "owner": "Auth.owner",
-    "client": "Auth.client"
+    "owner": "소유자",
+    "client": "클라이언트"
   },
   "Admin": {
     "id": "ID",
@@ -156,7 +156,7 @@
     "notifications": "알림",
     "notificationRecipients": "알림 수신자",
     "logo": "로고",
-    "websites": "Company.websites"
+    "websites": "웹사이트"
   },
   "CompanyRole": {
     "id": "ID",
@@ -198,7 +198,7 @@
     "company": "회사",
     "member": "사용자",
     "role": "역할",
-    "invitePassed": "CompanyMember.invitePassed"
+    "invitePassed": "초대 승인됨"
   },
   "RequestLog": {
     "id": "ID",
@@ -240,8 +240,8 @@
     "member": "사용자",
     "admin": "관리자",
     "company": "회사",
-    "owner": "RequestLog.owner",
-    "client": "RequestLog.client"
+    "owner": "소유자",
+    "client": "클라이언트"
   },
   "MediaFolder": {
     "id": "ID",
@@ -279,8 +279,8 @@
     "admin": "관리자",
     "member": "사용자",
     "files": "파일",
-    "depth": "MediaFolder.depth",
-    "owner": "MediaFolder.owner"
+    "depth": "깊이",
+    "owner": "소유자"
   },
   "MediaFile": {
     "id": "ID",
@@ -326,10 +326,10 @@
     "company": "회사",
     "admin": "관리자",
     "member": "사용자",
-    "fileExtension": "MediaFile.fileExtension",
-    "owner": "MediaFile.owner",
-    "uploadFailed": "MediaFile.uploadFailed",
-    "extension": "MediaFile.extension"
+    "fileExtension": "파일 확장자",
+    "owner": "소유자",
+    "uploadFailed": "업로드 실패",
+    "extension": "확장자"
   },
   "enum": {
     "Target": {
@@ -375,7 +375,7 @@
       "Member": "사용자",
       "Company": "기업",
       "Admin": "관리자",
-      "System": "System"
+      "System": "시스템"
     },
     "NotificationType": {
       "Alert": "경고",
@@ -417,7 +417,7 @@
     "MediaFile": "미디어 파일",
     "Notification": "알림",
     "NotificationRecipient": "알림 수신자",
-    "Website": "Website"
+    "Website": "웹사이트"
   },
   "Notification": {
     "id": "ID",
@@ -453,8 +453,8 @@
     "recipients": "수신자",
     "options": "옵션",
     "privacy": "프라이버시",
-    "receiver": "Notification.receiver",
-    "receivers": "Notification.receivers"
+    "receiver": "수신자",
+    "receivers": "수신자 목록"
   },
   "NotificationRecipient": {
     "id": "ID",
@@ -489,20 +489,20 @@
     "receiver": "수신자"
   },
   "Website": {
-    "id": "Website.id",
-    "createdAt": "Website.createdAt",
-    "updatedAt": "Website.updatedAt",
-    "title": "Website.title",
-    "description": "Website.description",
+    "id": "ID",
+    "createdAt": "생성 시간",
+    "updatedAt": "수정 시간",
+    "title": "제목",
+    "description": "설명",
     "_enums": {
       "cms": "WebsiteCms"
     },
-    "cms": "Website.cms",
-    "cmsConfig": "Website.cmsConfig",
-    "cmsApiToken": "Website.cmsApiToken",
-    "cmsApiUrl": "Website.cmsApiUrl",
-    "companyId": "Website.companyId",
-    "company": "Website.company",
+    "cms": "CMS",
+    "cmsConfig": "CMS 설정",
+    "cmsApiToken": "CMS API 토큰",
+    "cmsApiUrl": "CMS API URL",
+    "companyId": "회사 ID",
+    "company": "회사",
     "_relations": {
       "company": "Company"
     }

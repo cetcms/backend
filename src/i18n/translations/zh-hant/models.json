@@ -25,8 +25,8 @@
     "admin": "管理員",
     "member": "用戶",
     "company": "公司",
-    "owner": "Auth.owner",
-    "client": "Auth.client"
+    "owner": "擁有者",
+    "client": "用戶端"
   },
   "Admin": {
     "id": "ID",
@@ -156,7 +156,7 @@
     "notifications": "通知",
     "notificationRecipients": "通知接收者",
     "logo": "標誌",
-    "websites": "Company.websites"
+    "websites": "網站"
   },
   "CompanyRole": {
     "id": "ID",
@@ -198,7 +198,7 @@
     "company": "公司",
     "member": "用戶",
     "role": "角色",
-    "invitePassed": "CompanyMember.invitePassed"
+    "invitePassed": "邀請已通過"
   },
   "RequestLog": {
     "id": "ID",
@@ -240,8 +240,8 @@
     "member": "用戶",
     "admin": "管理員",
     "company": "公司",
-    "owner": "RequestLog.owner",
-    "client": "RequestLog.client"
+    "owner": "擁有者",
+    "client": "用戶端"
   },
   "MediaFolder": {
     "id": "ID",
@@ -280,7 +280,7 @@
     "member": "用戶",
     "files": "檔案",
     "depth": "深度",
-    "owner": "MediaFolder.owner"
+    "owner": "擁有者"
   },
   "MediaFile": {
     "id": "ID",
@@ -326,10 +326,10 @@
     "company": "公司",
     "admin": "管理員",
     "member": "用戶",
-    "fileExtension": "MediaFile.fileExtension",
-    "owner": "MediaFile.owner",
-    "uploadFailed": "MediaFile.uploadFailed",
-    "extension": "MediaFile.extension"
+    "fileExtension": "檔案副檔名",
+    "owner": "擁有者",
+    "uploadFailed": "上傳失敗",
+    "extension": "副檔名"
   },
   "enum": {
     "Target": {
@@ -372,20 +372,20 @@
       "Other": "其他"
     },
     "NotificationTarget": {
-      "Member": "Member",
-      "Company": "Company",
-      "Admin": "Admin",
-      "System": "System"
+      "Member": "用戶",
+      "Company": "企業",
+      "Admin": "管理員",
+      "System": "系統"
     },
     "NotificationType": {
-      "Alert": "Alert",
-      "Confirm": "Confirm",
-      "Message": "Message",
-      "Prompt": "Prompt"
+      "Alert": "警告",
+      "Confirm": "消息確認",
+      "Message": "消息提醒",
+      "Prompt": "提示消息"
     },
     "NotificationPrivacy": {
-      "Public": "Public",
-      "Private": "Private"
+      "Public": "公開",
+      "Private": "私有"
     },
     "Owner": {
       "Member": "Member",
@@ -417,7 +417,7 @@
     "MediaFile": "媒體檔案",
     "Notification": "通知",
     "NotificationRecipient": "通知接收者",
-    "Website": "Website"
+    "Website": "網站"
   },
   "Notification": {
     "id": "ID",
@@ -453,8 +453,8 @@
     "recipients": "接收者",
     "options": "選項",
     "privacy": "隱私",
-    "receiver": "Notification.receiver",
-    "receivers": "Notification.receivers"
+    "receiver": "接收者",
+    "receivers": "接收者列表"
   },
   "NotificationRecipient": {
     "id": "ID",
@@ -489,20 +489,20 @@
     "receiver": "接收者"
   },
   "Website": {
-    "id": "Website.id",
-    "createdAt": "Website.createdAt",
-    "updatedAt": "Website.updatedAt",
-    "title": "Website.title",
-    "description": "Website.description",
+    "id": "ID",
+    "createdAt": "建立時間",
+    "updatedAt": "更新時間",
+    "title": "標題",
+    "description": "描述",
     "_enums": {
       "cms": "WebsiteCms"
     },
-    "cms": "Website.cms",
-    "cmsConfig": "Website.cmsConfig",
-    "cmsApiToken": "Website.cmsApiToken",
-    "cmsApiUrl": "Website.cmsApiUrl",
-    "companyId": "Website.companyId",
-    "company": "Website.company",
+    "cms": "CMS",
+    "cmsConfig": "CMS設定",
+    "cmsApiToken": "CMS API令牌",
+    "cmsApiUrl": "CMS API URL",
+    "companyId": "公司ID",
+    "company": "公司",
     "_relations": {
       "company": "Company"
     }
