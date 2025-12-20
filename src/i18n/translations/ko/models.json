@@ -140,7 +140,8 @@
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile",
       "notifications": "Notification",
-      "notificationRecipients": "NotificationRecipient"
+      "notificationRecipients": "NotificationRecipient",
+      "websites": "Website"
     },
     "_enums": {
       "status": "Status"
@@ -154,7 +155,8 @@
     "mediaFiles": "미디어 파일",
     "notifications": "알림",
     "notificationRecipients": "알림 수신자",
-    "logo": "로고"
+    "logo": "로고",
+    "websites": "Company.websites"
   },
   "CompanyRole": {
     "id": "ID",
@@ -394,6 +396,11 @@
       "Admin": "Admin",
       "Member": "Member",
       "Company": "Company"
+    },
+    "WebsiteCms": {
+      "Strapi": "Strapi",
+      "WordPress": "WordPress",
+      "Directus": "Directus"
     }
   },
   "title": {
@@ -409,7 +416,8 @@
     "MediaFolder": "미디어 폴더",
     "MediaFile": "미디어 파일",
     "Notification": "알림",
-    "NotificationRecipient": "알림 수신자"
+    "NotificationRecipient": "알림 수신자",
+    "Website": "Website"
   },
   "Notification": {
     "id": "ID",
@@ -479,5 +487,24 @@
     "isDeleted": "삭제 여부",
     "receiverId": "수신자 ID",
     "receiver": "수신자"
+  },
+  "Website": {
+    "id": "Website.id",
+    "createdAt": "Website.createdAt",
+    "updatedAt": "Website.updatedAt",
+    "title": "Website.title",
+    "description": "Website.description",
+    "_enums": {
+      "cms": "WebsiteCms"
+    },
+    "cms": "Website.cms",
+    "cmsConfig": "Website.cmsConfig",
+    "cmsApiToken": "Website.cmsApiToken",
+    "cmsApiUrl": "Website.cmsApiUrl",
+    "companyId": "Website.companyId",
+    "company": "Website.company",
+    "_relations": {
+      "company": "Company"
+    }
   }
 }

@@ -1,86 +1,90 @@
 export const ModelsRelation = {
-  Auth: {
-    admin: 'Admin',
-    member: 'Member',
-    company: 'Company',
+  "Auth": {
+    "admin": "Admin",
+    "member": "Member",
+    "company": "Company"
   },
-  Admin: {
-    role: 'AdminRole',
-    companies: 'AdminCompany',
-    auths: 'Auth',
-    logs: 'RequestLog',
-    mediaFolders: 'MediaFolder',
-    mediaFiles: 'MediaFile',
-    notifications: 'Notification',
-    notificationRecipients: 'NotificationRecipient',
+  "Admin": {
+    "role": "AdminRole",
+    "companies": "AdminCompany",
+    "auths": "Auth",
+    "logs": "RequestLog",
+    "mediaFolders": "MediaFolder",
+    "mediaFiles": "MediaFile",
+    "notifications": "Notification",
+    "notificationRecipients": "NotificationRecipient"
   },
-  AdminRole: {
-    admins: 'Admin',
+  "AdminRole": {
+    "admins": "Admin"
   },
-  AdminCompany: {
-    admin: 'Admin',
-    company: 'Company',
-    role: 'CompanyRole',
+  "AdminCompany": {
+    "admin": "Admin",
+    "company": "Company",
+    "role": "CompanyRole"
   },
-  Member: {
-    companies: 'CompanyMember',
-    auths: 'Auth',
-    logs: 'RequestLog',
-    mediaFolders: 'MediaFolder',
-    mediaFiles: 'MediaFile',
-    notifications: 'Notification',
-    notificationRecipients: 'NotificationRecipient',
+  "Member": {
+    "companies": "CompanyMember",
+    "auths": "Auth",
+    "logs": "RequestLog",
+    "mediaFolders": "MediaFolder",
+    "mediaFiles": "MediaFile",
+    "notifications": "Notification",
+    "notificationRecipients": "NotificationRecipient"
   },
-  Company: {
-    auths: 'Auth',
-    admins: 'AdminCompany',
-    roles: 'CompanyRole',
-    members: 'CompanyMember',
-    logs: 'RequestLog',
-    mediaFolders: 'MediaFolder',
-    mediaFiles: 'MediaFile',
-    notifications: 'Notification',
-    notificationRecipients: 'NotificationRecipient',
+  "Company": {
+    "auths": "Auth",
+    "admins": "AdminCompany",
+    "roles": "CompanyRole",
+    "members": "CompanyMember",
+    "logs": "RequestLog",
+    "mediaFolders": "MediaFolder",
+    "mediaFiles": "MediaFile",
+    "notifications": "Notification",
+    "notificationRecipients": "NotificationRecipient",
+    "websites": "Website"
   },
-  CompanyRole: {
-    company: 'Company',
-    members: 'CompanyMember',
-    admins: 'AdminCompany',
+  "CompanyRole": {
+    "company": "Company",
+    "members": "CompanyMember",
+    "admins": "AdminCompany"
   },
-  CompanyMember: {
-    company: 'Company',
-    member: 'Member',
-    role: 'CompanyRole',
+  "CompanyMember": {
+    "company": "Company",
+    "member": "Member",
+    "role": "CompanyRole"
   },
-  Notification: {
-    admin: 'Admin',
-    member: 'Member',
-    company: 'Company',
-    recipients: 'NotificationRecipient',
+  "Website": {
+    "company": "Company"
   },
-  NotificationRecipient: {
-    admin: 'Admin',
-    member: 'Member',
-    company: 'Company',
-    notification: 'Notification',
+  "Notification": {
+    "admin": "Admin",
+    "member": "Member",
+    "company": "Company",
+    "recipients": "NotificationRecipient"
   },
-  RequestLog: {
-    member: 'Member',
-    admin: 'Admin',
-    company: 'Company',
+  "NotificationRecipient": {
+    "admin": "Admin",
+    "member": "Member",
+    "company": "Company",
+    "notification": "Notification"
   },
-  MediaFolder: {
-    parent: 'MediaFolder',
-    children: 'MediaFolder',
-    admin: 'Admin',
-    member: 'Member',
-    company: 'Company',
-    files: 'MediaFile',
+  "RequestLog": {
+    "member": "Member",
+    "admin": "Admin",
+    "company": "Company"
   },
-  MediaFile: {
-    folder: 'MediaFolder',
-    admin: 'Admin',
-    member: 'Member',
-    company: 'Company',
+  "MediaFolder": {
+    "parent": "MediaFolder",
+    "children": "MediaFolder",
+    "admin": "Admin",
+    "member": "Member",
+    "company": "Company",
+    "files": "MediaFile"
   },
-} as const;
+  "MediaFile": {
+    "folder": "MediaFolder",
+    "admin": "Admin",
+    "member": "Member",
+    "company": "Company"
+  }
+} as const

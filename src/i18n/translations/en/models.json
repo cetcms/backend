@@ -140,7 +140,8 @@
       "mediaFolders": "MediaFolder",
       "mediaFiles": "MediaFile",
       "notifications": "Notification",
-      "notificationRecipients": "NotificationRecipient"
+      "notificationRecipients": "NotificationRecipient",
+      "websites": "Website"
     },
     "_enums": {
       "status": "Status"
@@ -154,7 +155,8 @@
     "mediaFiles": "Media Files",
     "notifications": "Notifications",
     "notificationRecipients": "Notification Recipients",
-    "logo": "Logo"
+    "logo": "Logo",
+    "websites": "Company.websites"
   },
   "CompanyRole": {
     "id": "ID",
@@ -394,6 +396,11 @@
       "Admin": "Admin",
       "Member": "Member",
       "Company": "Company"
+    },
+    "WebsiteCms": {
+      "Strapi": "Strapi",
+      "WordPress": "WordPress",
+      "Directus": "Directus"
     }
   },
   "title": {
@@ -409,7 +416,8 @@
     "MediaFolder": "Media Folder",
     "MediaFile": "Media File",
     "Notification": "Notification",
-    "NotificationRecipient": "Notification Recipient"
+    "NotificationRecipient": "Notification Recipient",
+    "Website": "Website"
   },
   "Notification": {
     "id": "ID",
@@ -480,5 +488,24 @@
     "receiverId": "Receiver ID",
     "receivers": "Receiver",
     "receiver": "NotificationRecipient.receiver"
+  },
+  "Website": {
+    "id": "Website.id",
+    "createdAt": "Website.createdAt",
+    "updatedAt": "Website.updatedAt",
+    "title": "Website.title",
+    "description": "Website.description",
+    "_enums": {
+      "cms": "WebsiteCms"
+    },
+    "cms": "Website.cms",
+    "cmsConfig": "Website.cmsConfig",
+    "cmsApiToken": "Website.cmsApiToken",
+    "cmsApiUrl": "Website.cmsApiUrl",
+    "companyId": "Website.companyId",
+    "company": "Website.company",
+    "_relations": {
+      "company": "Company"
+    }
   }
 }
