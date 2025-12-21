@@ -9,13 +9,13 @@
  * - IsPublicAccess: 公共访问装饰器
  * - CurrentAuth: 当前认证信息装饰器
  * - CurrentAuthAdmin: 当前管理员装饰器
- * - CurrentAuthCompany: 当前公司装饰器
+ * - CurrentAuthCompany: 当前企业装饰器
  * - CurrentAuthMember: 当前成员装饰器
  * - CurrentRequestMeta: 当前请求元信息装饰器
  * - CurrentRequest: 当前请求装饰器
  * - UsePermission: 权限装饰器
  * - ApiCommon: API文档通用装饰器
- * - RequireCompany: 需要公司上下文装饰器
+ * - RequireCompany: 需要企业上下文装饰器
  */
 export * from './is-public-access.decorator';
 export * from './current-auth.decorator';

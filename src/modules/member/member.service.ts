@@ -27,7 +27,7 @@ export class MemberService {
     const args: FindManyMemberArgs = {};
     args.take = 10;
     args.skip = 0;
-    // 对公司可查询的范围做限制
+    // 对企业可查询的范围做限制
     if (!keyword || keyword.length < 2 || !companyId) {
       return PaginationResult([], args.take, args.skip, 0);
     }
@@ -51,7 +51,7 @@ export class MemberService {
   async paginate(args: FindManyMemberArgs, auth?: CurrentAuth) {
     if (!args.take) args.take = 10;
     if (!args.skip) args.skip = 0;
-    // 对公司可查询的范围做限制
+    // 对企业可查询的范围做限制
     if (auth && auth.companyId) {
       args.where = {
         ...args.where,

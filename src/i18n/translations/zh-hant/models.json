@@ -11,7 +11,7 @@
       "company": "Company"
     },
     "memberId": "使用者ID",
-    "companyId": "公司ID",
+    "companyId": "企业ID",
     "token": "令牌",
     "fingerprint": "指紋",
     "device": "裝置",
@@ -24,7 +24,7 @@
     },
     "admin": "管理員",
     "member": "用戶",
-    "company": "公司",
+    "company": "企业",
     "owner": "擁有者",
     "client": "用戶端"
   },
@@ -51,7 +51,7 @@
       "status": "Status"
     },
     "role": "角色",
-    "companies": "公司",
+    "companies": "企业",
     "auths": "認證",
     "logs": "日誌",
     "mediaFolders": "媒體資料夾",
@@ -86,10 +86,10 @@
       "company": "Company",
       "role": "CompanyRole"
     },
-    "companyId": "公司ID",
+    "companyId": "企业ID",
     "permissions": "權限",
     "admin": "管理員",
-    "company": "公司",
+    "company": "企业",
     "roleId": "角色ID",
     "role": "角色"
   },
@@ -113,7 +113,7 @@
     "_enums": {
       "status": "Status"
     },
-    "companies": "公司",
+    "companies": "企业",
     "auths": "認證",
     "logs": "日誌",
     "mediaFolders": "媒體資料夾",
@@ -127,9 +127,9 @@
     "createdAt": "建立時間",
     "updatedAt": "更新時間",
     "status": "狀態",
-    "name": "公司名稱",
+    "name": "企业名稱",
     "alias": "別名",
-    "code": "公司代碼",
+    "code": "企业代碼",
     "description": "描述",
     "_relations": {
       "auths": "Auth",
@@ -167,7 +167,7 @@
     "description": "描述",
     "code": "代碼",
     "permissions": "權限",
-    "companyId": "公司ID",
+    "companyId": "企业ID",
     "_relations": {
       "company": "Company",
       "members": "CompanyMember",
@@ -176,7 +176,7 @@
     "_enums": {
       "status": "Status"
     },
-    "company": "公司",
+    "company": "企业",
     "members": "用戶",
     "admins": "管理員"
   },
@@ -184,7 +184,7 @@
     "createdAt": "建立時間",
     "updatedAt": "更新時間",
     "status": "狀態",
-    "companyId": "公司ID",
+    "companyId": "企业ID",
     "_relations": {
       "company": "Company",
       "member": "Member",
@@ -195,7 +195,7 @@
     "_enums": {
       "status": "Status"
     },
-    "company": "公司",
+    "company": "企业",
     "member": "用戶",
     "role": "角色",
     "invitePassed": "邀請已通過"
@@ -230,7 +230,7 @@
       "company": "Company"
     },
     "adminId": "管理員ID",
-    "companyId": "公司ID",
+    "companyId": "企业ID",
     "_enums": {
       "method": "RequestMethod",
       "target": "Target",
@@ -239,7 +239,7 @@
     },
     "member": "用戶",
     "admin": "管理員",
-    "company": "公司",
+    "company": "企业",
     "owner": "擁有者",
     "client": "用戶端"
   },
@@ -261,7 +261,7 @@
       "member": "Member",
       "files": "MediaFile"
     },
-    "companyId": "公司ID",
+    "companyId": "企业ID",
     "ownerId": "所有者ID",
     "ownerType": "所有者類型",
     "adminId": "管理員ID",
@@ -275,7 +275,7 @@
     },
     "parent": "父級",
     "children": "子級",
-    "company": "公司",
+    "company": "企业",
     "admin": "管理員",
     "member": "用戶",
     "files": "檔案",
@@ -308,7 +308,7 @@
       "admin": "Admin",
       "member": "Member"
     },
-    "companyId": "公司ID",
+    "companyId": "企业ID",
     "ownerId": "所有者ID",
     "ownerType": "所有者類型",
     "adminId": "管理員ID",
@@ -323,7 +323,7 @@
       "owner": "Owner"
     },
     "folder": "資料夾",
-    "company": "公司",
+    "company": "企业",
     "admin": "管理員",
     "member": "用戶",
     "fileExtension": "檔案副檔名",
@@ -407,11 +407,11 @@
     "Auth": "認證",
     "Admin": "管理員",
     "AdminRole": "管理員角色",
-    "AdminCompany": "公司管理員",
+    "AdminCompany": "企业管理員",
     "Member": "用戶",
-    "Company": "公司",
-    "CompanyRole": "公司角色",
-    "CompanyMember": "公司用戶",
+    "Company": "企业",
+    "CompanyRole": "企业角色",
+    "CompanyMember": "企业用戶",
     "RequestLog": "請求日誌",
     "MediaFolder": "媒體資料夾",
     "MediaFile": "媒體檔案",
@@ -448,8 +448,8 @@
     },
     "memberId": "用戶ID",
     "member": "用戶",
-    "companyId": "公司ID",
-    "company": "公司",
+    "companyId": "企业ID",
+    "company": "企业",
     "recipients": "接收者",
     "options": "選項",
     "privacy": "隱私",
@@ -477,8 +477,8 @@
     },
     "memberId": "用戶ID",
     "member": "用戶",
-    "companyId": "公司ID",
-    "company": "公司",
+    "companyId": "企业ID",
+    "company": "企业",
     "notificationId": "通知ID",
     "notification": "通知",
     "readAt": "閱讀時間",
@@ -501,8 +501,8 @@
     "cmsConfig": "CMS設定",
     "cmsApiToken": "CMS API令牌",
     "cmsApiUrl": "CMS API URL",
-    "companyId": "公司ID",
-    "company": "公司",
+    "companyId": "企业ID",
+    "company": "企业",
     "_relations": {
       "company": "Company"
     }

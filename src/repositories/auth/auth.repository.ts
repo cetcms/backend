@@ -120,7 +120,7 @@ export class AuthRepository extends AuthAbstract {
   /**
    * 根据目标类型创建身份认证记录
    * @param targetId - 目标唯一标识符
-   * @param companyId - 公司唯一标识符（可选）
+   * @param companyId - 企业唯一标识符（可选）
    * @param input - 创建身份认证记录所需的数据
    * @returns 创建的身份认证记录
    */
@@ -138,7 +138,7 @@ export class AuthRepository extends AuthAbstract {
   /**
    * 创建管理员认证记录
    * @param adminId 管理员 ID
-   * @param companyId 公司 ID
+   * @param companyId 企业 ID
    * @param data 创建认证记录输入数据
    * @returns 创建的认证记录
    */
@@ -163,7 +163,7 @@ export class AuthRepository extends AuthAbstract {
       if (!admin) {
         throw new Error('target not found');
       }
-      // 非 ROOT 角色必须检查是否拥有管理公司的权限
+      // 非 ROOT 角色必须检查是否拥有管理企业的权限
       if (admin.role?.code !== SystemContract.RootAdminRole && !admin.companies?.length) {
         throw new Error('you cannot manage the company');
       }
@@ -177,7 +177,7 @@ export class AuthRepository extends AuthAbstract {
   /**
    * 创建成员认证记录
    * @param memberId 成员 ID
-   * @param companyId 公司 ID
+   * @param companyId 企业 ID
    * @param data 创建认证记录输入数据
    * @returns 创建的认证记录
    */
@@ -201,7 +201,7 @@ export class AuthRepository extends AuthAbstract {
       if (!member) {
         throw new Error('target not found');
       }
-      // 检查成员是否拥有管理公司的权限
+      // 检查成员是否拥有管理企业的权限
       if (!member.companies?.length) {
         throw new Error('you cannot manage the company');
       }
@@ -232,8 +232,8 @@ export class AuthRepository extends AuthAbstract {
   }
 
   /**
-   * 根据公司 ID 删除该公司的所有身份认证记录
-   * @param companyId - 公司唯一标识符
+   * 根据企业 ID 删除该企业的所有身份认证记录
+   * @param companyId - 企业唯一标识符
    * @returns 删除操作的结果，包含删除的记录数量
    */
   deleteAllByCompanyId(companyId: string) {

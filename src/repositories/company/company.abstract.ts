@@ -155,6 +155,7 @@ export abstract class CompanyAbstract {
       admins: true,
       roles: true,
       members: true,
+      websites: true,
       logs: true,
       mediaFiles: true,
       mediaFolders: true,

@@ -81,7 +81,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       permissions: [],
     };
 
-    // 管理员登录公司
+    // 管理员登录企业
     if (auth.admin && auth.companyId) {
       result.adminRole = auth.admin?.role;
       // 根管理员
@@ -101,7 +101,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       return result;
     }
 
-    // 成员登录公司
+    // 成员登录企业
     if (auth.memberId && auth.companyId) {
       const companyMember = await this.companyMember
         .setInclude({ role: true })

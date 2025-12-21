@@ -69,7 +69,7 @@ export class CompanyGuard implements CanActivate {
     const request = ContextHandler(context).getRequest();
     const auth = <CurrentAuth>request.authInfo;
 
-    // 检查是否必须登录公司才允许访问
+    // 检查是否必须登录企业才允许访问
     if (targets && targets.includes(auth.target as Target) && !auth.companyId) {
       return false;
     }

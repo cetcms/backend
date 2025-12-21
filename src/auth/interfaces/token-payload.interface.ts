@@ -11,7 +11,7 @@ import { Client, Target } from 'src/generated/graphql';
  * - tokenId: string - Token ID
  * - target: Target - 目标类型（管理员或成员）
  * - targetId: string - 目标 ID（管理员 ID 或成员 ID）
- * - companyId?: string - 公司 ID（可选）
+ * - companyId?: string - 企业 ID（可选）
  */
 export interface TokenPayload {
   tokenId?: string;

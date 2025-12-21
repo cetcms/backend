@@ -65,7 +65,7 @@ export class AuthService {
 
   /**
    * 成员登录方法
-   * @param input - 登录输入数据，包含账户、密码、目标类型和公司ID
+   * @param input - 登录输入数据，包含账户、密码、目标类型和企业ID
    * @param meta - 元数据信息
    * @returns 登录结果，包含访问令牌和相关信息
    */
@@ -134,7 +134,7 @@ export class AuthService {
   }
 
   /**
-   * 切换公司
+   * 切换企业
    * @param auth
    * @param meta
    * @param companyId
@@ -152,7 +152,7 @@ export class AuthService {
   }
 
   /**
-   * 获取当前认证公司列表
+   * 获取当前认证企业列表
    * @param auth
    * @param name
    */
@@ -178,7 +178,7 @@ export class AuthService {
       };
     }
     const result: Company[] = await this.company.findMany(args);
-    // 返回公司列表
+    // 返回企业列表
     return result;
   }
 }

@@ -65,7 +65,7 @@ export class TokenFactory {
    *   - tokenId: string - Token ID
    *   - target: Target - 目标类型
    *   - targetId: string - 目标 ID
-   *   - companyId?: string - 公司 ID（可选）
+   *   - companyId?: string - 企业 ID（可选）
    * - expiresIn?: string - 过期时间（可选，默认使用配置值）
    * - secret?: string - 密钥（可选，默认使用配置值）
    *

@@ -43,7 +43,7 @@ export class LoggingInterceptor implements NestInterceptor {
     } else {
       messages.push(`Guest->${data.fingerprint}`);
     }
-    // 如果存在公司ID，则添加公司ID信息
+    // 如果存在企业ID，则添加企业ID信息
     if (data.companyId) {
       messages.push(`COM:${data.companyId}`);
     }
@@ -96,7 +96,7 @@ export class LoggingInterceptor implements NestInterceptor {
       target: auth?.target || null, // 认证目标
       memberId: auth?.memberId || null, // 成员ID
       adminId: auth?.adminId || null, // 管理员ID
-      companyId: auth?.companyId || null, // 公司ID
+      companyId: auth?.companyId || null, // 企业ID
       message: 'OK',
       client: auth?.client || null,
       recordAt: new Date(), // 记录时间

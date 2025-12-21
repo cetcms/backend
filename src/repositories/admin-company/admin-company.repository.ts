@@ -101,17 +101,17 @@ export class AdminCompanyRepository extends AdminCompanyAbstract {
   }
 
   /**
-   * 根据管理员 ID 和公司 ID 删除关联关系
+   * 根据管理员 ID 和企业 ID 删除关联关系
    * @param adminId - 管理员唯一标识符
-   * @param companyId - 公司唯一标识符
-   * @returns 删除的管理员公司关联记录
+   * @param companyId - 企业唯一标识符
+   * @returns 删除的管理员企业关联记录
    */
   deleteByUnique(adminId: string, companyId: string) {
     return this.delete({ adminCompanyIdx: { adminId, companyId } });
   }
 
   /**
-   * 根据管理员 ID 删除该管理员的所有公司关联关系
+   * 根据管理员 ID 删除该管理员的所有企业关联关系
    * @param adminId - 管理员唯一标识符
    * @returns 删除操作的结果，包含删除的记录数量
    */
