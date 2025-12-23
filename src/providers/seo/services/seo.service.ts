@@ -1,15 +1,12 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable } from '@nestjs/common';
 import { AxiosInstance, AxiosError } from 'axios';
+import type { Cache } from 'cache-manager';
 import { Logger } from 'src/common';
 import { ConfigService } from 'src/config';
 
-import {
-  AnalyzeResponse,
-  StatusResponse,
-  GlobalStatusResponse,
-  ReportResponse,
-} from '../interfaces';
+import { AnalyzeResponse, StatusResponse, GlobalStatusResponse, ReportResponse } from '../interfaces';
 
 /**
  * SEO 分析服务
@@ -22,7 +19,8 @@ export class SeoService {
 
   constructor(
     private readonly http: HttpService,
-    private readonly config: ConfigService
+    private readonly config: ConfigService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) {
     const { seo } = config.getProviderConfig();
     this.request = this.http.axiosRef.create({
@@ -40,7 +38,7 @@ export class SeoService {
       this.logger.debug(`提交 SEO 分析任务: ${urls.length} 个 URL`);
       const { data } = await this.request.post<AnalyzeResponse>('/seo/analyze', { urls });
       this.logger.info(
-        `分析任务已提交: 成功 ${data.submitted} 个, 重复 ${data.duplicateUrls.length} 个, 队列 ${data.queueSize} 个`
+        `分析任务已提交: 成功 ${data.submitted || 0} 个, 重复 ${data.duplicateUrls.length} 个, 队列 ${data.queueSize} 个`
       );
       return data;
     } catch (error) {
@@ -54,9 +52,17 @@ export class SeoService {
    * @returns 状态查询响应
    */
   async getUrlsStatus(urls: string[]): Promise<StatusResponse> {
+    const cacheKey = `seo:status:${urls.sort().join(',')}`;
+    const cached = await this.cacheManager.get<StatusResponse>(cacheKey);
+    if (cached) {
+      this.logger.debug(`从缓存获取 ${urls.length} 个 URL 的分析状态`);
+      return cached;
+    }
+
     try {
       this.logger.debug(`查询 ${urls.length} 个 URL 的分析状态`);
       const { data } = await this.request.post<StatusResponse>('/seo/analyze/status', { urls });
+      await this.cacheManager.set(cacheKey, data, 60 * 1000); // 缓存 1 分钟
       return data;
     } catch (error) {
       this.handleError('查询 URL 状态失败', error);
@@ -68,9 +74,17 @@ export class SeoService {
    * @returns 全局状态响应
    */
   async getGlobalStatus(): Promise<GlobalStatusResponse> {
+    const cacheKey = 'seo:global-status';
+    const cached = await this.cacheManager.get<GlobalStatusResponse>(cacheKey);
+    if (cached) {
+      this.logger.debug('从缓存获取全局分析状态');
+      return cached;
+    }
+
     try {
       this.logger.debug('查询全局分析状态');
       const { data } = await this.request.get<GlobalStatusResponse>('/seo/analyze/status/all');
+      await this.cacheManager.set(cacheKey, data, 30 * 1000); // 缓存 30 秒
       return data;
     } catch (error) {
       this.handleError('查询全局状态失败', error);
@@ -83,14 +97,25 @@ export class SeoService {
    * @returns 报告响应
    */
   async getReport(url: string): Promise<ReportResponse> {
+    const cacheKey = `seo:report:${url}`;
+    const cached = await this.cacheManager.get<ReportResponse>(cacheKey);
+    if (cached) {
+      this.logger.debug(`从缓存获取 SEO 报告: ${url}`);
+      return cached;
+    }
+
     try {
       this.logger.debug(`获取 SEO 报告: ${url}`);
       const { data } = await this.request.post<ReportResponse>('/seo/analyze/report', { url });
 
       if (data.success) {
         this.logger.info(`成功获取 SEO 报告: ${url}, 得分: ${data.data.report?.score}`);
+        // 成功的报告缓存更长时间（10分钟）
+        await this.cacheManager.set(cacheKey, data, 10 * 60 * 1000);
       } else {
         this.logger.warn(`报告不存在或获取失败: ${url}, 原因: ${data.message}`);
+        // 失败的响应缓存较短时间（1分钟）
+        await this.cacheManager.set(cacheKey, data, 60 * 1000);
       }
 
       return data;
@@ -111,10 +136,7 @@ export class SeoService {
         // 请求已发出，服务器返回错误状态码
         const status = axiosError.response.status;
         const responseData = axiosError.response.data;
-        this.logger.error(
-          `${message} - HTTP ${status}: ${JSON.stringify(responseData)}`,
-          axiosError.stack
-        );
+        this.logger.error(`${message} - HTTP ${status}: ${JSON.stringify(responseData)}`, axiosError.stack);
         throw new Error(`${message}: HTTP ${status} - ${JSON.stringify(responseData)}`);
       } else if (axiosError.request) {
         // 请求已发出，但没有收到响应

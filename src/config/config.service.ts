@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
 
 import { AppConfig } from './definition/app.config';
+import { CacheConfig } from './definition/cache.config';
 import { ProviderConfig } from './definition/provider.config';
 import { StorageConfig } from './definition/storage.config';
 
@@ -21,5 +22,10 @@ export class ConfigService extends NestConfigService {
     const providerConfig = this.get<typeof ProviderConfig>('provider');
     if (!providerConfig) throw new Error('ProviderConfig is not loaded');
     return providerConfig;
+  }
+  getCacheConfig() {
+    const cacheConfig = this.get<typeof CacheConfig>('cache');
+    if (!cacheConfig) throw new Error('CacheConfig is not loaded');
+    return cacheConfig;
   }
 }

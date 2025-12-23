@@ -34,10 +34,10 @@ export class WebsiteSeoService {
     try {
       const pages = await this.sitePages(auth, args);
       const urls = pages.map((page) => page.url);
-      
+
       this.logger.debug(`准备推送 ${urls.length} 个页面到 SEO 分析队列`);
       const response = await this.seo.analyzeUrls(urls);
-      
+
       if (response.success) {
         this.logger.info(
           `成功推送 ${response.submitted} 个页面, 重复 ${response.duplicateUrls.length} 个, 当前队列 ${response.queueSize} 个`
@@ -59,10 +59,7 @@ export class WebsiteSeoService {
    * @param args 网站查询参数
    * @returns 页面状态列表和摘要信息
    */
-  async getWebsiteSeoPageStatus(
-    auth: CurrentAuth,
-    args: FindUniqueWebsiteArgs
-  ): Promise<WebsiteSeoPageStatusList> {
+  async getWebsiteSeoPageStatus(auth: CurrentAuth, args: FindUniqueWebsiteArgs): Promise<WebsiteSeoPageStatusList> {
     try {
       // 获取所有页面
       const pages = await this.sitePages(auth, args);

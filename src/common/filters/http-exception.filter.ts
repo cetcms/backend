@@ -1,7 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { I18nService } from 'src/i18n';
-import {AxiosError} from "axios";
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
