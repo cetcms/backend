@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
+import { SeoModule } from 'src/providers/seo/seo.module';
+import { SiteModule } from 'src/providers/site/site.module';
+import { StrapiModule } from 'src/providers/strapi/strapi.module';
 
-import { WebsiteResolver } from './website.resolver';
-import { WebsiteService } from './website.service';
+import * as Resolvers from './resolvers';
+import * as Services from './services';
+import { WebsiteController } from './website.controller';
 
 @Module({
-  providers: [WebsiteResolver, WebsiteService],
-  exports: [WebsiteService],
+  imports: [StrapiModule, SiteModule, SeoModule],
+  providers: [...Object.values(Services), ...Object.values(Resolvers)],
+  exports: [...Object.values(Services)],
+  controllers: [WebsiteController],
 })
 export class WebsiteModule {}

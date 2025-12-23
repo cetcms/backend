@@ -3,3 +3,4 @@ export * from './auth/auth.extend';
 export * from './company/company.extend';
 export * from './member/member.extend';
 export * from './media-file/media-file.extend';
+export * from './website/website.extend';

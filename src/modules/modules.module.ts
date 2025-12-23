@@ -9,5 +9,6 @@ import { WebsiteModule } from './website/website.module';
 
 @Module({
   imports: [AdminModule, MemberModule, CompanyModule, MediaModule, NotificationModule, WebsiteModule],
+  providers: [],
 })
 export class ModulesModule {}

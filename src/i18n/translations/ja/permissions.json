@@ -17,7 +17,8 @@
     "NotificationRecipientResolver": "メッセージ通知受信",
     "NotificationResolver": "メッセージ通知管理",
     "NotificationCompanyResolver": "企業通知管理",
-    "WebsiteResolver": "ウェブサイト管理"
+    "WebsiteResolver": "ウェブサイト管理",
+    "WebsiteSeoResolver": "网站管理"
   },
   "action": {
     "MemberResolver": {
@@ -92,6 +93,11 @@
       "paginateWebsites": "ウェブサイトリストをページ分割して検索",
       "createOneWebsite": "ウェブサイトを追加",
       "updateOneWebsite": "ウェブサイトを変更"
+    },
+    "WebsiteSeoResolver": {
+      "listWebsitePages": "分页查询网站列表",
+      "listWebsiteSeoPage": "网站 SEO 页面列表",
+      "pushAllPagesToAnalyze": "分析网站所有页面"
     }
   }
 }

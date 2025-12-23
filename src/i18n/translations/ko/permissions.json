@@ -17,7 +17,8 @@
     "NotificationRecipientResolver": "메시지 알림 수신",
     "NotificationResolver": "메시지 알림 관리",
     "NotificationCompanyResolver": "기업 알림 관리",
-    "WebsiteResolver": "웹사이트 관리"
+    "WebsiteResolver": "웹사이트 관리",
+    "WebsiteSeoResolver": "网站管理"
   },
   "action": {
     "MemberResolver": {
@@ -92,6 +93,11 @@
       "paginateWebsites": "웹사이트 리스트 페이징 조회",
       "createOneWebsite": "웹사이트 추가",
       "updateOneWebsite": "웹사이트 수정"
+    },
+    "WebsiteSeoResolver": {
+      "listWebsitePages": "分页查询网站列表",
+      "listWebsiteSeoPage": "网站 SEO 页面列表",
+      "pushAllPagesToAnalyze": "分析网站所有页面"
     }
   }
 }

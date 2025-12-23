@@ -17,7 +17,8 @@
     "NotificationRecipientResolver": "Notification Recipient Management",
     "NotificationResolver": "Notification Management",
     "NotificationCompanyResolver": "Company Notification Management",
-    "WebsiteResolver": "Website Management"
+    "WebsiteResolver": "Website Management",
+    "WebsiteSeoResolver": "Website SEO"
   },
   "action": {
     "MemberResolver": {
@@ -92,6 +93,11 @@
       "paginateWebsites": "Paginate Websites",
       "createOneWebsite": "Create Website",
       "updateOneWebsite": "Update Website"
+    },
+    "WebsiteSeoResolver": {
+      "listWebsitePages": "分页查询网站列表",
+      "listWebsiteSeoPage": "网站 SEO 页面列表",
+      "pushAllPagesToAnalyze": "分析网站所有页面"
     }
   }
 }

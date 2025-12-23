@@ -12,7 +12,7 @@ import {
   Website,
 } from 'src/generated/graphql';
 
-import { WebsiteService } from './website.service';
+import { WebsiteService } from '../services';
 
 const PaginatedWebsite = Paginated(Website);
 

@@ -10,9 +10,19 @@ import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { I18nModule } from './i18n/i18n.module';
 import { ModulesModule } from './modules/modules.module';
+import { ProvidersModule } from './providers/providers.module';
 
 @Module({
-  imports: [CommonModule, AuthModule, DatabaseModule, I18nModule, RepositoriesModule, ModulesModule, ConfigModule],
+  imports: [
+    CommonModule,
+    AuthModule,
+    DatabaseModule,
+    I18nModule,
+    RepositoriesModule,
+    ModulesModule,
+    ConfigModule,
+    ProvidersModule,
+  ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
 })
