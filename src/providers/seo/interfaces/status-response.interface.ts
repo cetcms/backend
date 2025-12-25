@@ -1,7 +1,7 @@
 /**
  * URL 状态类型
  */
-export type UrlStatus = 'analyzing' | 'queued' | 'idle';
+export type UrlStatus = 'analyzing' | 'queued' | 'completed' | 'failed' | 'timeout' | 'none';
 
 /**
  * URL 状态信息
@@ -16,26 +16,15 @@ export interface UrlStatusInfo {
  * 状态摘要信息
  */
 export interface StatusSummary {
-  totalAnalyzing: number;
-  queueSize: number;
-  activeTasks: number;
-  maxConcurrent: number;
+  queued: number;
+  analyzing: number;
+  completed: number;
+  failed: number;
+  timeout: number;
+  notFound: number;
 }
 
 /**
  * 查询状态响应
  */
-export interface StatusResponse {
-  urlStatuses: UrlStatusInfo[];
-  summary: StatusSummary;
-}
-
-/**
- * 全局状态响应
- */
-export interface GlobalStatusResponse {
-  analyzingUrls: string[];
-  queueSize: number;
-  activeTasks: number;
-  maxConcurrent: number;
-}
+export type StatusResponse = UrlStatusInfo[];

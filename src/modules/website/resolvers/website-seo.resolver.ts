@@ -4,7 +4,7 @@ import { CurrentAuth, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { Client, FindUniqueWebsiteArgs } from 'src/generated/graphql';
 
-import { WebsiteSeoPage, WebsiteSeoPageStatusList } from '../graphql';
+import { WebsiteSeoPage, PushPagesToAnalyzeArgs } from '../graphql';
 import { WebsiteSeoService } from '../services';
 
 /**
@@ -28,15 +28,14 @@ export class WebsiteSeoResolver {
   }
 
   /**
-   * 获取网站 SEO 页面状态列表
-   * 包含每个页面的分析状态、得分和全局摘要信息
-   * @param auth 当前认证信息
-   * @param args 网站查询参数
+   * 分析网站指定页面
+   * @param auth
+   * @param args
    */
-  @UsePermission([Client.Admin, Client.Company])
-  @Query(() => WebsiteSeoPageStatusList)
-  getWebsiteSeoPageStatus(@CurrentAuth() auth: CurrentAuth, @Args() args: FindUniqueWebsiteArgs) {
-    return this.service.getWebsiteSeoPageStatus(auth, args);
+  @UsePermission([Client.Admin])
+  @Mutation(() => Boolean)
+  pushPagesToAnalyze(@CurrentAuth() auth: CurrentAuth, @Args() args: PushPagesToAnalyzeArgs) {
+    return this.service.analyzePages(auth, args.where, args.urls);
   }
 
   /**
@@ -47,6 +46,6 @@ export class WebsiteSeoResolver {
   @UsePermission([Client.Admin])
   @Mutation(() => Boolean)
   pushAllPagesToAnalyze(@CurrentAuth() auth: CurrentAuth, @Args() args: FindUniqueWebsiteArgs) {
-    return this.service.pushAllPagesToAnalyze(auth, args);
+    return this.service.analyzeAllPages(auth, args);
   }
 }

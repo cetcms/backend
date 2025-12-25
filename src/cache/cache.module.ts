@@ -1,6 +1,8 @@
-import { CacheModule as NestCacheModule, CacheModuleAsyncOptions } from '@nestjs/cache-manager';
+import KeyvRedis from '@keyv/redis';
+import { CacheModule as NestCacheModule } from '@nestjs/cache-manager';
 import { Global, Module } from '@nestjs/common';
-import { redisStore } from 'cache-manager-redis-yet';
+import { CacheableMemory } from 'cacheable';
+import { Keyv } from 'keyv';
 import { ConfigService } from 'src/config';
 
 @Global()
@@ -8,21 +10,25 @@ import { ConfigService } from 'src/config';
   imports: [
     NestCacheModule.registerAsync({
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
+      useFactory: (configService: ConfigService) => {
         const cacheConfig = configService.getCacheConfig();
+        const redis = cacheConfig.redis;
         return {
-          store: await redisStore({
-            socket: {
-              host: cacheConfig.redis.host,
-              port: cacheConfig.redis.port,
-            },
-            username: cacheConfig.redis.username || undefined,
-            password: cacheConfig.redis.password || undefined,
-            database: cacheConfig.redis.db,
-          }),
-          ttl: cacheConfig.ttl * 1000, // 转换为毫秒
-          max: cacheConfig.max,
-        } as CacheModuleAsyncOptions;
+          stores: [
+            new Keyv({
+              store: new CacheableMemory({ ttl: cacheConfig.ttl * 1000, lruSize: cacheConfig.max }),
+            }),
+            new KeyvRedis({
+              socket: {
+                host: redis.host,
+                port: redis.port,
+              },
+              username: redis.username || undefined,
+              password: redis.password || undefined,
+              database: redis.db,
+            }),
+          ],
+        };
       },
     }),
   ],
