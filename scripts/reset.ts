@@ -11,14 +11,14 @@
 import { spawn } from 'child_process';
 
 const commands = [
-  'pnpm db:push --force-reset',
-  'pnpm script:scan-permissions',
-  'pnpm db:seed',
-  'pnpm script:push-permissions-to-role',
-  'pnpm script:push-permissions-to-role --type company --role OWNER',
-  'pnpm script:seed-mock',
-  'pnpm generate',
-  'pnpm lint',
+  'bun db:push --force-reset',
+  'bun script:scan-permissions',
+  'bun db:seed',
+  'bun script:push-permissions-to-role',
+  'bun script:push-permissions-to-role --type company --role OWNER',
+  'bun script:seed-mock',
+  'bun generate',
+  'bun lint',
 ];
 
 function executeCommand(command: string): Promise<void> {

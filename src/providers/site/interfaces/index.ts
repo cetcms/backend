@@ -1,1 +1,1 @@
-export * from './page.interface';
+export * from './pages-response.interface';

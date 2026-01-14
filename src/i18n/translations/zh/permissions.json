@@ -99,7 +99,8 @@
       "listWebsiteSeoPage": "网站 SEO 页面列表",
       "pushAllPagesToAnalyze": "分析网站所有页面",
       "getWebsiteSeoPageStatus": "获取 SEO 分析状态",
-      "pushPagesToAnalyze": "分析网站指定页面"
+      "pushPagesToAnalyze": "分析网站指定页面",
+      "pushPagesToUpdate": "更新指定页面 SEO"
     }
   }
 }

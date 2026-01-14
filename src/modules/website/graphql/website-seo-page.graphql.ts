@@ -42,6 +42,12 @@ export class WebsiteSeoPage {
   apiId: string;
 
   @Field(() => String)
+  locale: string;
+
+  @Field(() => Boolean)
+  isItem: boolean;
+
+  @Field(() => String)
   document: string;
 
   @Field(() => String)

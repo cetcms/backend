@@ -437,13 +437,13 @@ model Website {
   title       String
   description String?
 
-  cms         WebsiteCms?
-  cmsConfig   Json?       @map("cms_config")
-  cmsApiToken String?     @map("cms_api_token")
-  cmsApiUrl   String?     @map("cms_api_url")
-
-  companyId String  @map("company_id")
-  company   Company @relation(fields: [companyId], references: [id])
+  cms                WebsiteCms?
+  cmsConfig          Json?       @map("cms_config")
+  cmsApiToken        String?     @map("cms_api_token")
+  cmsApiUrl          String?     @map("cms_api_url")
+  industryBackground String?     @map("industry_background")
+  companyId          String      @map("company_id")
+  company            Company     @relation(fields: [companyId], references: [id])
 }
 
 model Notification {

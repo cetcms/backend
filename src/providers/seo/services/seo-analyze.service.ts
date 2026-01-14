@@ -19,9 +19,9 @@ function md5(str: string) {
  * 提供网页 SEO 分析功能，包括任务提交、状态查询和报告获取
  */
 @Injectable()
-export class SeoService {
+export class SeoAnalyzeService {
   private request: AxiosInstance;
-  private readonly logger = new Logger(SeoService.name);
+  private readonly logger = new Logger(SeoAnalyzeService.name);
 
   constructor(
     private readonly http: HttpService,
@@ -39,7 +39,7 @@ export class SeoService {
    * @param urls URL 数组
    * @returns 分析任务提交响应
    */
-  async analyzeUrls(urls: string[]): Promise<AnalyzeResponse> {
+  async pushUrls(urls: string[]): Promise<AnalyzeResponse> {
     try {
       this.logger.debug(`提交 SEO 分析任务: ${urls.length} 个 URL`);
       const { data } = await this.request.post<AnalyzeResponse>('/seo/analyze', { urls });

@@ -30,6 +30,7 @@ export class StrapiService {
     });
     return this;
   }
+
   async fetchTypes() {
     const cacheKey = `strapi:types:${this.baseUrl}`;
     const cached = await this.cacheManager.get<Array<ContentType>>(cacheKey);

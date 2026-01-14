@@ -3,7 +3,7 @@ import { CurrentAuth } from 'src/auth/decorators';
 import { Logger } from 'src/common';
 import { FindUniqueWebsiteArgs, WebsiteCms } from 'src/generated/graphql';
 import { ContentDataType, SeoAnalysisStatus, WebsiteSeoPage } from 'src/modules/website/graphql';
-import { SeoService } from 'src/providers/seo/services';
+import { SeoAnalyzeService, SeoGenerateService } from 'src/providers/seo/services';
 import { SiteService } from 'src/providers/site/services';
 import { StrapiService } from 'src/providers/strapi/services';
 import { WebsiteRepository } from 'src/repositories';
@@ -12,7 +12,8 @@ import { WebsiteRepository } from 'src/repositories';
 export class WebsiteSeoService {
   private readonly logger = new Logger(WebsiteSeoService.name);
   constructor(
-    private readonly seo: SeoService,
+    private readonly seo: SeoAnalyzeService,
+    private readonly seoGen: SeoGenerateService,
     private readonly strapi: StrapiService,
     private readonly site: SiteService,
     private readonly website: WebsiteRepository
@@ -51,6 +52,22 @@ export class WebsiteSeoService {
     }
   }
 
+  async updatePages(auth: CurrentAuth, where: FindUniqueWebsiteArgs['where'], urls: string[]) {
+    try {
+      const { pages, cmsToken, cmsUrl, website } = await this.siteInfo(auth, { where });
+      const items = pages.filter((page) => urls.includes(page.url) && page.isItem);
+      if (items.length === 0) {
+        this.logger.warn('没有需要更新的页面');
+        return false;
+      }
+      await this.seoGen.pushPages(cmsUrl, cmsToken, items, website);
+      return true;
+    } catch (error) {
+      this.logger.error(`更新页面到 SEO 失败: ${error.message}`, error.stack);
+      return false;
+    }
+  }
+
   /**
    * 推送页面到 SEO 分析队列
    * @param urls
@@ -59,7 +76,7 @@ export class WebsiteSeoService {
   private async pushPagesToAnalyze(urls: string[]) {
     try {
       this.logger.debug(`准备推送 ${urls.length} 个页面到 SEO 分析队列`);
-      const response = await this.seo.analyzeUrls(urls);
+      const response = await this.seo.pushUrls(urls);
 
       if (response.success) {
         this.logger.info(
@@ -98,7 +115,7 @@ export class WebsiteSeoService {
     }
   }
 
-  async sitePages(auth: CurrentAuth, args: FindUniqueWebsiteArgs, withStatus = true): Promise<WebsiteSeoPage[]> {
+  private async siteInfo(auth: CurrentAuth, args: FindUniqueWebsiteArgs) {
     const { where } = args;
     const { company } = auth;
     const website = await this.website.findUnique(where);
@@ -117,11 +134,22 @@ export class WebsiteSeoService {
     const strapi = this.strapi.setRequest(website.cmsApiUrl, website.cmsApiToken);
     const { url } = await strapi.fetchSite().then((site) => site || {});
     const site = this.site.setRequest(url, website.cmsApiToken);
-    const { items } = await site.fetchPages();
-    if (!items) {
+    const { pages } = await site.fetchPages();
+
+    return {
+      pages,
+      website,
+      cmsToken: website.cmsApiToken,
+      cmsUrl: website.cmsApiUrl,
+    };
+  }
+
+  async sitePages(auth: CurrentAuth, args: FindUniqueWebsiteArgs, withStatus = true): Promise<WebsiteSeoPage[]> {
+    const { pages } = await this.siteInfo(auth, args);
+    if (!pages) {
       return [];
     }
-    const urls = items.map((item) => item.url);
+    const urls = pages.map((item) => item.url);
     this.logger.debug(`查询 ${urls.length} 个页面的 SEO 分析状态`);
     // 查询所有页面的状态
     const statuses = withStatus ? await this.seo.getUrlsStatus(urls) : [];
@@ -132,20 +160,22 @@ export class WebsiteSeoService {
       }, {}) || {};
 
     // 组合页面信息和状态信息
-    return items.map((item) => {
+    return pages.map((item) => {
       const urlStatus = statusByUrl[item.url];
       return {
         apiId: item.apiId,
-        contentType: item.dataType === 'single' ? ContentDataType.Single : ContentDataType.Collection,
+        contentType: item.documentType === 'single' ? ContentDataType.Single : ContentDataType.Collection,
         document: item.document,
         documentId: item.documentId,
-        documentTitle: item.dataTypeName,
+        documentTitle: item.documentName,
         id: item.id,
         title: item.title,
         url: item.url,
         status: this.mapStatus(urlStatus?.status || 'none'),
         md5: urlStatus?.md5 || '',
         score: urlStatus?.score || 0,
+        isItem: Boolean(item.isItem),
+        locale: item.locale,
       };
     });
   }

@@ -28,10 +28,10 @@
     "script:gen-i18n-translations": "tsx scripts/gen-i18n-translations.ts",
     "script:seed-mock": "tsx scripts/seed-mock.ts",
     "generate": "prisma generate",
-    "prebuild": "pnpm generate",
-    "predev": "pnpm generate",
-    "predebug": "pnpm generate",
-    "postgenerate": "pnpm script:scan-permissions & pnpm script:gen-i18n-translations"
+    "prebuild": "bun generate",
+    "predev": "bun generate",
+    "predebug": "bun generate",
+    "postgenerate": "bun script:scan-permissions & bun script:gen-i18n-translations"
   },
   "dependencies": {
     "@apollo/server": "^4.12.2",
@@ -142,6 +142,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "packageManager": "pnpm@10.26.1"
+  }
 }

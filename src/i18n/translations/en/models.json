@@ -506,6 +506,7 @@
     "company": "Company",
     "_relations": {
       "company": "Company"
-    }
+    },
+    "industryBackground": "Website.industryBackground"
   }
 }
