@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AxiosInstance } from 'axios';
 import type { Cache } from 'cache-manager';
 import { Logger } from 'src/common';
-import {Page, PagesResponse} from 'src/providers/site/interfaces';
+import { PagesResponse } from 'src/providers/site/interfaces';
 
 @Injectable()
 export class SiteService {

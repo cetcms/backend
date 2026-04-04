@@ -67,8 +67,16 @@ export class StrapiService {
       this.logger.debug('从缓存获取 Strapi Site');
       return cached;
     }
-
-    const { data } = await this.request.get('/api/site').then((res) => res.data);
+    const types = await this.fetchTypes();
+    const siteType = types.find((item) => item.apiID === 'site');
+    if (!siteType) {
+      throw new Error('未找到 Site 类型');
+    }
+    let url = `/api/${siteType.apiID}`;
+    if (siteType.plugin) {
+      url = `/api/${siteType.plugin}/${siteType.apiID}`;
+    }
+    const { data } = await this.request.get(url).then((res) => res.data);
     const site = data as Site;
     await this.cacheManager.set(cacheKey, site, 5 * 60 * 1000); // 缓存 5 分钟
     return site;

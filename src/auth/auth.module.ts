@@ -1,6 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { StringValue } from 'ms';
 import { TokenFactory } from 'src/auth/factories';
 import { JwtStrategy } from 'src/auth/strategies';
 import { ConfigService } from 'src/config';
@@ -16,7 +17,7 @@ import { AuthService } from './auth.service';
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
         secret: configService.getAppConfig().jwt.secret,
-        signOptions: { expiresIn: configService.getAppConfig().jwt.expiresIn },
+        signOptions: { expiresIn: configService.getAppConfig().jwt.expiresIn as StringValue },
       }),
       inject: [ConfigService],
     }),

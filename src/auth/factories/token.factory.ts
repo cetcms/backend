@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { StringValue } from 'ms';
 import { DateHandler, TimeHandler } from 'src/common/handlers';
 import { ConfigService } from 'src/config';
 import { Client, Target } from 'src/generated/graphql';
@@ -87,7 +88,7 @@ export class TokenFactory {
     };
     const token = this.jwtService.sign(payload, {
       secret,
-      expiresIn,
+      expiresIn: expiresIn as StringValue,
     });
     const { value, unit } = TimeHandler().serialize(expiresIn);
     return {
