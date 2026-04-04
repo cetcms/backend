@@ -14,6 +14,22 @@ import { Auth, RequestMethod } from 'src/generated/graphql';
 export function RequestHandler(req: Request) {
   return {
     /**
+     * 获取请求来源域名(Origin)
+     * @returns 请求来源域名，如果不存在则返回null
+     */
+    getOrigin() {
+      return req.headers?.origin || null;
+    },
+
+    /**
+     * 获取前端域名(X-Frontend-Domain)
+     * @returns 前端域名，如果不存在则返回null
+     */
+    getFrontendDomain() {
+      return req.header?.(RequestHeaders.FrontendDomain.toLowerCase()) || null;
+    },
+
+    /**
      * 获取客户端IP地址
      * @returns 客户端IP地址，如果无法获取则返回null
      */

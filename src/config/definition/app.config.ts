@@ -14,6 +14,10 @@ export const AppConfig = {
   auth: {
     enableFingerprint: process.env.ENABLE_FINGERPRINT === 'true',
   },
+  domain: {
+    admin: process.env.ADMIN_DOMAIN || 'localhost',
+    member: process.env.MEMBER_DOMAIN || '127.0.0.1',
+  },
   jwt: {
     secret: process.env.JWT_SECRET || 'ADMIN_SECRET_3325',
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',

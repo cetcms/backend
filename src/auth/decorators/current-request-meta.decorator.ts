@@ -38,6 +38,8 @@ export interface CurrentRequestMeta {
   ip: string | null;
   memberAgent: string | null;
   fingerprint: string | null;
+  origin: string | null;
+  frontendDomain: string | null;
 }
 
 export const CurrentRequestMeta = createParamDecorator((data: any, ctx: ExecutionContext) => {
@@ -47,6 +49,8 @@ export const CurrentRequestMeta = createParamDecorator((data: any, ctx: Executio
     ip: req.getIp(),
     memberAgent: req.getMemberAgent(),
     fingerprint: req.getFingerprint(),
+    origin: req.getOrigin(),
+    frontendDomain: req.getFrontendDomain(),
   };
   return meta;
 });

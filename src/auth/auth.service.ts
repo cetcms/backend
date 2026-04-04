@@ -1,5 +1,6 @@
 import { Injectable, Logger, UnprocessableEntityException } from '@nestjs/common';
 import { isEmail } from 'class-validator';
+import { AppConfig } from 'src/config';
 import { TokenFactory } from 'src/auth/factories';
 import { Login, LoginInput, LoginMeta } from 'src/auth/graphql';
 import { DateHandler } from 'src/common/handlers';
@@ -64,37 +65,83 @@ export class AuthService {
   }
 
   /**
+   * 根据请求的 Origin 或 X-Frontend-Domain 确定登录目标类型
+   * 优先使用 X-Frontend-Domain，如果不存在则使用 Origin
+   * @param origin - 请求的来源域名 (例如: http://localhost:3000)
+   * @param frontendDomain - 前端域名 (例如: localhost)
+   * @returns Target 类型
+   */
+  private determineTargetByDomain(origin: string | null, frontendDomain: string | null): Target {
+    const { admin: adminDomain, member: memberDomain } = AppConfig.domain;
+
+    // 优先使用 X-Frontend-Domain
+    let domainToCheck = frontendDomain;
+
+    // 如果没有 X-Frontend-Domain，则使用 Origin
+    if (!domainToCheck && origin) {
+      try {
+        const url = new URL(origin);
+        domainToCheck = url.hostname;
+      } catch {
+        // 如果解析失败，直接使用原始值
+        domainToCheck = origin.split(':')[0].replace(/^\/\//, '');
+      }
+    }
+
+    // 如果没有获取到任何域名信息，默认返回 Member
+    if (!domainToCheck) {
+      return Target.Member;
+    }
+
+    // 移除端口号（如果有）
+    const hostname = domainToCheck.split(':')[0];
+
+    // 优先匹配 admin 域名
+    if (hostname === adminDomain) {
+      return Target.Admin;
+    }
+
+    // 匹配 member 域名
+    if (hostname === memberDomain) {
+      return Target.Member;
+    }
+
+    // 默认返回 Member
+    return Target.Member;
+  }
+
+  /**
    * 成员登录方法
    * @param input - 登录输入数据，包含账户、密码、目标类型和企业ID
    * @param meta - 元数据信息
    * @returns 登录结果，包含访问令牌和相关信息
    */
   async login(input: LoginInput, meta: LoginMeta): Promise<Login> {
-    // 如果未指定目标类型，默认设置为成员类型
-    if (!input.target) input.target = Target.Member;
+    // 根据请求的 Origin 或 X-Frontend-Domain 自动确定目标类型
+    const target = this.determineTargetByDomain(meta.origin || null, meta.frontendDomain || null);
 
     // 初始化目标对象（管理员或成员）
-    let target: Admin | Member | null = null;
+    let targetEntity: Admin | Member | null = null;
 
     // 根据目标类型获取对应的仓库
-    const repo = input.target === Target.Admin ? this.admin : this.member;
+    const repo = target === Target.Admin ? this.admin : this.member;
 
     // 如果输入的账户是邮箱格式，则通过邮箱和密码查找成员
     if (isEmail(input.account)) {
-      target = await repo.findByEmailAndCheckPassword(input.account, input.password);
+      targetEntity = await repo.findByEmailAndCheckPassword(input.account, input.password);
     }
 
     // 如果未找到匹配的成员或密码错误，则抛出异常
-    if (!target) {
+    if (!targetEntity) {
       this.logger.warn('Target is null');
       throw new UnprocessableEntityException('Invalid login credentials');
     }
 
     try {
       // 删除所有与目标相关的认证记录
-      await this.auth.deleteByTarget(input.target, target.id);
+      await this.auth.deleteByTarget(target, targetEntity.id);
       // 创建新的认证记录
-      return await this.targetLogin(input.target, target.id, meta, input.companyId);
+      return await this.targetLogin(target, targetEntity.id, meta, input.companyId);
     } catch (error) {
       // 打印错误日志
       this.logger.error(error);

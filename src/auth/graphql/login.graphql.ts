@@ -21,6 +21,10 @@ export class LoginMeta {
   memberAgent?: string | null;
   @Field(() => String, { nullable: true })
   ip?: string | null;
+  @Field(() => String, { nullable: true })
+  origin?: string | null;
+  @Field(() => String, { nullable: true })
+  frontendDomain?: string | null;
 }
 
 @ObjectType()

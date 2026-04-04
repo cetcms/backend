@@ -16,6 +16,8 @@ export class AuthResolver {
       fingerprint: meta.fingerprint,
       memberAgent: meta.memberAgent,
       ip: meta.ip,
+      origin: meta.origin,
+      frontendDomain: meta.frontendDomain,
     });
   }
 
