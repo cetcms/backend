@@ -1,0 +1,152 @@
+{
+  "agents": [
+    {
+      "agent_id": "abd4d01ca5adec3f0",
+      "agent_type": "test-analyzer",
+      "started_at": "2026-04-04T18:10:24.959Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:10:25.260Z",
+      "duration_ms": 301
+    },
+    {
+      "agent_id": "a00c60e0f18b44390",
+      "agent_type": "db-analyzer",
+      "started_at": "2026-04-04T18:10:25.047Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:10:25.573Z",
+      "duration_ms": 526
+    },
+    {
+      "agent_id": "a0480dc93467b04f8",
+      "agent_type": "security-analyzer",
+      "started_at": "2026-04-04T18:10:25.017Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:10:25.610Z",
+      "duration_ms": 593
+    },
+    {
+      "agent_id": "a951c3d1e7b3a15c8",
+      "agent_type": "perf-analyzer",
+      "started_at": "2026-04-04T18:10:25.069Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:10:25.639Z",
+      "duration_ms": 570
+    },
+    {
+      "agent_id": "aeacf6d3e7beede37",
+      "agent_type": "arch-analyzer",
+      "started_at": "2026-04-04T18:10:25.116Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:10:25.435Z",
+      "duration_ms": 319
+    },
+    {
+      "agent_id": "ac76616b96e5ecd62",
+      "agent_type": "quality-analyzer",
+      "started_at": "2026-04-04T18:10:25.176Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:10:25.677Z",
+      "duration_ms": 501
+    },
+    {
+      "agent_id": "a87e08df44e331003",
+      "agent_type": "graphql-analyzer",
+      "started_at": "2026-04-04T18:10:25.212Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:10:25.555Z",
+      "duration_ms": 343
+    },
+    {
+      "agent_id": "a742f952ccfc03972",
+      "agent_type": "config-analyzer",
+      "started_at": "2026-04-04T18:10:25.313Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:10:25.828Z",
+      "duration_ms": 515
+    },
+    {
+      "agent_id": "a6829d238a9bd7905",
+      "agent_type": "arch-analyzer",
+      "started_at": "2026-04-04T18:13:32.482Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:13:32.745Z",
+      "duration_ms": 263
+    },
+    {
+      "agent_id": "aa0d654fab49a9ec6",
+      "agent_type": "quality-analyzer",
+      "started_at": "2026-04-04T18:13:32.695Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:13:32.985Z",
+      "duration_ms": 290
+    },
+    {
+      "agent_id": "a5a4162fae632e8e4",
+      "agent_type": "graphql-analyzer",
+      "started_at": "2026-04-04T18:13:33.087Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:13:33.358Z",
+      "duration_ms": 271
+    },
+    {
+      "agent_id": "a1a4b758ae8f2f63d",
+      "agent_type": "security-analyzer",
+      "started_at": "2026-04-04T18:13:33.139Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:13:33.953Z",
+      "duration_ms": 814
+    },
+    {
+      "agent_id": "a52b7280fcf976db3",
+      "agent_type": "perf-analyzer",
+      "started_at": "2026-04-04T18:13:33.171Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:13:33.684Z",
+      "duration_ms": 513
+    },
+    {
+      "agent_id": "a8d31a7b5623dcded",
+      "agent_type": "db-analyzer",
+      "started_at": "2026-04-04T18:13:33.192Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:13:33.457Z",
+      "duration_ms": 265
+    },
+    {
+      "agent_id": "a6ccadc5e672a039e",
+      "agent_type": "config-analyzer",
+      "started_at": "2026-04-04T18:13:33.417Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:13:33.697Z",
+      "duration_ms": 280
+    },
+    {
+      "agent_id": "ab01f052110654965",
+      "agent_type": "test-analyzer",
+      "started_at": "2026-04-04T18:13:33.923Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-04-04T18:13:34.397Z",
+      "duration_ms": 474
+    }
+  ],
+  "total_spawned": 10,
+  "total_completed": 11,
+  "total_failed": 0,
+  "last_updated": "2026-04-04T18:13:34.500Z"
+}

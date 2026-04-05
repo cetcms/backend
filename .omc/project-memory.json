@@ -1,0 +1,352 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1775323934278,
+  "projectRoot": "/Users/imoyh/Codes/nestjs.cetcms.com/backend",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "@nestjs/core",
+        "version": "11.1.18",
+        "category": "backend"
+      },
+      {
+        "name": "express",
+        "version": "5.2.1",
+        "category": "backend"
+      },
+      {
+        "name": "jest",
+        "version": "30.3.0",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": "npm test",
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "build": "nest build",
+      "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+      "start": "nest start",
+      "dev": "nest start --watch --env-file .env",
+      "debug": "nest start --debug --watch --env-file .env",
+      "prod": "node dist/main",
+      "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+      "test": "jest",
+      "test:watch": "jest --watch",
+      "test:cov": "jest --coverage",
+      "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+      "test:e2e": "jest --config ./test/jest-e2e.json",
+      "db:push": "prisma db push",
+      "db:migrate": "prisma migrate dev",
+      "db:reset": "prisma migrate reset",
+      "db:studio": "prisma studio",
+      "db:seed": "tsx scripts/seed-database.ts",
+      "script:scan-permissions": "tsx scripts/scan-permissions.ts",
+      "script:push-permissions-to-role": "tsx scripts/push-permissions-to-role.ts",
+      "script:gen-i18n-translations": "tsx scripts/gen-i18n-translations.ts",
+      "script:seed-mock": "tsx scripts/seed-mock.ts",
+      "generate": "prisma generate",
+      "prebuild": "bun generate",
+      "predev": "bun generate",
+      "predebug": "bun generate",
+      "postgenerate": "bun script:scan-permissions & bun script:gen-i18n-translations"
+    }
+  },
+  "conventions": {
+    "namingStyle": "camelCase/PascalCase",
+    "importStyle": "ES modules",
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "scripts",
+      "src",
+      "test"
+    ],
+    "gitBranches": {
+      "defaultBranch": "develop",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "dist": {
+      "path": "dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 17,
+      "lastAccessed": 1775323934180,
+      "keyFiles": [
+        "app.controller.d.ts",
+        "app.controller.js",
+        "app.controller.js.map",
+        "app.module.d.ts",
+        "app.module.js"
+      ]
+    },
+    "logs": {
+      "path": "logs",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1775323934180,
+      "keyFiles": []
+    },
+    "prisma": {
+      "path": "prisma",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1775323934182,
+      "keyFiles": [
+        "schema.prisma",
+        "zod-generator-config.json"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 6,
+      "lastAccessed": 1775323934183,
+      "keyFiles": [
+        "gen-i18n-translations.ts",
+        "push-permissions-to-role.ts",
+        "reset.ts",
+        "scan-permissions.ts",
+        "seed-database.ts"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 6,
+      "lastAccessed": 1775323934183,
+      "keyFiles": [
+        "app.controller.ts",
+        "app.module.ts",
+        "app.resolver.ts",
+        "app.service.ts",
+        "main.ts"
+      ]
+    },
+    "test": {
+      "path": "test",
+      "purpose": "Test files",
+      "fileCount": 5,
+      "lastAccessed": 1775323934183,
+      "keyFiles": [
+        "app.e2e-spec.ts",
+        "auth-flow.e2e-spec.ts",
+        "jest-e2e.json",
+        "jest-setup.ts",
+        "n8n_testing_workflow.json"
+      ]
+    },
+    "uploads": {
+      "path": "uploads",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1775323934183,
+      "keyFiles": []
+    },
+    "src/config": {
+      "path": "src/config",
+      "purpose": "Configuration files",
+      "fileCount": 3,
+      "lastAccessed": 1775323934184,
+      "keyFiles": [
+        "config.module.ts",
+        "config.service.ts",
+        "index.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "prisma/schema.prisma",
+      "accessCount": 7,
+      "lastAccessed": 1775326952936,
+      "type": "file"
+    },
+    {
+      "path": "src/config/definition/app.config.ts",
+      "accessCount": 4,
+      "lastAccessed": 1775326840509,
+      "type": "file"
+    },
+    {
+      "path": "src/modules/company/services/company.service.ts",
+      "accessCount": 3,
+      "lastAccessed": 1775326863716,
+      "type": "file"
+    },
+    {
+      "path": "src/auth/strategies/jwt.strategy.ts",
+      "accessCount": 3,
+      "lastAccessed": 1775327244890,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 2,
+      "lastAccessed": 1775327169846,
+      "type": "file"
+    },
+    {
+      "path": "src/auth/factories/token.factory.ts",
+      "accessCount": 2,
+      "lastAccessed": 1775327230372,
+      "type": "file"
+    },
+    {
+      "path": "src/i18n/i18n.resolver.ts",
+      "accessCount": 2,
+      "lastAccessed": 1775352060208,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1775326294642,
+      "type": "file"
+    },
+    {
+      "path": "src/app.module.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326320980,
+      "type": "file"
+    },
+    {
+      "path": "src/main.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326321192,
+      "type": "file"
+    },
+    {
+      "path": "src/config/config.service.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326321250,
+      "type": "file"
+    },
+    {
+      "path": "src/auth/auth.module.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326321455,
+      "type": "file"
+    },
+    {
+      "path": "src/repositories/repositories.module.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326330601,
+      "type": "file"
+    },
+    {
+      "path": "src/modules/modules.module.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326330755,
+      "type": "file"
+    },
+    {
+      "path": "src/repositories/admin/admin.repository.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326348369,
+      "type": "file"
+    },
+    {
+      "path": "src/auth/auth.service.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326348420,
+      "type": "file"
+    },
+    {
+      "path": "src/cache/cache.module.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326364820,
+      "type": "file"
+    },
+    {
+      "path": "src/providers/strapi/services/strapi.service.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326388935,
+      "type": "file"
+    },
+    {
+      "path": "test/app.e2e-spec.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326394997,
+      "type": "file"
+    },
+    {
+      "path": "src/auth/interfaces/jwt-payload.interface.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326876366,
+      "type": "file"
+    },
+    {
+      "path": "src/common/tools/logger.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326876417,
+      "type": "file"
+    },
+    {
+      "path": "src/common/tools/json.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775326876468,
+      "type": "file"
+    },
+    {
+      "path": "src/i18n/i18n.service.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775351531186,
+      "type": "file"
+    },
+    {
+      "path": "scripts/gen-i18n-translations.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775351544432,
+      "type": "file"
+    },
+    {
+      "path": "nest-cli.json",
+      "accessCount": 1,
+      "lastAccessed": 1775351724148,
+      "type": "file"
+    },
+    {
+      "path": "src/database/database.service.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775351793045,
+      "type": "file"
+    },
+    {
+      "path": "scripts/scan-permissions.ts",
+      "accessCount": 1,
+      "lastAccessed": 1775351818395,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

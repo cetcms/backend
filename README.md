@@ -2,107 +2,152 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# CETCMS - 企业内容管理系统
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<p align="center">基于 NestJS 构建的企业级 CMS 后端系统</p>
 
-## Description
+## 项目简介
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+CETCMS 是一个功能丰富的企业内容管理系统，支持：
 
-## Project setup
+- **多租户架构** - 支持多企业/组织隔离
+- **权限管理** - 基于 RBAC 的细粒度权限控制
+- **媒体管理** - 支持多种存储后端（本地、七牛、OSS、S3 等）
+- **GraphQL API** - 现代化的 API 设计
+- **多语言支持** - 基于 i18next 的国际化方案
+- **通知系统** - 站内消息和通知管理
+
+## 技术栈
+
+- **框架**: [NestJS](https://nestjs.com/) + TypeScript
+- **数据库**: PostgreSQL + Prisma ORM
+- **API**: GraphQL (Apollo Server) + REST
+- **缓存**: Redis + 内存缓存
+- **认证**: JWT + Passport
+- **运行时**: Bun
+
+## 快速开始
+
+### 环境要求
+
+- Bun >= 1.0
+- PostgreSQL >= 14
+- Redis >= 6
+
+### 安装依赖
 
 ```bash
-$ bun install
+bun install
 ```
 
-## Compile and run the project
+### 环境配置
+
+复制 `.env.example` 为 `.env` 并配置：
 
 ```bash
-# development
-$ bun run start
+# 数据库
+DATABASE_URL="postgresql://user:password@localhost:5432/cetcms?schema=public"
 
-# watch mode
-$ bun run start:dev
+# JWT
+JWT_SECRET="your-secret-key-here"
+JWT_EXPIRES_IN="7d"
 
-# production mode
-$ bun run start:prod
+# Redis
+REDIS_HOST="localhost"
+REDIS_PORT=6379
 ```
 
-## Run tests
+### 数据库迁移
 
 ```bash
-# unit tests
-$ bun run test
-
-# e2e tests
-$ bun run test:e2e
-
-# test coverage
-$ bun run test:cov
+bun run db:migrate
+bun run db:seed
 ```
 
-## Performance test
+### 开发运行
+
 ```bash
-autocannon http://localhost:3000/api \
+# 开发模式（热重载）
+bun run dev
+
+# 调试模式
+bun run debug
+```
+
+### 生产构建
+
+```bash
+bun run build
+bun run prod
+```
+
+## 项目结构
+
+```
+src/
+├── auth/              # 认证模块（JWT、Guard、装饰器）
+├── cache/             # 缓存配置（Redis + 内存）
+├── common/            # 共享工具、过滤器、拦截器
+├── config/            # 配置服务
+├── database/          # Prisma 数据库服务
+├── generated/         # 自动生成的 DTO 和 GraphQL 类型
+├── i18n/              # 国际化配置
+├── modules/           # 业务模块
+│   ├── admin/         # 管理员管理
+│   ├── company/       # 企业管理
+│   ├── media/         # 媒体文件管理
+│   ├── member/        # 成员管理
+│   ├── notification/  # 通知系统
+│   └── website/       # 网站管理
+├── providers/         # 外部服务提供商
+│   ├── site/          # 站点爬虫
+│   └── strapi/        # Strapi CMS 集成
+└── repositories/      # 数据访问层（Prisma 扩展）
+```
+
+## 常用命令
+
+```bash
+# 数据库操作
+bun run db:migrate        # 运行迁移
+bun run db:push           # 推送 schema 变更
+bun run db:studio         # 打开 Prisma Studio
+bun run db:seed           # 种子数据
+
+# 代码生成
+bun run generate          # 生成 Prisma Client 和 DTO
+
+# 脚本
+bun run script:scan-permissions          # 扫描权限
+bun run script:push-permissions-to-role  # 推送权限到角色
+bun run script:gen-i18n-translations     # 生成翻译文件
+
+# 测试
+bun run test              # 单元测试
+bun run test:e2e          # E2E 测试
+bun run test:cov          # 测试覆盖率
+
+# 代码质量
+bun run lint              # ESLint 检查
+bun run format            # Prettier 格式化
+```
+
+## API 文档
+
+启动服务后访问：
+
+- GraphQL Playground: http://localhost:3325/graphql
+- Swagger UI: http://localhost:3325/api-docs
+
+## 性能测试
+
+```bash
+autocannon http://localhost:3325/api \
   -c 10 \
   -d 5 \
-  -H "X-Fingerprint: test-fingerprint" \
-  -H "Accept-Language: zh-CN,zh;q=0.9" \
-  -H "Authorization: Basic eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwMTk5NTFhNC02NGI2LTcyNDgtOTA1MC05MmY1NzY1ZDg2YjIiLCJhdWQiOiJBZG1pbiIsInN1YiI6ImNtZmZtZzJncTAwMDFoNzlmMDZ6NjhxMmEiLCJpYXQiOjE3NTgwMTEzNTIsImV4cCI6MTc1ODYxNjE1Mn0.rWscKF58MdWGPGJFlRGaKZcBb4qyDL7W9rsm9eHrkuQ"
+  -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
-## Deployment
+## 许可证
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ bun install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+[MIT](LICENSE)
