@@ -19,16 +19,16 @@ export const AppConfig = {
     member: process.env.MEMBER_DOMAIN || '127.0.0.1',
   },
   jwt: {
-    secret: process.env.JWT_SECRET || 'ADMIN_SECRET_3325',
+    secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
   },
   db: {
     host: process.env.DATABASE_HOST || '127.0.0.1',
-    port: parseInt(process.env.DATABASE_PORT || '3306', 10) || 3306,
-    membername: process.env.DATABASE_USERNAME || 'root',
-    password: process.env.DATABASE_PASSWORD || 'password',
-    database: process.env.DATABASE_NAME || 'test',
-    provider: process.env.DATABASE_PROVIDER || 'postgres',
+    port: parseInt(process.env.DATABASE_PORT || '5432', 10) || 5432,
+    username: process.env.DATABASE_USERNAME || 'postgres',
+    password: process.env.DATABASE_PASSWORD || '',
+    database: process.env.DATABASE_NAME || 'cetcms',
+    provider: process.env.DATABASE_PROVIDER || 'postgresql',
   },
 };
 

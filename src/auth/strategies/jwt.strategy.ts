@@ -27,10 +27,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly configService: ConfigService,
     private readonly factory: TokenFactory
   ) {
+    const jwtConfig = configService.getAppConfig().jwt;
+    if (!jwtConfig.secret) {
+      throw new Error('JWT_SECRET is not defined in environment variables');
+    }
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.getAppConfig().jwt.secret,
+      secretOrKey: jwtConfig.secret,
     });
   }
 

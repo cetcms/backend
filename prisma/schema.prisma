@@ -181,6 +181,9 @@ model Auth {
   device   Json?
   location Json?
 
+  @@index([target], name: "authTargetIdx")
+  @@index([client], name: "authClientIdx")
+  @@index([expiredAt], name: "authExpiredAtIdx")
   @@map("auths")
 }
 
@@ -582,6 +585,11 @@ model RequestLog {
   company   Company? @relation(fields: [companyId], references: [id])
 
   @@index([subject, action], name: "requestResourceIdx")
+  @@index([createdAt], name: "requestLogCreatedAtIdx")
+  @@index([ip], name: "requestLogIpIdx")
+  @@index([memberId], name: "requestLogMemberIdx")
+  @@index([adminId], name: "requestLogAdminIdx")
+  @@index([companyId], name: "requestLogCompanyIdx")
   @@map("request_logs")
 }
 
@@ -685,5 +693,8 @@ model MediaFile {
   @@unique([adminId, folderId, fileName], name: "adminFileIdx")
   @@unique([memberId, folderId, fileName], name: "memberFileIdx")
   @@unique([companyId, folderId, fileName], name: "companyFileIdx")
+  @@index([fileHash], name: "mediaFileHashIdx")
+  @@index([status], name: "mediaFileStatusIdx")
+  @@index([store], name: "mediaFileStoreIdx")
   @@map("media_files")
 }

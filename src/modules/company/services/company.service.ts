@@ -59,7 +59,6 @@ export class CompanyService {
     const { where, data } = args;
     if (auth && auth.company) {
       for (const key in where) {
-        console.log(where[key], auth.company[key]);
         if (where[key] && where[key] !== auth.company[key]) {
           throw new ForbiddenException('无权限操作');
         }

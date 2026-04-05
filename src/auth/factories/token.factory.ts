@@ -50,6 +50,9 @@ export class TokenFactory {
     private readonly configService: ConfigService
   ) {
     const { jwt } = configService.getAppConfig();
+    if (!jwt.secret) {
+      throw new Error('JWT_SECRET is not defined in environment variables');
+    }
     this.jwtSecret = jwt.secret;
     this.jwtExpiresIn = jwt.expiresIn;
   }
