@@ -128,8 +128,8 @@ bun run test:e2e          # E2E 测试
 bun run test:cov          # 测试覆盖率
 
 # 代码质量
-bun run lint              # ESLint 检查
-bun run format            # Prettier 格式化
+bun run lint              # oxlint 检查
+bun run format            # oxfmt 格式化
 ```
 
 ## API 文档

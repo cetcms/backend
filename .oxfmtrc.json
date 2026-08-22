@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "quoteProps": "as-needed",
+  "proseWrap": "preserve",
+  "endOfLine": "lf",
+  "singleAttributePerLine": false,
+  "insertFinalNewline": true,
+  "sortImports": {
+    "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "unknown"],
+    "newlinesBetween": true,
+    "order": "asc",
+    "ignoreCase": true,
+    "internalPattern": ["src/", "~/", "@/", "#"]
+  },
+  "ignorePatterns": [
+    "src/contracts/models-relation.contract.ts",
+    "src/i18n/i18n.enum.ts"
+  ]
+}

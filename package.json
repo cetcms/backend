@@ -7,12 +7,12 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "oxfmt \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch --env-file .env",
     "debug": "nest start --debug --watch --env-file .env",
     "prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "oxlint src test --fix",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -92,8 +92,6 @@
   },
   "devDependencies": {
     "@brakebein/prisma-generator-nestjs-dto": "^1.30.0",
-    "@eslint/eslintrc": "^3.3.6",
-    "@eslint/js": "^10.0.1",
     "@faker-js/faker": "^10.6.0",
     "@nestjs/cli": "^11.0.24",
     "@nestjs/schematics": "^11.1.0",
@@ -110,13 +108,9 @@
     "@types/voca": "^1.4.6",
     "autocannon": "^8.0.0",
     "dotenv": "^17.4.2",
-    "eslint": "^10.9.0",
-    "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-import-x": "^4.17.1",
-    "eslint-plugin-prettier": "^5.5.6",
-    "globals": "^17.11.0",
     "jest": "^30.4.2",
-    "prettier": "^3.9.6",
+    "oxfmt": "^0.64.0",
+    "oxlint": "^1.79.0",
     "prisma": "7.9.1",
     "prisma-nestjs-graphql": "^23.2.1",
     "prisma-zod-generator": "^3.3.1",
@@ -128,8 +122,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.23.12",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.67.0"
+    "typescript": "^6.0.3"
   },
   "jest": {
     "moduleFileExtensions": [

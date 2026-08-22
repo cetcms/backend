@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["eslint", "typescript", "import"],
+  "rules": {
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+    "typescript/no-explicit-any": "off",
+    "typescript/no-var-requires": "error",
+    "no-debugger": "error",
+    "no-alert": "error",
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-console": "off",
+    "require-await": "error",
+    "prefer-promise-reject-errors": "error",
+    "import/no-duplicates": "error"
+  },
+  "ignorePatterns": [
+    "dist/**",
+    "build/**",
+    "**/generated/**",
+    "node_modules/**",
+    ".next/**",
+    "coverage/**",
+    "public/**",
+    "**/*.d.ts",
+    "src/contracts/models-relation.contract.ts",
+    "src/i18n/i18n.enum.ts"
+  ]
+}
