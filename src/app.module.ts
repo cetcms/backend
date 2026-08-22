@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { AppResolver } from 'src/app.resolver';
 import { CacheModule } from 'src/cache';
 import { ConfigModule } from 'src/config';

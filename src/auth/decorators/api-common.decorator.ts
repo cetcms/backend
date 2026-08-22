@@ -31,6 +31,7 @@
  */
 import { applyDecorators } from '@nestjs/common';
 import { ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
+
 import { RequestHeaders } from 'src/contracts';
 
 export function ApiCommon({ auth }: { auth?: boolean } = { auth: true }) {

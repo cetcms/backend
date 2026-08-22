@@ -29,6 +29,7 @@
  * - 依赖 ContextHandler(ctx) 从不同类型的上下文中获取 Request；确保在全局拦截器/守卫中正确设置 request.authInfo。
  */
 import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+
 import { ContextHandler } from 'src/common/handlers';
 import { AdminRole, CompanyRole } from 'src/generated/graphql';
 import { Auth } from 'src/generated/graphql/auth';

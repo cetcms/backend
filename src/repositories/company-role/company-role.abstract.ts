@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { z } from 'zod';
+
 import { DatabaseService } from 'src/database';
 import {
   CompanyRole,
@@ -26,7 +28,6 @@ import {
   CompanyRoleWhereInputObjectZodSchema,
   CompanyRoleWhereUniqueInputObjectZodSchema,
 } from 'src/generated/schemas';
-import { z } from 'zod';
 
 /**
  * 企业角色数据访问抽象类

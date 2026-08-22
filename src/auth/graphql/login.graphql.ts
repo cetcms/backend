@@ -1,4 +1,5 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
+
 import { Target } from 'src/generated/graphql/prisma';
 
 @InputType()

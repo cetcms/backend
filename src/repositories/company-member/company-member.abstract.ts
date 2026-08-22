@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { z } from 'zod';
+
 import { DatabaseService } from 'src/database';
 import {
   CompanyMember,
@@ -26,7 +28,6 @@ import {
   CompanyMemberWhereInputObjectZodSchema,
   CompanyMemberWhereUniqueInputObjectZodSchema,
 } from 'src/generated/schemas';
-import { z } from 'zod';
 
 /**
  * 企业成员关联数据访问抽象类

@@ -30,6 +30,7 @@
  * - 依赖 ContextHandler(ctx) 正确获取 Request；确保在认证逻辑中写入 request.authInfo。
  */
 import { createParamDecorator, ExecutionContext, ForbiddenException, UnauthorizedException } from '@nestjs/common';
+
 import { ContextHandler } from 'src/common/handlers';
 import { Auth } from 'src/generated/graphql/auth';
 

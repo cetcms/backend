@@ -7,9 +7,10 @@ import process from 'node:process';
 import { LoggerService as NestLoggerService } from '@nestjs/common';
 import chalk from 'chalk';
 import { WinstonModule } from 'nest-winston';
-import { JsonStringify } from 'src/common';
 import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
+
+import { JsonStringify } from 'src/common';
 
 /**
  * Winston 配置

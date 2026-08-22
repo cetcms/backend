@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { z } from 'zod';
+
 import { DatabaseService } from 'src/database';
 import {
   AdminCompany,
@@ -26,7 +28,6 @@ import {
   AdminCompanyWhereInputObjectZodSchema,
   AdminCompanyWhereUniqueInputObjectZodSchema,
 } from 'src/generated/schemas';
-import { z } from 'zod';
 
 /**
  * 管理员企业关联数据访问抽象类

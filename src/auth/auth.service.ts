@@ -1,5 +1,6 @@
 import { Injectable, Logger, UnprocessableEntityException } from '@nestjs/common';
 import { isEmail } from 'class-validator';
+
 import { TokenFactory } from 'src/auth/factories';
 import { Login, LoginInput, LoginMeta } from 'src/auth/graphql';
 import { DateHandler } from 'src/common/handlers';

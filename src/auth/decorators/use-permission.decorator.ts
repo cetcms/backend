@@ -31,6 +31,7 @@
  * - 依赖 USE_PERMISSION_KEY 元数据键与 PermissionGuard，须确保两者在应用中已正确引入与提供。
  */
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
+
 import { PermissionGuard } from 'src/auth/guards';
 import { Client } from 'src/generated/graphql';
 

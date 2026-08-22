@@ -1,9 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'src/app.module';
-import { Target } from 'src/generated/graphql/prisma';
 import request from 'supertest';
 import { App } from 'supertest/types';
+
+import { AppModule } from 'src/app.module';
+import { Target } from 'src/generated/graphql/prisma';
 
 describe('Auth Flow (e2e)', () => {
   let app: INestApplication<App>;

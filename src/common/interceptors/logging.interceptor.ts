@@ -1,10 +1,11 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { v7 as uuid } from 'uuid';
+
 import { BuildRequestLogPrint, JsonMask, Logger } from 'src/common';
 import { ContextHandler, RequestHandler } from 'src/common/handlers';
 import { RequestLog } from 'src/generated/graphql';
-import { v7 as uuid } from 'uuid';
 
 /**
  * 日志拦截器

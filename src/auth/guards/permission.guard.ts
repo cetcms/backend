@@ -17,6 +17,7 @@
  */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+
 import { CurrentAuth, USE_PERMISSION_KEY } from 'src/auth/decorators';
 import { ContextHandler, PermissionAliasHandler } from 'src/common/handlers';
 import { Client } from 'src/generated/graphql';

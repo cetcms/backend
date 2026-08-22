@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+
 import { PaginationResult } from 'src/common/dto';
 import {
   CreateOneNotificationRecipientArgs,

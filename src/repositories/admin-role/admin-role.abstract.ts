@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { z } from 'zod';
+
 import { DatabaseService } from 'src/database';
 import {
   AdminRole,
@@ -26,7 +28,6 @@ import {
   AdminRoleWhereInputObjectZodSchema,
   AdminRoleWhereUniqueInputObjectZodSchema,
 } from 'src/generated/schemas';
-import { z } from 'zod';
 
 /**
  * 管理员角色数据访问抽象类

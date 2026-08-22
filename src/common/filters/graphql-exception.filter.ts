@@ -1,7 +1,8 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
+import { ZodError } from 'zod';
+
 import { Prisma } from 'src/generated/prisma/client';
 import { I18nService } from 'src/i18n';
-import { ZodError } from 'zod';
 
 @Catch()
 export class GraphQLExceptionFilter implements ExceptionFilter {

@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { z } from 'zod';
+
 import { DatabaseService } from 'src/database';
 import {
   MediaFolder,
@@ -26,7 +28,6 @@ import {
   MediaFolderWhereInputObjectZodSchema,
   MediaFolderWhereUniqueInputObjectZodSchema,
 } from 'src/generated/schemas';
-import { z } from 'zod';
 
 /**
  * 媒体文件夹数据访问抽象类

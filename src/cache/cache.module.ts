@@ -3,6 +3,7 @@ import { CacheModule as NestCacheModule } from '@nestjs/cache-manager';
 import { Global, Module } from '@nestjs/common';
 import { CacheableMemory } from 'cacheable';
 import { Keyv } from 'keyv';
+
 import { ConfigService } from 'src/config';
 
 @Global()

@@ -35,6 +35,7 @@
  * - 与认证装饰器配合使用，确保请求上下文中包含有效的成员信息
  */
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
+
 import { CompanyGuard } from 'src/auth/guards';
 import { Target } from 'src/generated/graphql';
 

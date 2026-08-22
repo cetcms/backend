@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { z } from 'zod';
+
 import { DatabaseService } from 'src/database';
 import {
   RequestLog,
@@ -26,7 +28,6 @@ import {
   RequestLogWhereInputObjectZodSchema,
   RequestLogWhereUniqueInputObjectZodSchema,
 } from 'src/generated/schemas';
-import { z } from 'zod';
 
 /**
  * 请求日志数据访问抽象类

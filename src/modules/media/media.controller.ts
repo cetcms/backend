@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors, Req, Res } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Request, Response } from 'express';
+
 import { JwtAuthGuard } from 'src/auth/guards';
 
 import { MediaService } from './media.service';

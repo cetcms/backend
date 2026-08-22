@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { validateFileExtension, validateMimeType } from 'graphql-upload-ts';
 import sharp from 'sharp';
+
 import { getMediaInfo } from 'src/common';
 import { ConfigService } from 'src/config';
 import { MediaType } from 'src/generated/graphql';

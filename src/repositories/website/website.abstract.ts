@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { z } from 'zod';
+
 import { DatabaseService } from 'src/database';
 import {
   CreateOneWebsiteArgs,
@@ -26,7 +28,6 @@ import {
   WebsiteWhereInputObjectZodSchema,
   WebsiteWhereUniqueInputObjectZodSchema,
 } from 'src/generated/schemas';
-import { z } from 'zod';
 
 /**
  * 网站数据访问抽象类

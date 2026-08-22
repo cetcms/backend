@@ -1,8 +1,9 @@
 import * as crypto from 'crypto';
 
+import voca from 'voca';
+
 import { PermissionGroupItem, PermissionItem } from 'src/auth/graphql';
 import { I18nService } from 'src/i18n';
-import voca from 'voca';
 
 const md5 = (value: string): string => {
   return crypto.createHash('md5').update(value).digest('hex');

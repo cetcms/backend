@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { SiteModule } from 'src/providers/site/site.module';
 import { StrapiModule } from 'src/providers/strapi/strapi.module';
 

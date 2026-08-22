@@ -1,4 +1,5 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+
 import { Company } from 'src/generated/graphql';
 import { MediaFileRepository } from 'src/repositories';
 

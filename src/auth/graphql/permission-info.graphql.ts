@@ -1,4 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+
 import { Client } from 'src/generated/graphql/prisma';
 import { PermissionAlias } from 'src/generated/permissions';
 

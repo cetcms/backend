@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { z } from 'zod';
+
 import { DatabaseService } from 'src/database';
 import {
   Notification,
@@ -26,7 +28,6 @@ import {
   NotificationWhereInputObjectZodSchema,
   NotificationWhereUniqueInputObjectZodSchema,
 } from 'src/generated/schemas';
-import { z } from 'zod';
 
 /**
  * 消息通知数据访问抽象类

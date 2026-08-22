@@ -3,6 +3,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { AxiosInstance } from 'axios';
 import type { Cache } from 'cache-manager';
+
 import { Logger } from 'src/common';
 import { PagesResponse } from 'src/providers/site/interfaces';
 

@@ -1,6 +1,7 @@
 import path from 'node:path';
 
 import { registerAs } from '@nestjs/config';
+
 import { MediaStore } from 'src/generated/graphql/prisma';
 
 export const StorageConfig = {

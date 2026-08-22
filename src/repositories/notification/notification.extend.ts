@@ -1,4 +1,5 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+
 import { Notification } from 'src/generated/graphql';
 import { NotificationRepository } from 'src/repositories';
 

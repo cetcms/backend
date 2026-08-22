@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+
 import { CurrentAuth, CurrentAuthCompany, UsePermission } from 'src/auth/decorators';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { IPaginated, Paginated } from 'src/common/dto';

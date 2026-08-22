@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { StringValue } from 'ms';
+
 import { TokenFactory } from 'src/auth/factories';
 import { JwtStrategy } from 'src/auth/strategies';
 import { ConfigService } from 'src/config';

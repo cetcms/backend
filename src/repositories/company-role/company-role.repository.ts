@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import voca from 'voca';
+
 import { DatabaseService } from 'src/database';
 import {
   Client,
@@ -9,7 +11,6 @@ import {
 } from 'src/generated/graphql';
 import { Permissions } from 'src/generated/permissions';
 import { Prisma } from 'src/generated/prisma/client';
-import voca from 'voca';
 
 import { CompanyRoleAbstract } from './company-role.abstract';
 

@@ -6,10 +6,11 @@ import acceptLanguage from 'accept-language';
 import { Request } from 'express';
 import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
-import { ConfigService } from 'src/config/config.service';
 import voca from 'voca';
 import { z } from 'zod';
 import { en, zhCN, zhTW } from 'zod/locales';
+
+import { ConfigService } from 'src/config/config.service';
 
 @Injectable()
 export class I18nService implements OnModuleInit {

@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { StringValue } from 'ms';
+import { v7 as uuid } from 'uuid';
+
 import { DateHandler, TimeHandler } from 'src/common/handlers';
 import { ConfigService } from 'src/config';
 import { Client, Target } from 'src/generated/graphql';
-import { v7 as uuid } from 'uuid';
 
 import { JwtPayload, TokenPayload } from '../interfaces';
 
