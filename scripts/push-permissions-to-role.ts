@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Logger } from '@nestjs/common';
 import { Command } from 'commander';
 import { DatabaseService } from 'src/database';

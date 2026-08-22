@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import { FindManyMediaFolderArgs, UpsertOneMediaFolderArgs, Owner } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 
 import { MediaFolderAbstract } from './media-folder.abstract';
 

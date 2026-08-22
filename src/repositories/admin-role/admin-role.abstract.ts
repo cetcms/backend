@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   AdminRole,
@@ -17,6 +16,7 @@ import {
   UpdateOneAdminRoleArgs,
   UpsertOneAdminRoleArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   AdminRoleCreateInputObjectZodSchema,
   AdminRoleIncludeObjectZodSchema,
@@ -213,7 +213,7 @@ export abstract class AdminRoleAbstract {
    * @param where - 查询条件
    * @returns 管理员角色记录或null
    */
-  findUnique(where: FindUniqueAdminRoleArgs['where']): PrismaPromise<AdminRole | null> {
+  findUnique(where: FindUniqueAdminRoleArgs['where']): Prisma.PrismaPromise<AdminRole | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.adminRole.findUnique({
@@ -231,7 +231,7 @@ export abstract class AdminRoleAbstract {
    * @param args - 查询参数
    * @returns 管理员角色记录或null
    */
-  findFirst(args: FindFirstAdminRoleArgs): PrismaPromise<AdminRole | null> {
+  findFirst(args: FindFirstAdminRoleArgs): Prisma.PrismaPromise<AdminRole | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -250,7 +250,7 @@ export abstract class AdminRoleAbstract {
    * @param args - 查询参数
    * @returns 管理员角色记录数组
    */
-  findMany(args: FindManyAdminRoleArgs): PrismaPromise<AdminRole[]> {
+  findMany(args: FindManyAdminRoleArgs): Prisma.PrismaPromise<AdminRole[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -267,7 +267,7 @@ export abstract class AdminRoleAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyAdminRoleArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyAdminRoleArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.adminRole.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -279,7 +279,7 @@ export abstract class AdminRoleAbstract {
    * @param data - 创建数据
    * @returns 创建的管理员角色记录
    */
-  create(data: CreateOneAdminRoleArgs['data']): PrismaPromise<AdminRole> {
+  create(data: CreateOneAdminRoleArgs['data']): Prisma.PrismaPromise<AdminRole> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.adminRole.create({
@@ -296,7 +296,10 @@ export abstract class AdminRoleAbstract {
    * @param data - 更新数据
    * @returns 更新后的管理员角色记录
    */
-  update(where: UpdateOneAdminRoleArgs['where'], data: UpdateOneAdminRoleArgs['data']): PrismaPromise<AdminRole> {
+  update(
+    where: UpdateOneAdminRoleArgs['where'],
+    data: UpdateOneAdminRoleArgs['data']
+  ): Prisma.PrismaPromise<AdminRole> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.adminRole.update({
@@ -315,7 +318,7 @@ export abstract class AdminRoleAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的管理员角色记录
    */
-  upsert(args: UpsertOneAdminRoleArgs): PrismaPromise<AdminRole> {
+  upsert(args: UpsertOneAdminRoleArgs): Prisma.PrismaPromise<AdminRole> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -336,7 +339,7 @@ export abstract class AdminRoleAbstract {
    * @param where - 删除条件
    * @returns 删除的管理员角色记录
    */
-  delete(where: DeleteOneAdminRoleArgs['where']): PrismaPromise<AdminRole> {
+  delete(where: DeleteOneAdminRoleArgs['where']): Prisma.PrismaPromise<AdminRole> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.adminRole.delete({

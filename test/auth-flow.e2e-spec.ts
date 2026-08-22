@@ -26,6 +26,7 @@ describe('Auth Flow (e2e)', () => {
   it('should perform login successfully', () => {
     return request(app.getHttpServer())
       .post('/graphql')
+      .set('Origin', 'http://localhost')
       .send({
         query: `
           mutation Login($input: LoginInput!) {
@@ -75,18 +76,20 @@ describe('Auth Flow (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         query: `
-          query ListAuthCompanies($name: String) {
-            listAuthCompanies(name: $name) {
-              id
-              name
-              alias
-              code
+          query PaginateCompanies {
+            paginateCompanies {
+              items {
+                id
+                name
+                alias
+                code
+              }
+              pagination {
+                totalCount
+              }
             }
           }
         `,
-        variables: {
-          name: '',
-        },
       })
       .expect(200)
       .expect((res) => {
@@ -100,9 +103,10 @@ describe('Auth Flow (e2e)', () => {
         }
 
         expect(res.body.data).toBeDefined();
-        expect(res.body.data.listAuthCompanies).toBeDefined();
-        if (res.body.data.listAuthCompanies.length > 0) {
-          companyId = res.body.data.listAuthCompanies[0].id;
+        expect(res.body.data.paginateCompanies).toBeDefined();
+        const items = res.body.data.paginateCompanies.items ?? [];
+        if (items.length > 0) {
+          companyId = items[0].id;
         }
         console.log('Company ID:', companyId);
       });

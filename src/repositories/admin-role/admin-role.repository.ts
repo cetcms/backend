@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import { Client, FindManyAdminRoleArgs, UpsertOneAdminRoleArgs } from 'src/generated/graphql';
 import { Permissions } from 'src/generated/permissions';
+import { Prisma } from 'src/generated/prisma/client';
 import voca from 'voca';
 
 import { AdminRoleAbstract } from './admin-role.abstract';

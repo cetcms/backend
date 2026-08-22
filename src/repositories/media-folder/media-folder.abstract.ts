@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   MediaFolder,
@@ -17,6 +16,7 @@ import {
   UpdateOneMediaFolderArgs,
   UpsertOneMediaFolderArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   MediaFolderCreateInputObjectZodSchema,
   MediaFolderIncludeObjectZodSchema,
@@ -216,7 +216,7 @@ export abstract class MediaFolderAbstract {
    * @param where - 查询条件
    * @returns 媒体文件夹记录或null
    */
-  findUnique(where: FindUniqueMediaFolderArgs['where']): PrismaPromise<MediaFolder | null> {
+  findUnique(where: FindUniqueMediaFolderArgs['where']): Prisma.PrismaPromise<MediaFolder | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.mediaFolder.findUnique({
@@ -234,7 +234,7 @@ export abstract class MediaFolderAbstract {
    * @param args - 查询参数
    * @returns 媒体文件夹记录或null
    */
-  findFirst(args: FindFirstMediaFolderArgs): PrismaPromise<MediaFolder | null> {
+  findFirst(args: FindFirstMediaFolderArgs): Prisma.PrismaPromise<MediaFolder | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -253,7 +253,7 @@ export abstract class MediaFolderAbstract {
    * @param args - 查询参数
    * @returns 媒体文件夹记录数组
    */
-  findMany(args: FindManyMediaFolderArgs): PrismaPromise<MediaFolder[]> {
+  findMany(args: FindManyMediaFolderArgs): Prisma.PrismaPromise<MediaFolder[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -270,7 +270,7 @@ export abstract class MediaFolderAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyMediaFolderArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyMediaFolderArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.mediaFolder.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -282,7 +282,7 @@ export abstract class MediaFolderAbstract {
    * @param data - 创建数据
    * @returns 创建的媒体文件夹记录
    */
-  create(data: CreateOneMediaFolderArgs['data']): PrismaPromise<MediaFolder> {
+  create(data: CreateOneMediaFolderArgs['data']): Prisma.PrismaPromise<MediaFolder> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.mediaFolder.create({
@@ -299,7 +299,10 @@ export abstract class MediaFolderAbstract {
    * @param data - 更新数据
    * @returns 更新后的媒体文件夹记录
    */
-  update(where: UpdateOneMediaFolderArgs['where'], data: UpdateOneMediaFolderArgs['data']): PrismaPromise<MediaFolder> {
+  update(
+    where: UpdateOneMediaFolderArgs['where'],
+    data: UpdateOneMediaFolderArgs['data']
+  ): Prisma.PrismaPromise<MediaFolder> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.mediaFolder.update({
@@ -318,7 +321,7 @@ export abstract class MediaFolderAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的媒体文件夹记录
    */
-  upsert(args: UpsertOneMediaFolderArgs): PrismaPromise<MediaFolder> {
+  upsert(args: UpsertOneMediaFolderArgs): Prisma.PrismaPromise<MediaFolder> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -339,7 +342,7 @@ export abstract class MediaFolderAbstract {
    * @param where - 删除条件
    * @returns 删除的媒体文件夹记录
    */
-  delete(where: DeleteOneMediaFolderArgs['where']): PrismaPromise<MediaFolder> {
+  delete(where: DeleteOneMediaFolderArgs['where']): Prisma.PrismaPromise<MediaFolder> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.mediaFolder.delete({

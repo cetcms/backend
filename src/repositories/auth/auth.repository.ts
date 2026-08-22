@@ -1,8 +1,8 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { SystemContract } from 'src/contracts';
 import { DatabaseService } from 'src/database';
 import { AuthCreateInput, FindManyAuthArgs, Target, UpsertOneAuthArgs } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import { AdminRepository, MemberRepository } from 'src/repositories';
 
 import { AuthAbstract } from './auth.abstract';

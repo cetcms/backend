@@ -43,7 +43,7 @@ export class I18nService implements OnModuleInit {
       fallbackNS: defaultLocaleNs,
       fallbackLng: defaultLocaleLang,
       backend: {
-        loadPath: path.resolve(__dirname, 'translations', '{{lng}}', '{{ns}}.json'),
+        loadPath: path.resolve(this.translationsDir(), '{{lng}}', '{{ns}}.json'),
         addPath: path.resolve('src', 'i18n', 'translations', '{{lng}}', '{{ns}}.missing.json'),
       },
     });
@@ -51,9 +51,21 @@ export class I18nService implements OnModuleInit {
     this.logger.log(`Initialized with languages: ${languages.join(', ')}`);
   }
 
+  // Compiled runtime (dev/prod) reads dist/i18n; source execution (tests) reads src/i18n.
+  private translationsDir() {
+    const candidates = ['dist/i18n/translations', 'src/i18n/translations'].map((dir) =>
+      path.resolve(process.cwd(), dir)
+    );
+    const found = candidates.find((dir) => fs.existsSync(dir));
+    if (found) {
+      return found;
+    }
+    return path.resolve(__dirname, 'translations');
+  }
+
   private translationParams() {
     const { defaultLocaleLang } = this.config.getAppConfig();
-    const transDir = path.resolve(__dirname, 'translations');
+    const transDir = this.translationsDir();
     const langDir = path.resolve(transDir, defaultLocaleLang);
     const languages = fs.readdirSync(transDir, { withFileTypes: true });
     const namespaces = fs.readdirSync(langDir, { withFileTypes: true });

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import { FindManyWebsiteArgs, UpsertOneWebsiteArgs } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 
 import { WebsiteAbstract } from './website.abstract';
 

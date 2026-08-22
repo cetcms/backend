@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   CompanyRole,
@@ -17,6 +16,7 @@ import {
   UpdateOneCompanyRoleArgs,
   UpsertOneCompanyRoleArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   CompanyRoleCreateInputObjectZodSchema,
   CompanyRoleIncludeObjectZodSchema,
@@ -216,7 +216,7 @@ export abstract class CompanyRoleAbstract {
    * @param where - 查询条件
    * @returns 企业角色记录或null
    */
-  findUnique(where: FindUniqueCompanyRoleArgs['where']): PrismaPromise<CompanyRole | null> {
+  findUnique(where: FindUniqueCompanyRoleArgs['where']): Prisma.PrismaPromise<CompanyRole | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.companyRole.findUnique({
@@ -234,7 +234,7 @@ export abstract class CompanyRoleAbstract {
    * @param args - 查询参数
    * @returns 企业角色记录或null
    */
-  findFirst(args: FindFirstCompanyRoleArgs): PrismaPromise<CompanyRole | null> {
+  findFirst(args: FindFirstCompanyRoleArgs): Prisma.PrismaPromise<CompanyRole | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -253,7 +253,7 @@ export abstract class CompanyRoleAbstract {
    * @param args - 查询参数
    * @returns 企业角色记录数组
    */
-  findMany(args: FindManyCompanyRoleArgs): PrismaPromise<CompanyRole[]> {
+  findMany(args: FindManyCompanyRoleArgs): Prisma.PrismaPromise<CompanyRole[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -270,7 +270,7 @@ export abstract class CompanyRoleAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyCompanyRoleArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyCompanyRoleArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.companyRole.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -282,7 +282,7 @@ export abstract class CompanyRoleAbstract {
    * @param data - 创建数据
    * @returns 创建的企业角色记录
    */
-  create(data: CreateOneCompanyRoleArgs['data']): PrismaPromise<CompanyRole> {
+  create(data: CreateOneCompanyRoleArgs['data']): Prisma.PrismaPromise<CompanyRole> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.companyRole.create({
@@ -299,7 +299,10 @@ export abstract class CompanyRoleAbstract {
    * @param data - 更新数据
    * @returns 更新后的企业角色记录
    */
-  update(where: UpdateOneCompanyRoleArgs['where'], data: UpdateOneCompanyRoleArgs['data']): PrismaPromise<CompanyRole> {
+  update(
+    where: UpdateOneCompanyRoleArgs['where'],
+    data: UpdateOneCompanyRoleArgs['data']
+  ): Prisma.PrismaPromise<CompanyRole> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.companyRole.update({
@@ -318,7 +321,7 @@ export abstract class CompanyRoleAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的企业角色记录
    */
-  upsert(args: UpsertOneCompanyRoleArgs): PrismaPromise<CompanyRole> {
+  upsert(args: UpsertOneCompanyRoleArgs): Prisma.PrismaPromise<CompanyRole> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -339,7 +342,7 @@ export abstract class CompanyRoleAbstract {
    * @param where - 删除条件
    * @returns 删除的企业角色记录
    */
-  delete(where: DeleteOneCompanyRoleArgs['where']): PrismaPromise<CompanyRole> {
+  delete(where: DeleteOneCompanyRoleArgs['where']): Prisma.PrismaPromise<CompanyRole> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.companyRole.delete({

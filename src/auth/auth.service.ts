@@ -1,9 +1,9 @@
 import { Injectable, Logger, UnprocessableEntityException } from '@nestjs/common';
 import { isEmail } from 'class-validator';
-import { AppConfig } from 'src/config';
 import { TokenFactory } from 'src/auth/factories';
 import { Login, LoginInput, LoginMeta } from 'src/auth/graphql';
 import { DateHandler } from 'src/common/handlers';
+import { AppConfig } from 'src/config';
 import { Client, Company, FindManyCompanyArgs } from 'src/generated/graphql';
 import { Admin } from 'src/generated/graphql/admin';
 import { Auth } from 'src/generated/graphql/auth';

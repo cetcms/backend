@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   MediaFile,
@@ -17,6 +16,7 @@ import {
   UpdateOneMediaFileArgs,
   UpsertOneMediaFileArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   MediaFileCreateInputObjectZodSchema,
   MediaFileIncludeObjectZodSchema,
@@ -212,7 +212,7 @@ export abstract class MediaFileAbstract {
    * @param where - 查询条件
    * @returns 媒体文件记录或null
    */
-  findUnique(where: FindUniqueMediaFileArgs['where']): PrismaPromise<MediaFile | null> {
+  findUnique(where: FindUniqueMediaFileArgs['where']): Prisma.PrismaPromise<MediaFile | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.mediaFile.findUnique({
@@ -230,7 +230,7 @@ export abstract class MediaFileAbstract {
    * @param args - 查询参数
    * @returns 媒体文件记录或null
    */
-  findFirst(args: FindFirstMediaFileArgs): PrismaPromise<MediaFile | null> {
+  findFirst(args: FindFirstMediaFileArgs): Prisma.PrismaPromise<MediaFile | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -249,7 +249,7 @@ export abstract class MediaFileAbstract {
    * @param args - 查询参数
    * @returns 媒体文件记录数组
    */
-  findMany(args: FindManyMediaFileArgs): PrismaPromise<MediaFile[]> {
+  findMany(args: FindManyMediaFileArgs): Prisma.PrismaPromise<MediaFile[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -266,7 +266,7 @@ export abstract class MediaFileAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyMediaFileArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyMediaFileArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.mediaFile.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -278,7 +278,7 @@ export abstract class MediaFileAbstract {
    * @param data - 创建数据
    * @returns 创建的媒体文件记录
    */
-  create(data: CreateOneMediaFileArgs['data']): PrismaPromise<MediaFile> {
+  create(data: CreateOneMediaFileArgs['data']): Prisma.PrismaPromise<MediaFile> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.mediaFile.create({
@@ -295,7 +295,10 @@ export abstract class MediaFileAbstract {
    * @param data - 更新数据
    * @returns 更新后的媒体文件记录
    */
-  update(where: UpdateOneMediaFileArgs['where'], data: UpdateOneMediaFileArgs['data']): PrismaPromise<MediaFile> {
+  update(
+    where: UpdateOneMediaFileArgs['where'],
+    data: UpdateOneMediaFileArgs['data']
+  ): Prisma.PrismaPromise<MediaFile> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.mediaFile.update({
@@ -314,7 +317,7 @@ export abstract class MediaFileAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的媒体文件记录
    */
-  upsert(args: UpsertOneMediaFileArgs): PrismaPromise<MediaFile> {
+  upsert(args: UpsertOneMediaFileArgs): Prisma.PrismaPromise<MediaFile> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -335,7 +338,7 @@ export abstract class MediaFileAbstract {
    * @param where - 删除条件
    * @returns 删除的媒体文件记录
    */
-  delete(where: DeleteOneMediaFileArgs['where']): PrismaPromise<MediaFile> {
+  delete(where: DeleteOneMediaFileArgs['where']): Prisma.PrismaPromise<MediaFile> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.mediaFile.delete({

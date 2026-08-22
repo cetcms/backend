@@ -1,6 +1,6 @@
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import importPlugin from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import-x';
 import prettierPlugin from 'eslint-plugin-prettier';
 import tsEsLint from 'typescript-eslint';
 
@@ -76,7 +76,6 @@ export default [
       ],
       'import/no-unresolved': 'off', // TypeScript 处理
       'import/no-duplicates': 'error',
-      'import/no-unused-modules': 'warn',
 
       // Prettier 相关 - 只保留与格式化相关的配置
       'prettier/prettier': [
@@ -101,6 +100,8 @@ export default [
       'coverage/**',
       'public/**',
       '**/*.d.ts',
+      'src/contracts/models-relation.contract.ts',
+      'src/i18n/i18n.enum.ts',
     ],
   },
 ];

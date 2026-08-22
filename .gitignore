@@ -62,3 +62,11 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # IDE files
 .omc/
 **/.omc/
+.omo/
+**/.omo/
+.codegraph/
+.trae/
+
+
+# TypeScript incremental build cache
+*.tsbuildinfo

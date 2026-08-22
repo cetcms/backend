@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PasswordHandler } from 'src/common/handlers';
 import { DatabaseService } from 'src/database';
 import { FindManyAdminArgs, FindUniqueAdminArgs, UpsertOneAdminArgs } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 
 import { AdminAbstract } from './admin.abstract';
 

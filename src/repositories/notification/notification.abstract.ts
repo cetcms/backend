@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   Notification,
@@ -17,6 +16,7 @@ import {
   UpdateOneNotificationArgs,
   UpsertOneNotificationArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   NotificationCreateInputObjectZodSchema,
   NotificationIncludeObjectZodSchema,
@@ -212,7 +212,7 @@ export abstract class NotificationAbstract {
    * @param where - 查询条件
    * @returns 消息通知记录或null
    */
-  findUnique(where: FindUniqueNotificationArgs['where']): PrismaPromise<Notification | null> {
+  findUnique(where: FindUniqueNotificationArgs['where']): Prisma.PrismaPromise<Notification | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.notification.findUnique({
@@ -230,7 +230,7 @@ export abstract class NotificationAbstract {
    * @param args - 查询参数
    * @returns 消息通知记录或null
    */
-  findFirst(args: FindFirstNotificationArgs): PrismaPromise<Notification | null> {
+  findFirst(args: FindFirstNotificationArgs): Prisma.PrismaPromise<Notification | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -249,7 +249,7 @@ export abstract class NotificationAbstract {
    * @param args - 查询参数
    * @returns 消息通知记录数组
    */
-  findMany(args: FindManyNotificationArgs): PrismaPromise<Notification[]> {
+  findMany(args: FindManyNotificationArgs): Prisma.PrismaPromise<Notification[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -266,7 +266,7 @@ export abstract class NotificationAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyNotificationArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyNotificationArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.notification.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -278,7 +278,7 @@ export abstract class NotificationAbstract {
    * @param data - 创建数据
    * @returns 创建的消息通知记录
    */
-  create(data: CreateOneNotificationArgs['data']): PrismaPromise<Notification> {
+  create(data: CreateOneNotificationArgs['data']): Prisma.PrismaPromise<Notification> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.notification.create({
@@ -298,7 +298,7 @@ export abstract class NotificationAbstract {
   update(
     where: UpdateOneNotificationArgs['where'],
     data: UpdateOneNotificationArgs['data']
-  ): PrismaPromise<Notification> {
+  ): Prisma.PrismaPromise<Notification> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.notification.update({
@@ -317,7 +317,7 @@ export abstract class NotificationAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的消息通知记录
    */
-  upsert(args: UpsertOneNotificationArgs): PrismaPromise<Notification> {
+  upsert(args: UpsertOneNotificationArgs): Prisma.PrismaPromise<Notification> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -338,7 +338,7 @@ export abstract class NotificationAbstract {
    * @param where - 删除条件
    * @returns 删除的消息通知记录
    */
-  delete(where: DeleteOneNotificationArgs['where']): PrismaPromise<Notification> {
+  delete(where: DeleteOneNotificationArgs['where']): Prisma.PrismaPromise<Notification> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.notification.delete({

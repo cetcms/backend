@@ -51,7 +51,7 @@ export class AppService {
 
     this.app.enableCors();
 
-    this.app.useStaticAssets(path.join(__dirname, '..', 'public'));
+    this.app.useStaticAssets(path.join(process.cwd(), 'public'));
 
     this.app.useGlobalFilters(new ExtensionsFilter(i18n));
 

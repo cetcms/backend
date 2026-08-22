@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   AdminCompany,
@@ -17,6 +16,7 @@ import {
   UpdateOneAdminCompanyArgs,
   UpsertOneAdminCompanyArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   AdminCompanyCreateInputObjectZodSchema,
   AdminCompanyIncludeObjectZodSchema,
@@ -213,7 +213,7 @@ export abstract class AdminCompanyAbstract {
    * @param where - 查询条件
    * @returns 管理员企业关联记录或null
    */
-  findUnique(where: FindUniqueAdminCompanyArgs['where']): PrismaPromise<AdminCompany | null> {
+  findUnique(where: FindUniqueAdminCompanyArgs['where']): Prisma.PrismaPromise<AdminCompany | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.adminCompany.findUnique({
@@ -231,7 +231,7 @@ export abstract class AdminCompanyAbstract {
    * @param args - 查询参数
    * @returns 管理员企业关联记录或null
    */
-  findFirst(args: FindFirstAdminCompanyArgs): PrismaPromise<AdminCompany | null> {
+  findFirst(args: FindFirstAdminCompanyArgs): Prisma.PrismaPromise<AdminCompany | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -250,7 +250,7 @@ export abstract class AdminCompanyAbstract {
    * @param args - 查询参数
    * @returns 管理员企业关联记录数组
    */
-  findMany(args: FindManyAdminCompanyArgs): PrismaPromise<AdminCompany[]> {
+  findMany(args: FindManyAdminCompanyArgs): Prisma.PrismaPromise<AdminCompany[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -267,7 +267,7 @@ export abstract class AdminCompanyAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyAdminCompanyArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyAdminCompanyArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.adminCompany.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -279,7 +279,7 @@ export abstract class AdminCompanyAbstract {
    * @param data - 创建数据
    * @returns 创建的管理员企业关联记录
    */
-  create(data: CreateOneAdminCompanyArgs['data']): PrismaPromise<AdminCompany> {
+  create(data: CreateOneAdminCompanyArgs['data']): Prisma.PrismaPromise<AdminCompany> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.adminCompany.create({
@@ -299,7 +299,7 @@ export abstract class AdminCompanyAbstract {
   update(
     where: UpdateOneAdminCompanyArgs['where'],
     data: UpdateOneAdminCompanyArgs['data']
-  ): PrismaPromise<AdminCompany> {
+  ): Prisma.PrismaPromise<AdminCompany> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.adminCompany.update({
@@ -318,7 +318,7 @@ export abstract class AdminCompanyAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的管理员企业关联记录
    */
-  upsert(args: UpsertOneAdminCompanyArgs): PrismaPromise<AdminCompany> {
+  upsert(args: UpsertOneAdminCompanyArgs): Prisma.PrismaPromise<AdminCompany> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -339,7 +339,7 @@ export abstract class AdminCompanyAbstract {
    * @param where - 删除条件
    * @returns 删除的管理员企业关联记录
    */
-  delete(where: DeleteOneAdminCompanyArgs['where']): PrismaPromise<AdminCompany> {
+  delete(where: DeleteOneAdminCompanyArgs['where']): Prisma.PrismaPromise<AdminCompany> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.adminCompany.delete({

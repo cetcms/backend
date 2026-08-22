@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { SystemContract } from 'src/contracts';
 import { DatabaseService } from 'src/database';
 import { NotificationPrivacy, NotificationTarget } from 'src/generated/graphql';

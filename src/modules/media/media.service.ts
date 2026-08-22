@@ -134,7 +134,7 @@ export class MediaService {
       if (existsSync(filePath)) {
         unlinkSync(filePath);
       }
-      throw new Error(`File upload failed: ${error.message}`);
+      throw new Error(`File upload failed: ${error.message}`, { cause: error });
     }
   }
 

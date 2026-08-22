@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   Company,
@@ -18,6 +17,7 @@ import {
   UpdateOneCompanyArgs,
   UpsertOneCompanyArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   CompanyCreateInputObjectZodSchema,
   CompanyIncludeObjectZodSchema,
@@ -237,7 +237,7 @@ export abstract class CompanyAbstract {
    * @param where - 查询条件
    * @returns 企业记录或null
    */
-  findUnique(where: FindUniqueCompanyArgs['where']): PrismaPromise<Company | null> {
+  findUnique(where: FindUniqueCompanyArgs['where']): Prisma.PrismaPromise<Company | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.company.findUnique({
@@ -255,7 +255,7 @@ export abstract class CompanyAbstract {
    * @param args - 查询参数
    * @returns 企业记录或null
    */
-  findFirst(args: FindFirstCompanyArgs): PrismaPromise<Company | null> {
+  findFirst(args: FindFirstCompanyArgs): Prisma.PrismaPromise<Company | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -274,7 +274,7 @@ export abstract class CompanyAbstract {
    * @param args - 查询参数
    * @returns 企业记录数组
    */
-  findMany(args: FindManyCompanyArgs): PrismaPromise<Company[]> {
+  findMany(args: FindManyCompanyArgs): Prisma.PrismaPromise<Company[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -291,7 +291,7 @@ export abstract class CompanyAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyCompanyArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyCompanyArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.company.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -303,7 +303,7 @@ export abstract class CompanyAbstract {
    * @param data - 创建数据
    * @returns 创建的企业记录
    */
-  create(data: CreateOneCompanyArgs['data']): PrismaPromise<Company> {
+  create(data: CreateOneCompanyArgs['data']): Prisma.PrismaPromise<Company> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.company.create({
@@ -320,7 +320,7 @@ export abstract class CompanyAbstract {
    * @param data - 更新数据
    * @returns 更新后的企业记录
    */
-  update(where: UpdateOneCompanyArgs['where'], data: UpdateOneCompanyArgs['data']): PrismaPromise<Company> {
+  update(where: UpdateOneCompanyArgs['where'], data: UpdateOneCompanyArgs['data']): Prisma.PrismaPromise<Company> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.company.update({
@@ -339,7 +339,7 @@ export abstract class CompanyAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的企业记录
    */
-  upsert(args: UpsertOneCompanyArgs): PrismaPromise<Company> {
+  upsert(args: UpsertOneCompanyArgs): Prisma.PrismaPromise<Company> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -360,7 +360,7 @@ export abstract class CompanyAbstract {
    * @param where - 删除条件
    * @returns 删除的企业记录
    */
-  delete(where: DeleteOneCompanyArgs['where']): PrismaPromise<Company> {
+  delete(where: DeleteOneCompanyArgs['where']): Prisma.PrismaPromise<Company> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.company.delete({

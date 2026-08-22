@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   Auth,
@@ -17,6 +16,7 @@ import {
   UpdateOneAuthArgs,
   UpsertOneAuthArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   AuthCreateInputObjectZodSchema,
   AuthIncludeObjectZodSchema,
@@ -205,7 +205,7 @@ export abstract class AuthAbstract {
    * @param where - 查询条件
    * @returns 认证记录或null
    */
-  findUnique(where: FindUniqueAuthArgs['where']): PrismaPromise<Auth | null> {
+  findUnique(where: FindUniqueAuthArgs['where']): Prisma.PrismaPromise<Auth | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.auth.findUnique({
@@ -223,7 +223,7 @@ export abstract class AuthAbstract {
    * @param args - 查询参数
    * @returns 认证记录或null
    */
-  findFirst(args: FindFirstAuthArgs): PrismaPromise<Auth | null> {
+  findFirst(args: FindFirstAuthArgs): Prisma.PrismaPromise<Auth | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -242,7 +242,7 @@ export abstract class AuthAbstract {
    * @param args - 查询参数
    * @returns 认证记录数组
    */
-  findMany(args: FindManyAuthArgs): PrismaPromise<Auth[]> {
+  findMany(args: FindManyAuthArgs): Prisma.PrismaPromise<Auth[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -259,7 +259,7 @@ export abstract class AuthAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyAuthArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyAuthArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.auth.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -271,7 +271,7 @@ export abstract class AuthAbstract {
    * @param data - 创建数据
    * @returns 创建的认证记录
    */
-  create(data: CreateOneAuthArgs['data']): PrismaPromise<Auth> {
+  create(data: CreateOneAuthArgs['data']): Prisma.PrismaPromise<Auth> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.auth.create({
@@ -288,7 +288,7 @@ export abstract class AuthAbstract {
    * @param data - 更新数据
    * @returns 更新后的认证记录
    */
-  update(where: UpdateOneAuthArgs['where'], data: UpdateOneAuthArgs['data']): PrismaPromise<Auth> {
+  update(where: UpdateOneAuthArgs['where'], data: UpdateOneAuthArgs['data']): Prisma.PrismaPromise<Auth> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.auth.update({
@@ -307,7 +307,7 @@ export abstract class AuthAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的认证记录
    */
-  upsert(args: UpsertOneAuthArgs): PrismaPromise<Auth> {
+  upsert(args: UpsertOneAuthArgs): Prisma.PrismaPromise<Auth> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -328,7 +328,7 @@ export abstract class AuthAbstract {
    * @param where - 删除条件
    * @returns 删除的认证记录
    */
-  delete(where: DeleteOneAuthArgs['where']): PrismaPromise<Auth> {
+  delete(where: DeleteOneAuthArgs['where']): Prisma.PrismaPromise<Auth> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.auth.delete({

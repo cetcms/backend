@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { faker } from '@faker-js/faker/locale/zh_CN';
 import { DatabaseService } from 'src/database';
 import {

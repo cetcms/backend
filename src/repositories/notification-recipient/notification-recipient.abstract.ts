@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   NotificationRecipient,
@@ -17,6 +16,7 @@ import {
   UpdateOneNotificationRecipientArgs,
   UpsertOneNotificationRecipientArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   NotificationRecipientCreateInputObjectZodSchema,
   NotificationRecipientIncludeObjectZodSchema,
@@ -225,7 +225,7 @@ export abstract class NotificationRecipientAbstract {
    * @param where - 查询条件
    * @returns 消息通知接收记录或null
    */
-  findUnique(where: FindUniqueNotificationRecipientArgs['where']): PrismaPromise<NotificationRecipient | null> {
+  findUnique(where: FindUniqueNotificationRecipientArgs['where']): Prisma.PrismaPromise<NotificationRecipient | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.notificationRecipient.findUnique({
@@ -243,7 +243,7 @@ export abstract class NotificationRecipientAbstract {
    * @param args - 查询参数
    * @returns 消息通知接收记录或null
    */
-  findFirst(args: FindFirstNotificationRecipientArgs): PrismaPromise<NotificationRecipient | null> {
+  findFirst(args: FindFirstNotificationRecipientArgs): Prisma.PrismaPromise<NotificationRecipient | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -262,7 +262,7 @@ export abstract class NotificationRecipientAbstract {
    * @param args - 查询参数
    * @returns 消息通知接收记录数组
    */
-  findMany(args: FindManyNotificationRecipientArgs): PrismaPromise<NotificationRecipient[]> {
+  findMany(args: FindManyNotificationRecipientArgs): Prisma.PrismaPromise<NotificationRecipient[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -279,7 +279,7 @@ export abstract class NotificationRecipientAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyNotificationRecipientArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyNotificationRecipientArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.notificationRecipient.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -291,7 +291,7 @@ export abstract class NotificationRecipientAbstract {
    * @param data - 创建数据
    * @returns 创建的消息通知接收记录
    */
-  create(data: CreateOneNotificationRecipientArgs['data']): PrismaPromise<NotificationRecipient> {
+  create(data: CreateOneNotificationRecipientArgs['data']): Prisma.PrismaPromise<NotificationRecipient> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.notificationRecipient.create({
@@ -311,7 +311,7 @@ export abstract class NotificationRecipientAbstract {
   update(
     where: UpdateOneNotificationRecipientArgs['where'],
     data: UpdateOneNotificationRecipientArgs['data']
-  ): PrismaPromise<NotificationRecipient> {
+  ): Prisma.PrismaPromise<NotificationRecipient> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.notificationRecipient.update({
@@ -330,7 +330,7 @@ export abstract class NotificationRecipientAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的消息通知接收记录
    */
-  upsert(args: UpsertOneNotificationRecipientArgs): PrismaPromise<NotificationRecipient> {
+  upsert(args: UpsertOneNotificationRecipientArgs): Prisma.PrismaPromise<NotificationRecipient> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -351,7 +351,7 @@ export abstract class NotificationRecipientAbstract {
    * @param where - 删除条件
    * @returns 删除的消息通知接收记录
    */
-  delete(where: DeleteOneNotificationRecipientArgs['where']): PrismaPromise<NotificationRecipient> {
+  delete(where: DeleteOneNotificationRecipientArgs['where']): Prisma.PrismaPromise<NotificationRecipient> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.notificationRecipient.delete({

@@ -1,23 +1,33 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
+  "moduleFileExtensions": [
+    "js",
+    "mjs",
+    "json",
+    "ts"
+  ],
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
+  "extensionsToTreatAsEsm": [
+    ".ts"
+  ],
   "transform": {
-    "^.+\\.(t|j)s$": [
+    "^.+\\.ts$": [
       "ts-jest",
       {
-        "useESM": true
+        "useESM": true,
+        "tsconfig": {
+          "module": "ESNext",
+          "moduleResolution": "Bundler",
+          "rootDir": "."
+        }
       }
     ]
   },
-  "extensionsToTreatAsEsm": [".ts"],
   "moduleNameMapper": {
     "^src/(.*)$": "<rootDir>/../src/$1"
   },
-  "transformIgnorePatterns": [
-    "node_modules/(?!chalk/.*)",
-    "node_modules/(?!uuid/.*)"
-  ],
-  "setupFilesAfterEnv": ["<rootDir>/jest-setup.ts"]
+  "setupFiles": [
+    "dotenv/config"
+  ]
 }

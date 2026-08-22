@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   CreateOneWebsiteArgs,
@@ -17,6 +16,7 @@ import {
   WebsiteWhereInput,
   WebsiteWhereUniqueInput,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   WebsiteCreateInputObjectZodSchema,
   WebsiteIncludeObjectZodSchema,
@@ -209,7 +209,7 @@ export abstract class WebsiteAbstract {
    * @param where - 查询条件
    * @returns 网站记录或null
    */
-  findUnique(where: FindUniqueWebsiteArgs['where']): PrismaPromise<Website | null> {
+  findUnique(where: FindUniqueWebsiteArgs['where']): Prisma.PrismaPromise<Website | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.website.findUnique({
@@ -227,7 +227,7 @@ export abstract class WebsiteAbstract {
    * @param args - 查询参数
    * @returns 网站记录或null
    */
-  findFirst(args: FindFirstWebsiteArgs): PrismaPromise<Website | null> {
+  findFirst(args: FindFirstWebsiteArgs): Prisma.PrismaPromise<Website | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -246,7 +246,7 @@ export abstract class WebsiteAbstract {
    * @param args - 查询参数
    * @returns 网站记录数组
    */
-  findMany(args: FindManyWebsiteArgs): PrismaPromise<Website[]> {
+  findMany(args: FindManyWebsiteArgs): Prisma.PrismaPromise<Website[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -263,7 +263,7 @@ export abstract class WebsiteAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyWebsiteArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyWebsiteArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.website.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -275,7 +275,7 @@ export abstract class WebsiteAbstract {
    * @param data - 创建数据
    * @returns 创建的网站记录
    */
-  create(data: CreateOneWebsiteArgs['data']): PrismaPromise<Website> {
+  create(data: CreateOneWebsiteArgs['data']): Prisma.PrismaPromise<Website> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.website.create({
@@ -292,7 +292,7 @@ export abstract class WebsiteAbstract {
    * @param data - 更新数据
    * @returns 更新后的网站记录
    */
-  update(where: UpdateOneWebsiteArgs['where'], data: UpdateOneWebsiteArgs['data']): PrismaPromise<Website> {
+  update(where: UpdateOneWebsiteArgs['where'], data: UpdateOneWebsiteArgs['data']): Prisma.PrismaPromise<Website> {
     const include = this.getInclude();
     const select = this.getSelect();
     const update = this.handleParsedData(this.parseUpdateData(data));
@@ -312,7 +312,7 @@ export abstract class WebsiteAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的网站记录
    */
-  upsert(args: UpsertOneWebsiteArgs): PrismaPromise<Website> {
+  upsert(args: UpsertOneWebsiteArgs): Prisma.PrismaPromise<Website> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -333,7 +333,7 @@ export abstract class WebsiteAbstract {
    * @param where - 删除条件
    * @returns 删除的网站记录
    */
-  delete(where: DeleteOneWebsiteArgs['where']): PrismaPromise<Website> {
+  delete(where: DeleteOneWebsiteArgs['where']): Prisma.PrismaPromise<Website> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.website.delete({

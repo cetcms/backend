@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   Member,
@@ -18,6 +17,7 @@ import {
   UpsertOneMemberArgs,
   Owner,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   MemberCreateInputObjectZodSchema,
   MemberIncludeObjectZodSchema,
@@ -230,7 +230,7 @@ export abstract class MemberAbstract {
    * @param where - 查询条件
    * @returns 成员记录或null
    */
-  findUnique(where: FindUniqueMemberArgs['where']): PrismaPromise<Member | null> {
+  findUnique(where: FindUniqueMemberArgs['where']): Prisma.PrismaPromise<Member | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.member.findUnique({
@@ -248,7 +248,7 @@ export abstract class MemberAbstract {
    * @param args - 查询参数
    * @returns 成员记录或null
    */
-  findFirst(args: FindFirstMemberArgs): PrismaPromise<Member | null> {
+  findFirst(args: FindFirstMemberArgs): Prisma.PrismaPromise<Member | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -267,7 +267,7 @@ export abstract class MemberAbstract {
    * @param args - 查询参数
    * @returns 成员记录数组
    */
-  findMany(args: FindManyMemberArgs): PrismaPromise<Member[]> {
+  findMany(args: FindManyMemberArgs): Prisma.PrismaPromise<Member[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -284,7 +284,7 @@ export abstract class MemberAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyMemberArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyMemberArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.member.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -296,7 +296,7 @@ export abstract class MemberAbstract {
    * @param data - 创建数据
    * @returns 创建的成员记录
    */
-  create(data: CreateOneMemberArgs['data']): PrismaPromise<Member> {
+  create(data: CreateOneMemberArgs['data']): Prisma.PrismaPromise<Member> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.member.create({
@@ -313,7 +313,7 @@ export abstract class MemberAbstract {
    * @param data - 更新数据
    * @returns 更新后的成员记录
    */
-  update(where: UpdateOneMemberArgs['where'], data: UpdateOneMemberArgs['data']): PrismaPromise<Member> {
+  update(where: UpdateOneMemberArgs['where'], data: UpdateOneMemberArgs['data']): Prisma.PrismaPromise<Member> {
     const include = this.getInclude();
     const select = this.getSelect();
     const update = this.handleParsedData(this.parseUpdateData(data));
@@ -333,7 +333,7 @@ export abstract class MemberAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的成员记录
    */
-  upsert(args: UpsertOneMemberArgs): PrismaPromise<Member> {
+  upsert(args: UpsertOneMemberArgs): Prisma.PrismaPromise<Member> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -354,7 +354,7 @@ export abstract class MemberAbstract {
    * @param where - 删除条件
    * @returns 删除的成员记录
    */
-  delete(where: DeleteOneMemberArgs['where']): PrismaPromise<Member> {
+  delete(where: DeleteOneMemberArgs['where']): Prisma.PrismaPromise<Member> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.member.delete({

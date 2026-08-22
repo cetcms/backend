@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaPromise } from '@prisma/client';
 import { DatabaseService } from 'src/database';
 import {
   RequestLog,
@@ -17,6 +16,7 @@ import {
   UpdateOneRequestLogArgs,
   UpsertOneRequestLogArgs,
 } from 'src/generated/graphql';
+import { Prisma } from 'src/generated/prisma/client';
 import {
   RequestLogCreateInputObjectZodSchema,
   RequestLogIncludeObjectZodSchema,
@@ -213,7 +213,7 @@ export abstract class RequestLogAbstract {
    * @param where - 查询条件
    * @returns 请求日志记录或null
    */
-  findUnique(where: FindUniqueRequestLogArgs['where']): PrismaPromise<RequestLog | null> {
+  findUnique(where: FindUniqueRequestLogArgs['where']): Prisma.PrismaPromise<RequestLog | null> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.requestLog.findUnique({
@@ -231,7 +231,7 @@ export abstract class RequestLogAbstract {
    * @param args - 查询参数
    * @returns 请求日志记录或null
    */
-  findFirst(args: FindFirstRequestLogArgs): PrismaPromise<RequestLog | null> {
+  findFirst(args: FindFirstRequestLogArgs): Prisma.PrismaPromise<RequestLog | null> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -250,7 +250,7 @@ export abstract class RequestLogAbstract {
    * @param args - 查询参数
    * @returns 请求日志记录数组
    */
-  findMany(args: FindManyRequestLogArgs): PrismaPromise<RequestLog[]> {
+  findMany(args: FindManyRequestLogArgs): Prisma.PrismaPromise<RequestLog[]> {
     args = this.parseManyOrFirstArgs(args);
     const include = this.getInclude();
     const select = this.getSelect();
@@ -267,7 +267,7 @@ export abstract class RequestLogAbstract {
    * @param where - 查询条件
    * @returns 记录数量
    */
-  count(where?: FindManyRequestLogArgs['where']): PrismaPromise<number> {
+  count(where?: FindManyRequestLogArgs['where']): Prisma.PrismaPromise<number> {
     return this.db.requestLog.count({
       where: where ? this.parseWhere(where) : undefined,
     });
@@ -279,7 +279,7 @@ export abstract class RequestLogAbstract {
    * @param data - 创建数据
    * @returns 创建的请求日志记录
    */
-  create(data: CreateOneRequestLogArgs['data']): PrismaPromise<RequestLog> {
+  create(data: CreateOneRequestLogArgs['data']): Prisma.PrismaPromise<RequestLog> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.requestLog.create({
@@ -296,7 +296,10 @@ export abstract class RequestLogAbstract {
    * @param data - 更新数据
    * @returns 更新后的请求日志记录
    */
-  update(where: UpdateOneRequestLogArgs['where'], data: UpdateOneRequestLogArgs['data']): PrismaPromise<RequestLog> {
+  update(
+    where: UpdateOneRequestLogArgs['where'],
+    data: UpdateOneRequestLogArgs['data']
+  ): Prisma.PrismaPromise<RequestLog> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.requestLog.update({
@@ -315,7 +318,7 @@ export abstract class RequestLogAbstract {
    * @param args - 更新或创建参数
    * @returns 更新或创建后的请求日志记录
    */
-  upsert(args: UpsertOneRequestLogArgs): PrismaPromise<RequestLog> {
+  upsert(args: UpsertOneRequestLogArgs): Prisma.PrismaPromise<RequestLog> {
     const include = this.getInclude();
     const select = this.getSelect();
     const where = this.parseUniqueWhere(args.where);
@@ -336,7 +339,7 @@ export abstract class RequestLogAbstract {
    * @param where - 删除条件
    * @returns 删除的请求日志记录
    */
-  delete(where: DeleteOneRequestLogArgs['where']): PrismaPromise<RequestLog> {
+  delete(where: DeleteOneRequestLogArgs['where']): Prisma.PrismaPromise<RequestLog> {
     const include = this.getInclude();
     const select = this.getSelect();
     return this.db.requestLog.delete({
